@@ -1,14 +1,27 @@
 import express from 'express';
-import cors from 'cors';
+import moviesRoutes from './routes/movies.routes';
+import { corsMiddleware } from './middlewares/cors.middleware';
+import prisma from './db/prisma';
 
 const app = express();
-const PORT = 3001;
+const PORT = process.env.PORT || 3001;
 
-app.use(cors());
+app.use(corsMiddleware);
 app.use(express.json());
 
-app.get('/api/hello', (_req, res) => {
-  res.json({ message: 'Hello from Express!' });
+app.use('/api/movies', moviesRoutes);
+
+// Graceful shutdown
+process.on('SIGINT', async () => {
+  console.log('Shutting down gracefully...');
+  await prisma.$disconnect();
+  process.exit(0);
+});
+
+process.on('SIGTERM', async () => {
+  console.log('Shutting down gracefully...');
+  await prisma.$disconnect();
+  process.exit(0);
 });
 
 app.listen(PORT, () => {
