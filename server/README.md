@@ -1,99 +1,75 @@
 # Movies API Server
 
-A Node.js/Express server with PostgreSQL database using Prisma ORM for managing movies.
+A RESTful API server for managing movies with PostgreSQL database and OMDb integration.
 
 ## Features
 
-- RESTful API for movies CRUD operations
-- PostgreSQL database with Prisma ORM
-- TypeScript support
-- CORS enabled
-- Type-safe database operations
-
-## Prerequisites
-
-- Node.js (v16 or higher)
-- PostgreSQL database
-- npm or yarn
+- **CRUD Operations**: Create, Read, Update, Delete movies
+- **PostgreSQL Database**: Persistent storage with Prisma ORM
+- **OMDb Integration**: Fetches additional movies from [OMDb API](https://www.omdbapi.com/) when database has fewer than 10 movies
+- **Auto-completion**: Always returns at least 10 movies by combining database and external API data
 
 ## Setup
 
-1. **Install dependencies:**
+1. **Install dependencies**:
    ```bash
    npm install
    ```
 
-2. **Set up environment variables:**
-   Create a `.env` file in the root directory with:
-   ```env
-   DATABASE_URL="postgresql://username:password@localhost:5432/movies_db"
+2. **Environment Variables**:
+   Create a `.env` file with:
+   ```
+   DATABASE_URL="your_postgresql_connection_string"
+   OMDB_API_KEY="your_omdb_api_key"
    PORT=3001
    ```
 
-3. **Set up the database:**
+3. **Get OMDb API Key**:
+   - Visit [http://www.omdbapi.com/apikey.aspx](http://www.omdbapi.com/apikey.aspx)
+   - Request a free API key
+   - Add it to your `.env` file as `OMDB_API_KEY`
+
+4. **Database Setup**:
    ```bash
-   # Push the schema to your database (creates tables)
-   npm run db:push
-   
-   # Or use migrations (recommended for production)
-   npm run db:migrate
+   npx prisma migrate dev
+   npx prisma generate
    ```
 
-4. **Generate Prisma client:**
-   ```bash
-   npm run db:generate
-   ```
-
-5. **Start the development server:**
+5. **Start Server**:
    ```bash
    npm run dev
    ```
 
-## Available Scripts
-
-- `npm run dev` - Start development server with hot reload
-- `npm run build` - Build the TypeScript code
-- `npm run start` - Start production server
-- `npm run db:generate` - Generate Prisma client
-- `npm run db:push` - Push schema changes to database
-- `npm run db:migrate` - Create and apply database migrations
-- `npm run db:studio` - Open Prisma Studio (database GUI)
-
 ## API Endpoints
 
-- `GET /api/movies` - Get all movies
-- `GET /api/movies/:id` - Get movie by ID
-- `POST /api/movies` - Create a new movie
-- `PUT /api/movies/:id` - Update a movie
-- `DELETE /api/movies/:id` - Delete a movie
+- `GET /api/movies` - Get all movies (always returns at least 10)
+- `GET /api/movies/:id` - Get specific movie
+- `POST /api/movies` - Create new movie
+- `PUT /api/movies/:id` - Update movie
+- `DELETE /api/movies/:id` - Delete movie
 
 ## Movie Schema
 
 ```typescript
-interface Movie {
+{
   id: number;
   title: string;
   director: string;
-  year: number;
+  year: string;
+  genre: string;
+  runtime: string;
+  createdAt: Date;
+  updatedAt: Date;
 }
 ```
 
-## Database Schema
+## OMDb Integration
 
-The database includes a `movies` table with:
-- `id` (Primary Key, Auto-increment)
-- `title` (String, Required)
-- `director` (String, Required)
-- `year` (Integer, Required)
-- `created_at` (Timestamp, Auto-generated)
-- `updated_at` (Timestamp, Auto-updated)
+When the database has fewer than 10 movies, the API automatically fetches additional movies from the OMDb API to ensure a minimum of 10 movies are always returned. If the OMDb API is unavailable or the API key is invalid, it falls back to a curated list of popular movies.
 
-## Why Prisma?
+## Development
 
-Instead of raw SQL queries, this project uses Prisma ORM which provides:
-- Type-safe database operations
-- Auto-completion and IntelliSense
-- Automatic query optimization
-- Database migrations
-- Schema validation
-- Much cleaner and maintainable code 
+- **Database**: PostgreSQL with Prisma ORM
+- **Runtime**: Node.js with TypeScript
+- **Server**: Express.js
+- **External API**: OMDb API for movie data 

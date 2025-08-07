@@ -1,8 +1,10 @@
 export interface Movie {
-    id: number;
-    title: string;
-    year: number;
-    runtime: string;
-    genre: string;
-    director: string;
-  }
+  id: number;
+  title: string;
+  year: string;
+  director: string;
+  genre: string;
+  runtime: string;
+  createdAt: Date;
+  updatedAt: Date;
+}

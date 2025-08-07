@@ -1,5 +1,6 @@
-import { Movie } from "../models/Movie.interface";
+import { Movie } from "@prisma/client";
 import prisma from "../db/prisma";
+import omdbService from "./omdb.service";
 
 export const MoviesService = {
   getAll: async (): Promise<Movie[]> => {
@@ -7,10 +8,189 @@ export const MoviesService = {
       const movies = await prisma.movie.findMany({
         orderBy: { createdAt: 'desc' }
       });
+
+      if (movies.length < 10) {
+        const additionalMovies = await MoviesService.fetchAdditionalMovies(10 - movies.length);
+        return [...movies, ...additionalMovies];
+      }
+
       return movies;
     } catch (error) {
       console.error('Error fetching movies:', error);
       throw new Error('Failed to fetch movies');
+    }
+  },
+
+  search: async (query: string): Promise<Movie[]> => {
+    try {
+      // Clean and prepare the search query
+      const cleanQuery = query.trim().toLowerCase();
+      const queryWords = cleanQuery.split(/\s+/).filter(word => word.length > 0);
+      
+      if (queryWords.length === 0) {
+        return [];
+      }
+
+      // Search in database with improved matching
+      const dbMovies = await prisma.movie.findMany({
+        where: {
+          OR: [
+            // Exact title match (case insensitive)
+            {
+              title: {
+                equals: cleanQuery,
+                mode: 'insensitive'
+              }
+            },
+            // Title starts with query
+            {
+              title: {
+                startsWith: cleanQuery,
+                mode: 'insensitive'
+              }
+            },
+            // Title contains query
+            {
+              title: {
+                contains: cleanQuery,
+                mode: 'insensitive'
+              }
+            }
+          ]
+        },
+        orderBy: { createdAt: 'desc' }
+      });
+
+      // Search in OMDb API
+      const omdbMovies = await omdbService.searchMoviesWithDetails(query, 10);
+      
+      const externalMovies: Movie[] = omdbMovies.map(omdbMovie => ({
+        id: 0,
+        title: omdbMovie.Title,
+        director: omdbMovie.Director || 'Unknown',
+        year: omdbMovie.Year,
+        genre: omdbMovie.Genre || 'Unknown',
+        runtime: omdbMovie.Runtime || 'Unknown',
+        createdAt: new Date(),
+        updatedAt: new Date()
+      }));
+
+      // Combine and remove duplicates (prioritize database movies)
+      const allMovies = [...dbMovies, ...externalMovies];
+      const uniqueMovies = allMovies.filter((movie, index, self) => 
+        index === self.findIndex(m => m.title.toLowerCase() === movie.title.toLowerCase())
+      );
+
+      // Filter results to only include movies that closely match the query
+      const filteredMovies = uniqueMovies.filter(movie => {
+        const movieTitle = movie.title.toLowerCase();
+        
+        // Exact match - always include
+        if (movieTitle === cleanQuery) return true;
+        
+        // Starts with query - always include
+        if (movieTitle.startsWith(cleanQuery)) return true;
+        
+        // For multi-word queries, be more strict about phrase matching
+        if (queryWords.length > 1) {
+          // Check if the movie title contains the query as a phrase
+          if (movieTitle.includes(cleanQuery)) {
+            // For multi-word queries, only include if the phrase appears naturally
+            // This helps avoid cases like "The Lego Batman Movie" when searching for "The Batman"
+            const beforeQuery = movieTitle.substring(0, movieTitle.indexOf(cleanQuery));
+            const afterQuery = movieTitle.substring(movieTitle.indexOf(cleanQuery) + cleanQuery.length);
+            
+            // If the query appears at the very beginning, include it
+            if (beforeQuery === '') return true;
+            
+            // If the query appears at the end, include it
+            if (afterQuery === '') return true;
+            
+            // If there's a space before and after the query, include it
+            if ((beforeQuery.endsWith(' ') || beforeQuery === '') && 
+                (afterQuery.startsWith(' ') || afterQuery === '')) {
+              return true;
+            }
+            
+            // For "The Batman" type queries, be more restrictive
+            if (cleanQuery.startsWith('the ')) {
+              const withoutThe = cleanQuery.substring(4); // Remove "the "
+              // Only include if the movie title starts with "the" and contains the rest
+              if (movieTitle.startsWith('the ') && movieTitle.includes(withoutThe)) {
+                return true;
+              }
+              return false;
+            }
+            
+            return false;
+          }
+          
+          return false;
+        }
+        
+        // For single word queries, allow partial matches but be smart about it
+        if (movieTitle.includes(cleanQuery)) {
+          // If the query is a complete word in the title, include it
+          const movieWords = movieTitle.split(/\s+/);
+          if (movieWords.some(word => word === cleanQuery)) return true;
+          
+          // If the query appears at the beginning of a word, include it
+          if (movieWords.some(word => word.startsWith(cleanQuery))) return true;
+          
+          // For very short queries (1-2 characters), be more restrictive
+          if (cleanQuery.length <= 2) {
+            return movieWords.some(word => word === cleanQuery);
+          }
+          
+          return true;
+        }
+        
+        return false;
+      });
+
+      // Sort results by relevance (exact matches first, then starts with, then contains)
+      const sortedMovies = filteredMovies.sort((a, b) => {
+        const aTitle = a.title.toLowerCase();
+        const bTitle = b.title.toLowerCase();
+        
+        // Exact match gets highest priority
+        if (aTitle === cleanQuery && bTitle !== cleanQuery) return -1;
+        if (bTitle === cleanQuery && aTitle !== cleanQuery) return 1;
+        
+        // Starts with gets second priority
+        if (aTitle.startsWith(cleanQuery) && !bTitle.startsWith(cleanQuery)) return -1;
+        if (bTitle.startsWith(cleanQuery) && !aTitle.startsWith(cleanQuery)) return 1;
+        
+        // Otherwise, sort alphabetically
+        return aTitle.localeCompare(bTitle);
+      });
+
+      return sortedMovies;
+    } catch (error) {
+      console.error('Error searching movies:', error);
+      throw new Error('Failed to search movies');
+    }
+  },
+
+  fetchAdditionalMovies: async (count: number): Promise<Movie[]> => {
+    try {
+      const omdbMovies = await omdbService.getRandomMovies(count);
+      
+      const additionalMovies: Movie[] = omdbMovies.map(omdbMovie => ({
+        id: 0,
+        title: omdbMovie.Title,
+        director: omdbMovie.Director || 'Unknown',
+        year: omdbMovie.Year,
+        genre: omdbMovie.Genre || 'Unknown',
+        runtime: omdbMovie.Runtime || 'Unknown',
+        createdAt: new Date(),
+        updatedAt: new Date()
+      }));
+  
+      return additionalMovies;
+    } catch (error) {
+      console.error('Error fetching additional movies:', error);
+      return [];
     }
   },
 
@@ -32,7 +212,9 @@ export const MoviesService = {
         data: {
           title: movieData.title,
           director: movieData.director,
-          year: movieData.year
+          year: movieData.year,
+          genre: movieData.genre,
+          runtime: movieData.runtime
         }
       });
       return newMovie;

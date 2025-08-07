@@ -6,6 +6,8 @@ import {
   StyledCloseButton,
 } from "./Popup.styles";
 import AddMovieForm from "../../movies/add-movie/AddMovie.form";
+import EditMovieForm from "../../movies/edit-movie/EditMovie.form";
+import type { Movie } from "../../interfaces";
 
 interface PopupProps {
   isOpen: boolean;
@@ -13,6 +15,8 @@ interface PopupProps {
   title?: string;
   size?: "small" | "medium" | "large";
   styleProps?: React.CSSProperties;
+  mode?: "add" | "edit";
+  movie?: Movie
 }
 
 const Popup: React.FC<PopupProps> = ({
@@ -21,6 +25,8 @@ const Popup: React.FC<PopupProps> = ({
   title,
   size = "medium",
   styleProps,
+  mode = "add",
+  movie,
 }) => {
   if (!isOpen) return null;
 
@@ -37,7 +43,11 @@ const Popup: React.FC<PopupProps> = ({
           ...styleProps,
         }}
       >
-        <AddMovieForm />
+        {!movie ? (
+          <AddMovieForm onClose={onClose}/>
+        ) : (
+          <EditMovieForm movie={movie!} onSuccess={onClose} />
+        )}
       </StyledPopup>
     </StyledPopupOverlay>
   );

@@ -12,6 +12,22 @@ export const MoviesController = {
     }
   },
 
+  search: async (req: Request, res: Response) => {
+    try {
+      const { query } = req.query;
+      
+      if (!query || typeof query !== 'string') {
+        return res.status(400).json({ message: 'Query parameter is required' });
+      }
+
+      const movies = await MoviesService.search(query);
+      res.json(movies);
+    } catch (error) {
+      console.error('Error in search:', error);
+      res.status(500).json({ message: 'Internal server error' });
+    }
+  },
+
   getById: async (req: Request, res: Response) => {
     try {
       const movie = await MoviesService.getById(Number(req.params.id));
@@ -28,11 +44,11 @@ export const MoviesController = {
 
   add: async (req: Request, res: Response) => {
     try {
-      const { title, director, year } = req.body;
-      if (!title || !director || !year) {
-        return res.status(400).json({ message: 'Missing fields' });
+      const { title, director, year, genre, runtime } = req.body;
+      if (!title || !director || !year || !genre || !runtime) {
+        return res.status(400).json({ message: 'Missing required fields: title, director, year, genre, runtime' });
       }
-      const newMovie = await MoviesService.add({ title, director, year });
+      const newMovie = await MoviesService.add({ title, director, year, genre, runtime });
       res.status(201).json(newMovie);
     } catch (error) {
       console.error('Error in add:', error);
@@ -42,10 +58,10 @@ export const MoviesController = {
 
   update: async (req: Request, res: Response) => {
     try {
-      const { title, director, year } = req.body;
+      const { title, director, year, genre, runtime } = req.body;
       const id = Number(req.params.id);
       
-      if (!title && !director && !year) {
+      if (!title && !director && !year && !genre && !runtime) {
         return res.status(400).json({ message: 'At least one field is required' });
       }
       
@@ -53,6 +69,8 @@ export const MoviesController = {
       if (title) updateData.title = title;
       if (director) updateData.director = director;
       if (year) updateData.year = year;
+      if (genre) updateData.genre = genre;
+      if (runtime) updateData.runtime = runtime;
       
       const updatedMovie = await MoviesService.update(id, updateData);
       if (updatedMovie) {

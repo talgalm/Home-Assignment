@@ -4,6 +4,7 @@ import { MoviesController } from '../controllers/movies.controller';
 const router = Router();
 
 router.get('/', MoviesController.getAll);
+router.get('/search', MoviesController.search);
 router.get('/:id', MoviesController.getById);
 router.post('/', MoviesController.add);
 router.put('/:id', MoviesController.update);

@@ -17,7 +17,9 @@ model Movie {
   id        Int      @id @default(autoincrement())
   title     String
   director  String
-  year      Int
+  year      String
+  genre     String
+  runtime   String
   createdAt DateTime @default(now()) @map("created_at")
   updatedAt DateTime @updatedAt @map("updated_at")
 

@@ -2,18 +2,38 @@ import React, { useState } from "react";
 import GeneralLoader from "../components/loader/loader";
 import GeneralSearch from "../components/search/Search";
 import { useMovies } from "../hooks/useMovies";
+import { useSearchMovies } from "../hooks/useSearchMovies";
+import { useDebounce } from "../hooks/useDebounce";
 import Popup from "../components/popup/Popup";
 import { AddIcon, HomeContainer, SeacrhIcon } from "./Home.styles";
+import type { Movie } from "../interfaces";
 
 const Home: React.FC = () => {
   const [searchValue, setSearchValue] = useState("");
+  const debouncedSearchValue = useDebounce(searchValue, 500);
   const { data: movies, isLoading, error } = useMovies();
+  const { data: searchResults, isLoading: isSearching } =
+    useSearchMovies(debouncedSearchValue);
   const [modal, setModal] = useState(false);
+  const [editMovie, setEditMovie] = useState<Movie | undefined>(undefined);
 
-  if (isLoading)
-    return <GeneralLoader loading={true} text="Searching IMDb..." />;
+  const displayMovies = debouncedSearchValue ? searchResults : movies;
+  const isLoadingData = debouncedSearchValue ? isSearching : isLoading;
+
+  if (isLoadingData)
+    return (
+      <GeneralLoader
+        loading={true}
+        text={debouncedSearchValue ? "Searching..." : "Loading movies..."}
+      />
+    );
 
   if (error) return <div>Error loading movies: {error.message}</div>;
+
+  const handlEditMovie = (movie: Movie) => {
+    setEditMovie(movie);
+    setModal(true);
+  };
 
   return (
     <HomeContainer>
@@ -24,12 +44,14 @@ const Home: React.FC = () => {
         placeholder="Search something..."
       />
       <ul>
-        {movies?.map((movie) => (
-          <li key={movie.id}>{movie.title}</li>
+        {displayMovies?.map((movie: Movie) => (
+          <li key={movie.id} onClick={() => handlEditMovie(movie)}>
+            {movie.title}
+          </li>
         ))}
       </ul>
       <AddIcon onClick={() => setModal(true)} />
-      <Popup isOpen={modal} onClose={() => setModal(false)}/>
+      <Popup isOpen={modal} onClose={() => setModal(false)} movie={editMovie} />
     </HomeContainer>
   );
 };
