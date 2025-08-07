@@ -71,6 +71,7 @@ export const MoviesService = {
         year: omdbMovie.Year,
         genre: omdbMovie.Genre || 'Unknown',
         runtime: omdbMovie.Runtime || 'Unknown',
+        img: omdbMovie.Poster || null,
         createdAt: new Date(),
         updatedAt: new Date()
       }));
@@ -183,6 +184,7 @@ export const MoviesService = {
         year: omdbMovie.Year,
         genre: omdbMovie.Genre || 'Unknown',
         runtime: omdbMovie.Runtime || 'Unknown',
+        img: omdbMovie.Poster || null,
         createdAt: new Date(),
         updatedAt: new Date()
       }));
@@ -214,7 +216,8 @@ export const MoviesService = {
           director: movieData.director,
           year: movieData.year,
           genre: movieData.genre,
-          runtime: movieData.runtime
+          runtime: movieData.runtime,
+          img: movieData.img
         }
       });
       return newMovie;

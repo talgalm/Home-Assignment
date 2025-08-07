@@ -5,4 +5,5 @@ export interface Movie {
     runtime: string;
     genre: string;
     director: string;
+    image?: string;
   }

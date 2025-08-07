@@ -6,6 +6,7 @@ interface OMDbMovie {
   Director: string;
   Genre: string;
   Runtime: string;
+  Poster: string;
   imdbID: string;
 }
 
@@ -25,6 +26,7 @@ interface OMDbDetailResponse {
   Director: string;
   Genre: string;
   Runtime: string;
+  Poster: string;
   imdbID: string;
   Response: string;
 }
@@ -34,7 +36,8 @@ class OMDbService {
   private baseUrl: string = 'http://www.omdbapi.com/';
 
   constructor() {
-    this.apiKey = process.env.OMDB_API_KEY || 'demo';
+    // You'll need to get a free API key from http://www.omdbapi.com/apikey.aspx
+    this.apiKey = process.env.OMDB_API_KEY || 'demo'; // Use 'demo' for testing
   }
 
   async searchMovies(query: string, page: number = 1): Promise<OMDbSearchResponse> {
@@ -76,6 +79,7 @@ class OMDbService {
               Director: detailResponse.Director,
               Genre: detailResponse.Genre,
               Runtime: detailResponse.Runtime,
+              Poster: detailResponse.Poster,
               imdbID: detailResponse.imdbID
             });
           }
@@ -116,6 +120,7 @@ class OMDbService {
         Director: "Christopher Nolan",
         Genre: "Action, Crime, Drama",
         Runtime: "152 min",
+        Poster: "https://m.media-amazon.com/images/M/MV5BMTMxNTMwODM0NF5BMl5BanBnXkFtZTcwODAyMTk2Mw@@._V1_SX300.jpg",
         imdbID: "tt0468569"
       },
       {
@@ -124,6 +129,7 @@ class OMDbService {
         Director: "Christopher Nolan",
         Genre: "Action, Adventure, Sci-Fi",
         Runtime: "148 min",
+        Poster: "https://m.media-amazon.com/images/M/MV5BMjAxMzY3NjcxNF5BMl5BanBnXkFtZTcwNTI5OTM0Mw@@._V1_SX300.jpg",
         imdbID: "tt1375666"
       },
       {
@@ -132,6 +138,7 @@ class OMDbService {
         Director: "Christopher Nolan",
         Genre: "Adventure, Drama, Sci-Fi",
         Runtime: "169 min",
+        Poster: "https://m.media-amazon.com/images/M/MV5BZjdkOTU3MDktN2IxOS00OGEyLWFmMjktY2FiMmZkNWIyODZiXkEyXkFqcGdeQXVyMTMxODk2OTU@._V1_SX300.jpg",
         imdbID: "tt0816692"
       },
       {
@@ -140,6 +147,7 @@ class OMDbService {
         Director: "Lana Wachowski, Lilly Wachowski",
         Genre: "Action, Sci-Fi",
         Runtime: "136 min",
+        Poster: "https://m.media-amazon.com/images/M/MV5BNzQzOTk3OTAtNDQ0Zi00ZTVkLWI0MTEtMDllZjNkYzNjNTc4L2ltYWdlXkEyXkFqcGdeQXVyNjU0OTQ0OTY@._V1_SX300.jpg",
         imdbID: "tt0133093"
       },
       {
@@ -148,6 +156,7 @@ class OMDbService {
         Director: "David Fincher",
         Genre: "Drama",
         Runtime: "139 min",
+        Poster: "https://m.media-amazon.com/images/M/MV5BNDIzNDU0YzEtYzE5Ni00ZjlkLTk5ZjgtNjM3NWE4YzA3Nzk3XkEyXkFqcGdeQXVyMjUzOTY1NTc@._V1_SX300.jpg",
         imdbID: "tt0137523"
       },
       {
@@ -156,6 +165,7 @@ class OMDbService {
         Director: "Robert Zemeckis",
         Genre: "Drama, Romance",
         Runtime: "142 min",
+        Poster: "https://m.media-amazon.com/images/M/MV5BNWIwODRlZTUtY2U3ZS00Yzg1LWJhNzYtMmZiYmEyNmU1NjMzXkEyXkFqcGdeQXVyMTQxNzMzNDI@._V1_SX300.jpg",
         imdbID: "tt0109830"
       },
       {
@@ -164,6 +174,7 @@ class OMDbService {
         Director: "Roger Allers, Rob Minkoff",
         Genre: "Animation, Adventure, Drama",
         Runtime: "88 min",
+        Poster: "https://m.media-amazon.com/images/M/MV5BYTYxNGMyZTYtMjE3MS00MzNjLWFjNmYtMDk3N2FmM2JiM2M1XkEyXkFqcGdeQXVyNjY5NDU4NzI@._V1_SX300.jpg",
         imdbID: "tt0110357"
       },
       {
@@ -172,6 +183,7 @@ class OMDbService {
         Director: "John Lasseter",
         Genre: "Animation, Adventure, Comedy",
         Runtime: "81 min",
+        Poster: "https://m.media-amazon.com/images/M/MV5BMDU2ZWJlMjktMTdhMy00MmI5LWFkYjItYzVlYWM5NmI4ZDBiXkEyXkFqcGdeQXVyNDQ2OTk4MzI@._V1_SX300.jpg",
         imdbID: "tt0114709"
       },
       {
@@ -180,6 +192,7 @@ class OMDbService {
         Director: "Andrew Stanton, Lee Unkrich",
         Genre: "Animation, Adventure, Comedy",
         Runtime: "100 min",
+        Poster: "https://m.media-amazon.com/images/M/MV5BZjMxYzBiNjUtZDliNC00MDAyLWg4N2NiMDQxMWIxNGQ1YzYwXkEyXkFqcGdeQXVyNjY5NDU4NzI@._V1_SX300.jpg",
         imdbID: "tt0266543"
       },
       {
@@ -188,6 +201,7 @@ class OMDbService {
         Director: "Andrew Adamson, Vicky Jenson",
         Genre: "Animation, Adventure, Comedy",
         Runtime: "90 min",
+        Poster: "https://m.media-amazon.com/images/M/MV5BOGZhM2FhNTItODAzNi00YjA0LWEyN2UtNjJlYWQzYzU1MDg5L2ltYWdlL2ltYWdlXkEyXkFqcGdeQXVyMTQxNzMzNDI@._V1_SX300.jpg",
         imdbID: "tt0126029"
       }
     ];
@@ -259,6 +273,7 @@ class OMDbService {
                     Director: detailResponse.Director,
                     Genre: detailResponse.Genre,
                     Runtime: detailResponse.Runtime,
+                    Poster: detailResponse.Poster,
                     imdbID: detailResponse.imdbID
                   });
                   usedIds.add(result.imdbID);

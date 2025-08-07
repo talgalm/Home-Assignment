@@ -44,11 +44,11 @@ export const MoviesController = {
 
   add: async (req: Request, res: Response) => {
     try {
-      const { title, director, year, genre, runtime } = req.body;
+      const { title, director, year, genre, runtime, img } = req.body;
       if (!title || !director || !year || !genre || !runtime) {
         return res.status(400).json({ message: 'Missing required fields: title, director, year, genre, runtime' });
       }
-      const newMovie = await MoviesService.add({ title, director, year, genre, runtime });
+      const newMovie = await MoviesService.add({ title, director, year, genre, runtime, img });
       res.status(201).json(newMovie);
     } catch (error) {
       console.error('Error in add:', error);
@@ -58,10 +58,10 @@ export const MoviesController = {
 
   update: async (req: Request, res: Response) => {
     try {
-      const { title, director, year, genre, runtime } = req.body;
+      const { title, director, year, genre, runtime, img } = req.body;
       const id = Number(req.params.id);
       
-      if (!title && !director && !year && !genre && !runtime) {
+      if (!title && !director && !year && !genre && !runtime && !img) {
         return res.status(400).json({ message: 'At least one field is required' });
       }
       
@@ -71,6 +71,7 @@ export const MoviesController = {
       if (year) updateData.year = year;
       if (genre) updateData.genre = genre;
       if (runtime) updateData.runtime = runtime;
+      if (img !== undefined) updateData.img = img;
       
       const updatedMovie = await MoviesService.update(id, updateData);
       if (updatedMovie) {
