@@ -3,7 +3,7 @@ import Home from "./home/Home";
 import Header from "./components/header";
 import { AppContainer } from "./App.styles";
 import { SearchProvider } from "./context/SearchContext";
-import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
+import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
 
 const queryClient = new QueryClient();
 

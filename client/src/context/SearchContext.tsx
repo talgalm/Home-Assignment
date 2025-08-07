@@ -7,6 +7,7 @@ interface SearchContextType {
 
 const SearchContext = createContext<SearchContextType | undefined>(undefined);
 
+// eslint-disable-next-line react-refresh/only-export-components
 export const useSearch = () => {
   const context = useContext(SearchContext);
   if (!context) {

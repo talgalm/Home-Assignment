@@ -1,7 +1,7 @@
 import { styled } from "@mui/material/styles";
 import { Autocomplete as MuiAutocomplete } from "@mui/material";
 
-export const StyledAutocomplete = styled(MuiAutocomplete)(({ theme }) => ({
+export const StyledAutocomplete = styled(MuiAutocomplete)(() => ({
   "& .MuiOutlinedInput-root": {
     backgroundColor: "rgba(255, 255, 255, 0.1)",
     borderRadius: "12px",
@@ -85,7 +85,6 @@ export const StyledAutocomplete = styled(MuiAutocomplete)(({ theme }) => ({
     },
   },
 
-  // Error state styling
   "&.Mui-error .MuiOutlinedInput-root": {
     borderColor: "#f44336",
     "&:hover": {
@@ -97,7 +96,6 @@ export const StyledAutocomplete = styled(MuiAutocomplete)(({ theme }) => ({
     },
   },
 
-  // Error helper text styling
   "& .MuiFormHelperText-root": {
     marginLeft: "0",
     marginTop: "8px",
@@ -106,7 +104,6 @@ export const StyledAutocomplete = styled(MuiAutocomplete)(({ theme }) => ({
     fontWeight: 500,
   },
 
-  // Error helper text when not in error state
   "& .MuiFormHelperText-root:not(.Mui-error)": {
     color: "rgba(255, 255, 255, 0.6)",
   },

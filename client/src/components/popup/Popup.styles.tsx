@@ -1,7 +1,7 @@
 import { Box, IconButton } from "@mui/material";
 import { styled } from "@mui/material/styles";
 
-export const StyledPopupOverlay = styled(Box)(({ theme }) => ({
+export const StyledPopupOverlay = styled(Box)({
   position: "fixed",
   top: 0,
   left: 0,
@@ -15,20 +15,16 @@ export const StyledPopupOverlay = styled(Box)(({ theme }) => ({
   backdropFilter: "blur(4px)",
   animation: "fadeIn 0.3s ease-out",
   "@keyframes fadeIn": {
-    from: {
-      opacity: 0,
-    },
-    to: {
-      opacity: 1,
-    },
+    from: { opacity: 0 },
+    to: { opacity: 1 },
   },
-}));
+});
 
 export const StyledPopup = styled(Box)<{ size: "small" | "medium" | "large" }>(
-  ({ theme, size }) => ({
+  ({ size }) => ({
     backgroundColor: "rgba(20, 20, 20, 0.95)",
     borderRadius: "16px",
-    padding: theme.spacing(3),
+    padding: "24px", // used `theme.spacing(3)` originally
     boxShadow: "0 20px 60px rgba(0, 0, 0, 0.8)",
     border: "1px solid rgba(255, 255, 255, 0.1)",
     backdropFilter: "blur(10px)",
@@ -77,16 +73,16 @@ export const StyledPopup = styled(Box)<{ size: "small" | "medium" | "large" }>(
   })
 );
 
-export const StyledPopupContent = styled(Box)(({ theme }) => ({
+export const StyledPopupContent = styled(Box)({
   position: "relative",
   zIndex: 1,
   color: "white",
   "& > *": {
     color: "white",
   },
-}));
+});
 
-export const StyledCloseButton = styled(IconButton)(({ theme }) => ({
+export const StyledCloseButton = styled(IconButton)({
   position: "absolute",
   top: "20px",
   right: "20px",
@@ -111,4 +107,4 @@ export const StyledCloseButton = styled(IconButton)(({ theme }) => ({
   "&:active": {
     transform: "scale(0.95)",
   },
-}));
+});

@@ -15,17 +15,15 @@ import Autocomplete from "../../components/autocomplete";
 import type { Movie } from "../../interfaces";
 
 interface EditMovieProps {
-  movie: Movie
+  movie: Movie;
   onSuccess?: () => void;
 }
 
 const EditMovie: React.FC<EditMovieProps> = ({ movie, onSuccess }) => {
   const queryClient = useQueryClient();
-  const { handleSubmit, reset, watch } = useFormContext<EditMovieInput>();
+  const { handleSubmit, } = useFormContext<EditMovieInput>();
   const editMovieMutation = useEditMovie();
 
-  // Watch all form values to detect changes
-  const watchedValues = watch();
 
   const onSubmit = (data: EditMovieInput) => {
     // Only include fields that have changed

@@ -1,7 +1,7 @@
 import styled from "@emotion/styled";
 
 export const MovieGridContainer = styled("div")<{ isEmpty: boolean }>(
-  ({ theme, isEmpty }) => ({
+  ({ isEmpty }) => ({
     display: "grid",
     gap: 16,
     padding: "16px 0",

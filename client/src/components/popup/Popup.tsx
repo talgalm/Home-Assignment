@@ -12,20 +12,16 @@ import type { Movie } from "../../interfaces";
 interface PopupProps {
   isOpen: boolean;
   onClose: () => void;
-  title?: string;
   size?: "small" | "medium" | "large";
   styleProps?: React.CSSProperties;
-  mode?: "add" | "edit";
   movie?: Movie
 }
 
 const Popup: React.FC<PopupProps> = ({
   isOpen,
   onClose,
-  title,
   size = "medium",
   styleProps,
-  mode = "add",
   movie,
 }) => {
   if (!isOpen) return null;

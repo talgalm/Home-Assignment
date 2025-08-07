@@ -1,6 +1,5 @@
 import React, { useState, useMemo } from "react";
 import GeneralLoader from "../components/loader/loader";
-import { useMovies } from "../hooks/useMovies";
 import { useInfiniteSearchMovies } from "../hooks/useSearchMovies";
 import { useDebounce } from "../hooks/useDebounce";
 import { useInfiniteScroll } from "../hooks/useInfiniteScroll";
@@ -13,6 +12,8 @@ import { useAppSelector } from "../store/hooks";
 import { useAtom } from "jotai";
 import { showFavoritesOnlyAtom } from "../store/favoritesViewAtom";
 import { Box, Typography } from "@mui/material";
+import type { RootState } from "../store";
+import { useMovies } from "../hooks/UseMovies";
 
 const Home: React.FC = () => {
   const { searchValue } = useSearch();

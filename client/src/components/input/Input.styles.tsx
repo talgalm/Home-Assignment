@@ -1,7 +1,7 @@
 import { TextField } from "@mui/material";
 import { styled } from "styled-components";
 
-export const StyledInput = styled(TextField)(({ theme }) => ({
+export const StyledInput = styled(TextField)(() => ({
   "& .MuiOutlinedInput-root": {
     backgroundColor: "rgba(255, 255, 255, 0.1)",
     borderRadius: "12px",
@@ -46,7 +46,6 @@ export const StyledInput = styled(TextField)(({ theme }) => ({
     },
   },
 
-  // Error state styling
   "&.Mui-error .MuiOutlinedInput-root": {
     borderColor: "#f44336",
     "&:hover": {
@@ -58,7 +57,6 @@ export const StyledInput = styled(TextField)(({ theme }) => ({
     },
   },
 
-  // Error helper text styling
   "& .MuiFormHelperText-root": {
     marginLeft: "0",
     marginTop: "8px",
@@ -67,7 +65,6 @@ export const StyledInput = styled(TextField)(({ theme }) => ({
     fontWeight: 500,
   },
 
-  // Error helper text when not in error state
   "& .MuiFormHelperText-root:not(.Mui-error)": {
     color: "rgba(255, 255, 255, 0.6)",
   },

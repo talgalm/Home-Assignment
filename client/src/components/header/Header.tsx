@@ -18,14 +18,16 @@ import {
   showFavoritesOnlyAtom,
   toggleFavoritesViewAtom,
 } from "../../store/favoritesViewAtom";
-
 import logo from "../../assets/logo.svg";
 import Popup from "../popup/Popup";
+import type { RootState } from "../../store";
 
 const Header: React.FC = () => {
   const { searchValue, setSearchValue } = useSearch();
   const [modal, setModal] = useState(false);
-  const favorites = useAppSelector((state: any) => state.favorites.movies);
+  const favorites = useAppSelector(
+    (state: RootState) => state.favorites.movies
+  );
   const [showFavoritesOnly] = useAtom(showFavoritesOnlyAtom);
   const [, toggleFavoritesView] = useAtom(toggleFavoritesViewAtom);
 

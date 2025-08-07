@@ -1,15 +1,15 @@
 import { styled } from "@mui/material/styles";
-import { Box, Button, TextField, Autocomplete } from "@mui/material";
+import { Box, Button, Autocomplete } from "@mui/material";
 
-export const StyledForm = styled("form")(({ theme }) => ({
+export const StyledForm = styled("form")({
   display: "flex",
   flexDirection: "column",
   gap: "20px",
   width: "100%",
   padding: "20px 0",
-}));
+});
 
-export const StyledSubmitButton = styled(Button)(({ theme }) => ({
+export const StyledSubmitButton = styled(Button)({
   backgroundColor: "rgba(255, 255, 255, 0.15)",
   color: "white",
   border: "2px solid rgba(255, 255, 255, 0.3)",
@@ -40,9 +40,9 @@ export const StyledSubmitButton = styled(Button)(({ theme }) => ({
     transform: "none",
     boxShadow: "none",
   },
-}));
+});
 
-export const FormTitle = styled("h2")(({ theme }) => ({
+export const FormTitle = styled("h2")({
   color: "white",
   fontSize: "1.8rem",
   fontWeight: 700,
@@ -50,15 +50,15 @@ export const FormTitle = styled("h2")(({ theme }) => ({
   textAlign: "center",
   textShadow: "0 2px 10px rgba(0,0,0,0.3)",
   letterSpacing: "-0.02em",
-}));
+});
 
-export const FormContainer = styled(Box)(({ theme }) => ({
+export const FormContainer = styled(Box)({
   width: "100%",
   maxWidth: "500px",
   margin: "0 auto",
-}));
+});
 
-export const StyledAutocomplete = styled(Autocomplete)(({ theme }) => ({
+export const StyledAutocomplete = styled(Autocomplete)({
   "& .MuiOutlinedInput-root": {
     backgroundColor: "rgba(255, 255, 255, 0.1)",
     borderRadius: "12px",
@@ -141,4 +141,4 @@ export const StyledAutocomplete = styled(Autocomplete)(({ theme }) => ({
       },
     },
   },
-}));
+});
