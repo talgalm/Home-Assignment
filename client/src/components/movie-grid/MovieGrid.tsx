@@ -10,15 +10,20 @@ import { useAtom } from "jotai";
 interface MovieGridProps {
   movies: Movie[];
   onMovieClick: (movie: Movie) => void;
+  error?: string | null;
 }
 
-const MovieGrid: React.FC<MovieGridProps> = ({ movies, onMovieClick }) => {
-  const isEmpty = movies.length === 0;
+const MovieGrid: React.FC<MovieGridProps> = ({
+  movies,
+  onMovieClick,
+  error,
+}) => {
+  const isEmpty = movies.length === 0 && !error;
   const [showFavoritesOnly] = useAtom(showFavoritesOnlyAtom);
 
   return (
-    <MovieGridContainer isEmpty={isEmpty}>
-      {isEmpty ? (
+    <MovieGridContainer isEmpty={isEmpty || !!error}>
+      {isEmpty || error ? (
         <Box
           display="flex"
           flexDirection="column"
@@ -28,11 +33,19 @@ const MovieGrid: React.FC<MovieGridProps> = ({ movies, onMovieClick }) => {
           width="100%"
           textAlign="center"
         >
-          <MovieIcon sx={{ fontSize: 60, color: "gray" }} />
-          <Typography variant="h6" mt={2} color="text.secondary">
-            {showFavoritesOnly
+          <MovieIcon
+            sx={{ fontSize: 60, color: error ? "error.main" : "gray" }}
+          />
+          <Typography
+            variant="h6"
+            mt={2}
+            color={error ? "error.main" : "text.secondary"}
+          >
+            {error
+              ? `Error loading movies: ${error}`
+              : showFavoritesOnly
               ? "No Favorites"
-              : " No movies to display"}
+              : "No movies to display"}
           </Typography>
         </Box>
       ) : (

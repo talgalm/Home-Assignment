@@ -44,8 +44,6 @@ const Home: React.FC = () => {
       />
     );
 
-  if (error) return <div>Error loading movies: {error.message}</div>;
-
   const handlEditMovie = (movie: Movie) => {
     setEditMovie(movie);
     setModal(true);
@@ -60,7 +58,11 @@ const Home: React.FC = () => {
           </Typography>
         </Box>
       )}
-      <MovieGrid movies={displayMovies || []} onMovieClick={handlEditMovie} />
+      <MovieGrid
+        movies={displayMovies || []}
+        onMovieClick={handlEditMovie}
+        error={error?.message}
+      />
       <Popup isOpen={modal} onClose={() => setModal(false)} movie={editMovie} />
     </HomeContainer>
   );

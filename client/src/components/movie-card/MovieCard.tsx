@@ -13,11 +13,15 @@ import EditIcon from "@mui/icons-material/Edit";
 import DeleteIcon from "@mui/icons-material/Delete";
 import StarOutlineIcon from "@mui/icons-material/StarOutline";
 import StarIcon from "@mui/icons-material/Star";
+import CircularProgress from "@mui/material/CircularProgress";
 import type { Movie } from "../../interfaces";
 import { MovieCardContainer } from "./MovieCard.styles";
 import { useAppDispatch, useAppSelector } from "../../store/hooks";
 import { toggleFavorite } from "../../store/favoritesSlice";
 import type { RootState } from "../../store";
+import { formatMovieTitle } from "../../utils/textUtils";
+import { useDeleteMovie } from "../../hooks/useDeleteMovie";
+import { removeFavorite } from "../../store/favoritesSlice";
 
 type Props = {
   movie: Movie;
@@ -32,11 +36,29 @@ const MovieCard: React.FC<Props> = ({ movie, onClick }) => {
   const isFavorite = favorites.some(
     (favMovie: Movie) => favMovie.id === movie.id
   );
+  const deleteMovieMutation = useDeleteMovie();
 
   const handleFavorite = () => {
     console.log("Toggling favorite for movie:", movie.id, movie.title);
     console.log("Current favorites:", favorites);
     dispatch(toggleFavorite(movie));
+  };
+
+  const handleDelete = () => {
+    if (
+      window.confirm(
+        `Are you sure you want to delete "${formatMovieTitle(movie.title)}"?`
+      )
+    ) {
+      deleteMovieMutation.mutate(movie, {
+        onSuccess: () => {
+          // Also remove from favorites if it was favorited
+          if (isFavorite) {
+            dispatch(removeFavorite(movie.id));
+          }
+        },
+      });
+    }
   };
   return (
     <MovieCardContainer>
@@ -53,7 +75,7 @@ const MovieCard: React.FC<Props> = ({ movie, onClick }) => {
             component="img"
             sx={{ height: 150, objectFit: "cover" }}
             image={movie.img}
-            alt={movie.title}
+            alt={formatMovieTitle(movie.title)}
           />
         ) : (
           <Box
@@ -79,7 +101,7 @@ const MovieCard: React.FC<Props> = ({ movie, onClick }) => {
         >
           <Box>
             <Typography variant="h6" gutterBottom noWrap>
-              {movie.title}
+              {formatMovieTitle(movie.title)}
             </Typography>
             <Typography color="text.secondary">
               {movie.year} • {movie.runtime} min
@@ -94,8 +116,16 @@ const MovieCard: React.FC<Props> = ({ movie, onClick }) => {
           <IconButton color="primary" onClick={() => onClick(movie)}>
             <EditIcon />
           </IconButton>
-          <IconButton color="primary">
-            <DeleteIcon />
+          <IconButton
+            color="primary"
+            onClick={handleDelete}
+            disabled={deleteMovieMutation.isPending}
+          >
+            {deleteMovieMutation.isPending ? (
+              <CircularProgress size={20} />
+            ) : (
+              <DeleteIcon />
+            )}
           </IconButton>
           <IconButton color="primary" onClick={handleFavorite}>
             {isFavorite ? <StarIcon /> : <StarOutlineIcon />}

@@ -226,7 +226,6 @@ class OMDbService {
 
       // If we get an error response, use fallback movies
       if (testResponse.data.Response === 'False' || testResponse.data.Error) {
-        console.log('OMDb API key is invalid or not available, using fallback movies');
         return this.getFallbackMovies(count);
       }
 

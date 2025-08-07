@@ -1,5 +1,8 @@
 import { Request, Response } from 'express';
 import { MoviesService } from '../services/movies.service';
+import { PrismaClient } from '@prisma/client';
+
+const prisma = new PrismaClient();
 
 export const MoviesController = {
   getAll: async (_req: Request, res: Response) => {
@@ -48,7 +51,7 @@ export const MoviesController = {
       if (!title || !director || !year || !genre || !runtime) {
         return res.status(400).json({ message: 'Missing required fields: title, director, year, genre, runtime' });
       }
-      const newMovie = await MoviesService.add({ title, director, year, genre, runtime, img });
+      const newMovie = await MoviesService.add({ title, director, year, genre, runtime, img, action: null });
       res.status(201).json(newMovie);
     } catch (error) {
       console.error('Error in add:', error);
@@ -58,10 +61,10 @@ export const MoviesController = {
 
   update: async (req: Request, res: Response) => {
     try {
-      const { title, director, year, genre, runtime, img } = req.body;
+      const { title, director, year, genre, runtime, img, action } = req.body;
       const id = Number(req.params.id);
       
-      if (!title && !director && !year && !genre && !runtime && !img) {
+      if (!title && !director && !year && !genre && !runtime && !img && action === undefined) {
         return res.status(400).json({ message: 'At least one field is required' });
       }
       
@@ -72,6 +75,7 @@ export const MoviesController = {
       if (genre) updateData.genre = genre;
       if (runtime) updateData.runtime = runtime;
       if (img !== undefined) updateData.img = img;
+      if (action !== undefined) updateData.action = action;
       
       const updatedMovie = await MoviesService.update(id, updateData);
       if (updatedMovie) {
@@ -103,11 +107,41 @@ export const MoviesController = {
 
   delete: async (req: Request, res: Response) => {
     try {
-      const success = await MoviesService.delete(Number(req.params.id));
-      if (success) {
-        res.json({ message: 'Movie deleted' });
+      const id = Number(req.params.id);
+
+      const { title } = req.body;
+      let exists;
+      if (title) {
+        exists = await MoviesService.getByTitle(title);
+      }
+      if (exists === null) {
+        // Add OMDb movie to database with action = deleted
+        const { title, director, year, genre, runtime, img } = req.body;
+        if (!title || !director || !year || !genre || !runtime) {
+          return res.status(400).json({ message: 'Missing required fields for OMDb movie deletion' });
+        }
+
+        const deletedMovie = await prisma.movie.create({
+          data: {
+            title,
+            director,
+            year,
+            genre,
+            runtime,
+            img,
+            action: 'deleted'
+          }
+        });
+        res.json({ message: 'OMDb movie marked as deleted', movie: deletedMovie });
       } else {
-        res.status(404).json({ message: 'Movie not found' });
+
+        // Handle database movie deletion
+        const success = await MoviesService.delete(id);
+        if (success) {
+          res.json({ message: 'Movie deleted' });
+        } else {
+          res.status(404).json({ message: 'Movie not found' });
+        }
       }
     } catch (error) {
       console.error('Error in delete:', error);

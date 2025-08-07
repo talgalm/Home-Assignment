@@ -1,7 +1,7 @@
 import { useQuery } from '@tanstack/react-query';
 import { ApiService, HTTPMethod } from '../api/apiService';
 import type { Movie } from '../interfaces';
-
+import type { AxiosError } from 'axios';
 
 const fetchMovies = async (page?: number): Promise<Movie[]> => {
   return ApiService.makeRequest<Movie[]>(
@@ -11,7 +11,7 @@ const fetchMovies = async (page?: number): Promise<Movie[]> => {
 };
 
 export const useMovies = (page?: number) => {
-  return useQuery<Movie[], Error>({
+  return useQuery<Movie[], AxiosError>({
     queryKey: ['movies', page],
     queryFn: () => fetchMovies(page ?? 0),
   });

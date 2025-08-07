@@ -17,7 +17,7 @@ const TitleInput: React.FC<TitleInputProps> = ({
 }) => {
   const { watch, setError, clearErrors } = useFormContext();
   const title = watch(name);
-  const debouncedTitle = useDebounce(title, 500); // 500ms debounce
+  const debouncedTitle = useDebounce(title, 1000); // 500ms debounce
   const { data, isLoading, error } = useCheckTitleExists(debouncedTitle);
 
   useEffect(() => {

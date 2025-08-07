@@ -11,16 +11,24 @@ const generateOMDbId = (): number => {
 export const MoviesService = {
   getAll: async (): Promise<Movie[]> => {
     try {
-      const movies = await prisma.movie.findMany({
+      const dbMovies = await prisma.movie.findMany({
+        where: {
+          OR: [
+            { action: null },
+            { action: { not: 'deleted' } }
+          ]
+        },
         orderBy: { createdAt: 'desc' }
       });
 
-      if (movies.length < 10) {
-        const additionalMovies = await MoviesService.fetchAdditionalMovies(10 - movies.length);
-        return [...movies, ...additionalMovies];
+      // If we have less than 10 movies, fetch additional ones from OMDb
+      if (dbMovies.length < 10) {
+        const additionalCount = 10 - dbMovies.length;
+        const additionalMovies = await MoviesService.fetchAdditionalMovies(additionalCount);
+        return [...dbMovies, ...additionalMovies];
       }
 
-      return movies;
+      return dbMovies;
     } catch (error) {
       console.error('Error fetching movies:', error);
       throw new Error('Failed to fetch movies');
@@ -29,38 +37,44 @@ export const MoviesService = {
 
   search: async (query: string): Promise<Movie[]> => {
     try {
-      // Clean and prepare the search query
       const cleanQuery = query.trim().toLowerCase();
       const queryWords = cleanQuery.split(/\s+/).filter(word => word.length > 0);
-      
+
       if (queryWords.length === 0) {
         return [];
       }
 
-      // Search in database with improved matching
+      // Search in database for movies matching the query
       const dbMovies = await prisma.movie.findMany({
         where: {
-          OR: [
-            // Exact title match (case insensitive)
+          AND: [
             {
-              title: {
-                equals: cleanQuery,
-                mode: 'insensitive'
-              }
+              OR: [
+                {
+                  title: {
+                    equals: cleanQuery,
+                    mode: 'insensitive'
+                  }
+                },
+                {
+                  title: {
+                    startsWith: cleanQuery,
+                    mode: 'insensitive'
+                  }
+                },
+                {
+                  title: {
+                    contains: cleanQuery,
+                    mode: 'insensitive'
+                  }
+                }
+              ]
             },
-            // Title starts with query
             {
-              title: {
-                startsWith: cleanQuery,
-                mode: 'insensitive'
-              }
-            },
-            // Title contains query
-            {
-              title: {
-                contains: cleanQuery,
-                mode: 'insensitive'
-              }
+              OR: [
+                { action: null },
+                { action: { not: 'deleted' } }
+              ]
             }
           ]
         },
@@ -78,6 +92,7 @@ export const MoviesService = {
         genre: omdbMovie.Genre || 'Unknown',
         runtime: omdbMovie.Runtime || 'Unknown',
         img: omdbMovie.Poster || null,
+        action: null,
         createdAt: new Date(),
         updatedAt: new Date()
       }));
@@ -88,8 +103,22 @@ export const MoviesService = {
         index === self.findIndex(m => m.title.toLowerCase() === movie.title.toLowerCase())
       );
 
+      // Check each uniqueMovies title individually and filter out those that exist in DB
+      const uniqueMoviesFiltered = [];
+      for (const movie of uniqueMovies) {
+        const exists = await prisma.movie.findFirst({
+          where: {
+            title: movie.title,
+          },
+        });
+      
+        if (!exists) {
+          uniqueMoviesFiltered.push(movie);
+        }
+      }
+
       // Filter results to only include movies that closely match the query
-      const filteredMovies = uniqueMovies.filter(movie => {
+      const filteredMovies = uniqueMoviesFiltered.filter(movie => {
         const movieTitle = movie.title.toLowerCase();
         
         // Exact match - always include
@@ -191,6 +220,7 @@ export const MoviesService = {
         genre: omdbMovie.Genre || 'Unknown',
         runtime: omdbMovie.Runtime || 'Unknown',
         img: omdbMovie.Poster || null,
+        action: null,
         createdAt: new Date(),
         updatedAt: new Date()
       }));
@@ -211,6 +241,24 @@ export const MoviesService = {
     } catch (error) {
       console.error('Error fetching movie:', error);
       throw new Error('Failed to fetch movie');
+    }
+  },
+
+  getByTitle: async (title: string): Promise<Movie | null> => {
+    try {
+      const cleanTitle = title.trim().toLowerCase();
+      const movie = await prisma.movie.findFirst({
+        where: {
+          title: {
+            equals: cleanTitle,
+            mode: 'insensitive'
+          }
+        }
+      });
+      return movie;
+    } catch (error) {
+      console.error('Error fetching movie by title:', error);
+      throw new Error('Failed to fetch movie by title');
     }
   },
 
@@ -296,10 +344,33 @@ export const MoviesService = {
 
   delete: async (id: number): Promise<boolean> => {
     try {
-      await prisma.movie.delete({
-        where: { id }
-      });
-      return true;
+      // Check if it's a database movie (positive ID)
+      if (id > 0) {
+        const movie = await prisma.movie.findUnique({
+          where: { id }
+        });
+
+        if (!movie) {
+          return false; // Movie not found in database
+        }
+
+        if (movie.action === 'deleted') {
+          // If the movie is already marked as deleted, do nothing
+          return true;
+        }
+
+        // Mark as deleted instead of actually deleting
+        await prisma.movie.update({
+          where: { id },
+          data: { action: 'deleted' }
+        });
+        return true;
+      } else {
+        // It's an OMDb movie (negative ID), we need to add it to database with action = deleted
+        // Since we don't have the movie data, we'll need to get it from the request
+        // For now, we'll return false and handle this in the controller
+        return false;
+      }
     } catch (error) {
       console.error('Error deleting movie:', error);
       throw new Error('Failed to delete movie');

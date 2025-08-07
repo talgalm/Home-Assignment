@@ -5,6 +5,8 @@ export interface Movie {
   director: string;
   genre: string;
   runtime: string;
-  createdAt: Date;
-  updatedAt: Date;
+  img?: string | null; // Added for optional image
+  action?: string | null; // Added for action field
+  createdAt?: Date;
+  updatedAt?: Date;
 }
