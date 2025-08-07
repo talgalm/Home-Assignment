@@ -7,6 +7,7 @@ import { useDebounce } from "../hooks/useDebounce";
 import Popup from "../components/popup/Popup";
 import { AddIcon, HomeContainer, SeacrhIcon } from "./Home.styles";
 import type { Movie } from "../interfaces";
+import MovieGrid from "../components/movie-grid/MovieGrid";
 
 const Home: React.FC = () => {
   const [searchValue, setSearchValue] = useState("");
@@ -43,13 +44,7 @@ const Home: React.FC = () => {
         onChange={(e) => setSearchValue(e.target.value)}
         placeholder="Search something..."
       />
-      <ul>
-        {displayMovies?.map((movie: Movie) => (
-          <li key={movie.id} onClick={() => handlEditMovie(movie)}>
-            {movie.title}
-          </li>
-        ))}
-      </ul>
+      <MovieGrid movies={displayMovies || []} onMovieClick={handlEditMovie} />
       <AddIcon onClick={() => setModal(true)} />
       <Popup isOpen={modal} onClose={() => setModal(false)} movie={editMovie} />
     </HomeContainer>
