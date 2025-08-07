@@ -5,10 +5,16 @@ import { PrismaClient } from '@prisma/client';
 const prisma = new PrismaClient();
 
 export const MoviesController = {
-  getAll: async (_req: Request, res: Response) => {
+  getAll: async (req: Request, res: Response) => {
     try {
-      const movies = await MoviesService.getAll();
-      res.json(movies);
+      const page = parseInt(req.query.page as string) || 0;
+      
+      if (page < 0) {
+        return res.status(400).json({ message: 'Page number must be 1 or greater' });
+      }
+
+      const result = await MoviesService.getAll(page);
+      res.json(result);
     } catch (error) {
       console.error('Error in getAll:', error);
       res.status(500).json({ message: 'Internal server error' });

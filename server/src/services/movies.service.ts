@@ -9,8 +9,11 @@ const generateOMDbId = (): number => {
 };
 
 export const MoviesService = {
-  getAll: async (): Promise<Movie[]> => {
+  getAll: async (page: number = 1):  Promise<Movie[]> => {
     try {
+      const pageSize = 12;
+      const skip = (page - 1) * pageSize;
+
       const dbMovies = await prisma.movie.findMany({
         where: {
           OR: [
@@ -18,14 +21,28 @@ export const MoviesService = {
             { action: { not: 'deleted' } }
           ]
         },
-        orderBy: { createdAt: 'desc' }
+        orderBy: { createdAt: 'desc' },
+        skip: skip,
+        take: pageSize
       });
 
-      // If we have less than 10 movies, fetch additional ones from OMDb
-      if (dbMovies.length < 10) {
-        const additionalCount = 10 - dbMovies.length;
+      // Get total count for pagination
+      const totalMovies = await prisma.movie.count({
+        where: {
+          OR: [
+            { action: null },
+            { action: { not: 'deleted' } }
+          ]
+        }
+      });
+
+      // If we have less than 10 movies on this page, fetch additional ones from OMDb
+      if (dbMovies.length < pageSize) {
+        const additionalCount = pageSize - dbMovies.length;
         const additionalMovies = await MoviesService.fetchAdditionalMovies(additionalCount);
-        return [...dbMovies, ...additionalMovies];
+        const allMovies = [...dbMovies, ...additionalMovies];
+        
+        return allMovies;
       }
 
       return dbMovies;
