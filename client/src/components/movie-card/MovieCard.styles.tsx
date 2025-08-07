@@ -6,13 +6,12 @@ export const MovieCardContainer = styled.div`
   transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
   width: 100%;
   height: 100%;
- 
+
   &:hover {
     transform: translateY(-4px);
     box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
   }
 `;
-
 export const MovieTitle = styled(Typography)`
   font-weight: 600;
   line-height: 1.3;

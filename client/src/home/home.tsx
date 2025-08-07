@@ -1,16 +1,16 @@
 import React, { useState } from "react";
 import GeneralLoader from "../components/loader/loader";
-import GeneralSearch from "../components/search/Search";
 import { useMovies } from "../hooks/useMovies";
 import { useSearchMovies } from "../hooks/useSearchMovies";
 import { useDebounce } from "../hooks/useDebounce";
 import Popup from "../components/popup/Popup";
-import { AddIcon, HomeContainer, SeacrhIcon } from "./Home.styles";
+import {  HomeContainer } from "./Home.styles";
 import type { Movie } from "../interfaces";
 import MovieGrid from "../components/movie-grid/MovieGrid";
+import { useSearch } from "../context/SearchContext";
 
 const Home: React.FC = () => {
-  const [searchValue, setSearchValue] = useState("");
+  const { searchValue } = useSearch();
   const debouncedSearchValue = useDebounce(searchValue, 500);
   const { data: movies, isLoading, error } = useMovies();
   const { data: searchResults, isLoading: isSearching } =
@@ -38,14 +38,7 @@ const Home: React.FC = () => {
 
   return (
     <HomeContainer>
-      <GeneralSearch
-        icon={<SeacrhIcon />}
-        value={searchValue}
-        onChange={(e) => setSearchValue(e.target.value)}
-        placeholder="Search something..."
-      />
       <MovieGrid movies={displayMovies || []} onMovieClick={handlEditMovie} />
-      <AddIcon onClick={() => setModal(true)} />
       <Popup isOpen={modal} onClose={() => setModal(false)} movie={editMovie} />
     </HomeContainer>
   );
