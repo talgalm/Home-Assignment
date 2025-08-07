@@ -1,18 +1,18 @@
 import { useQuery } from '@tanstack/react-query';
 import { ApiService, HTTPMethod } from '../api/apiService';
+import type { Movie } from '../interfaces';
 
-type Movie = {
-  id: string;
-  title: string;
+
+const fetchMovies = async (page?: number): Promise<Movie[]> => {
+  return ApiService.makeRequest<Movie[]>(
+    `/movies?page=${page}`,
+    HTTPMethod.GET
+  );
 };
 
-const fetchMovies = async (): Promise<Movie[]> => {
-  return ApiService.makeRequest<Movie[]>('/movies', HTTPMethod.GET);
-};
-
-export const useMovies = () => {
+export const useMovies = (page?: number) => {
   return useQuery<Movie[], Error>({
-    queryKey: ['movies'],
-    queryFn: fetchMovies,
+    queryKey: ['movies', page],
+    queryFn: () => fetchMovies(page ?? 0),
   });
 };
