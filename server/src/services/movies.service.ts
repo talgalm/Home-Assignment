@@ -2,6 +2,12 @@ import { Movie } from "@prisma/client";
 import prisma from "../db/prisma";
 import omdbService from "./omdb.service";
 
+// Utility function to generate unique 10-digit random IDs for OMDb movies
+const generateOMDbId = (): number => {
+  // Generate a random 10-digit number (1000000000 to 9999999999)
+  return Math.floor(Math.random() * 9000000000) + 1000000000;
+};
+
 export const MoviesService = {
   getAll: async (): Promise<Movie[]> => {
     try {
@@ -65,7 +71,7 @@ export const MoviesService = {
       const omdbMovies = await omdbService.searchMoviesWithDetails(query, 10);
       
       const externalMovies: Movie[] = omdbMovies.map(omdbMovie => ({
-        id: 0,
+        id: generateOMDbId(),
         title: omdbMovie.Title,
         director: omdbMovie.Director || 'Unknown',
         year: omdbMovie.Year,
@@ -178,7 +184,7 @@ export const MoviesService = {
       const omdbMovies = await omdbService.getRandomMovies(count);
       
       const additionalMovies: Movie[] = omdbMovies.map(omdbMovie => ({
-        id: 0,
+        id: generateOMDbId(),
         title: omdbMovie.Title,
         director: omdbMovie.Director || 'Unknown',
         year: omdbMovie.Year,

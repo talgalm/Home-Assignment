@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React from "react";
 import {
   Card,
   CardContent,
@@ -15,6 +15,9 @@ import StarOutlineIcon from "@mui/icons-material/StarOutline";
 import StarIcon from "@mui/icons-material/Star";
 import type { Movie } from "../../interfaces";
 import { MovieCardContainer } from "./MovieCard.styles";
+import { useAppDispatch, useAppSelector } from "../../store/hooks";
+import { toggleFavorite } from "../../store/favoritesSlice";
+import type { RootState } from "../../store";
 
 type Props = {
   movie: Movie;
@@ -22,10 +25,18 @@ type Props = {
 };
 
 const MovieCard: React.FC<Props> = ({ movie, onClick }) => {
-  const [favorite, setFavorite] = useState<boolean>();
+  const dispatch = useAppDispatch();
+  const favorites = useAppSelector(
+    (state: RootState) => state.favorites.movies as Movie[]
+  );
+  const isFavorite = favorites.some(
+    (favMovie: Movie) => favMovie.id === movie.id
+  );
 
   const handleFavorite = () => {
-    setFavorite((prev) => !prev);
+    console.log("Toggling favorite for movie:", movie.id, movie.title);
+    console.log("Current favorites:", favorites);
+    dispatch(toggleFavorite(movie));
   };
   return (
     <MovieCardContainer>
@@ -87,7 +98,7 @@ const MovieCard: React.FC<Props> = ({ movie, onClick }) => {
             <DeleteIcon />
           </IconButton>
           <IconButton color="primary" onClick={handleFavorite}>
-            {favorite ? <StarIcon /> : <StarOutlineIcon />}
+            {isFavorite ? <StarIcon /> : <StarOutlineIcon />}
           </IconButton>
         </CardActions>
       </Card>
