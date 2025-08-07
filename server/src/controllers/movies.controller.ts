@@ -85,6 +85,22 @@ export const MoviesController = {
     }
   },
 
+  checkTitleExists: async (req: Request, res: Response) => {
+    try {
+      const { title } = req.query;
+      
+      if (!title || typeof title !== 'string') {
+        return res.status(400).json({ message: 'Title parameter is required' });
+      }
+
+      const exists = await MoviesService.checkTitleExists(title);
+      res.json({ exists });
+    } catch (error) {
+      console.error('Error in checkTitleExists:', error);
+      res.status(500).json({ message: 'Internal server error' });
+    }
+  },
+
   delete: async (req: Request, res: Response) => {
     try {
       const success = await MoviesService.delete(Number(req.params.id));

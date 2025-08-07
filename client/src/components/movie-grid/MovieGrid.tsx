@@ -12,8 +12,8 @@ const MovieGrid: React.FC<MovieGridProps> = ({ movies, onMovieClick }) => {
   return (
     <MovieGridContainer>
       {movies?.map((movie: Movie) => (
-        <div key={movie.id} onClick={() => onMovieClick(movie)}>
-          <MovieCard movie={movie} />
+        <div key={movie.id}>
+          <MovieCard movie={movie} onClick={() => onMovieClick(movie)} />
         </div>
       ))}
     </MovieGridContainer>

@@ -11,14 +11,20 @@ import {
 } from "./AddMovie.styles";
 import { GENRES } from "./consts";
 import GeneralInput from "../../components/input/Input";
+import TitleInput from "../../components/input/TitleInput";
 import Autocomplete from "../../components/autocomplete";
+
 type AddMovieProps = {
   onClose?: () => void;
 };
 
 const AddMovie: React.FC<AddMovieProps> = ({ onClose }) => {
   const queryClient = useQueryClient();
-  const { handleSubmit, reset } = useFormContext<AddMovieInput>();
+  const {
+    handleSubmit,
+    reset,
+    formState: { errors },
+  } = useFormContext<AddMovieInput>();
   const addMovieMutation = useAddMovie();
 
   const onSubmit = (data: AddMovieInput) => {
@@ -40,7 +46,7 @@ const AddMovie: React.FC<AddMovieProps> = ({ onClose }) => {
     <FormContainer>
       <FormTitle>Add New Movie</FormTitle>
       <StyledForm onSubmit={handleSubmit(onSubmit)}>
-        <GeneralInput name="title" placeholder="Movie Title" />
+        <TitleInput name="title" placeholder="Movie Title" />
         <GeneralInput
           name="year"
           type="number"
@@ -68,7 +74,7 @@ const AddMovie: React.FC<AddMovieProps> = ({ onClose }) => {
 
         <StyledSubmitButton
           type="submit"
-          disabled={addMovieMutation.isPending}
+          disabled={addMovieMutation.isPending || !!errors.title}
           fullWidth
           variant="outlined"
         >

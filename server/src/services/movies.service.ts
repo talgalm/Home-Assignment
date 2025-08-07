@@ -240,6 +240,54 @@ export const MoviesService = {
     }
   },
 
+  checkTitleExists: async (title: string): Promise<boolean> => {
+    try {
+      const cleanTitle = title.trim().toLowerCase();
+      
+      // Check in database first
+      const dbMovie = await prisma.movie.findFirst({
+        where: {
+          title: {
+            equals: cleanTitle,
+            mode: 'insensitive'
+          }
+        }
+      });
+
+      if (dbMovie) {
+        return true;
+      }
+
+      // Check in OMDb API
+      try {
+        const omdbMovies = await omdbService.searchMoviesWithDetails(title, 5);
+        
+        // Check if any movie title matches exactly (case insensitive)
+        const exactMatch = omdbMovies.some(movie => 
+          movie.Title.toLowerCase() === cleanTitle
+        );
+
+        if (exactMatch) {
+          return true;
+        }
+
+        // Also check for partial matches (title contains the search term)
+        const partialMatch = omdbMovies.some(movie => 
+          movie.Title.toLowerCase().includes(cleanTitle) ||
+          cleanTitle.includes(movie.Title.toLowerCase())
+        );
+
+        return partialMatch;
+      } catch (error) {
+        console.error('Error checking OMDb API:', error);
+        return false;
+      }
+    } catch (error) {
+      console.error('Error checking title existence:', error);
+      return false;
+    }
+  },
+
   delete: async (id: number): Promise<boolean> => {
     try {
       await prisma.movie.delete({

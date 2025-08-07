@@ -12,6 +12,12 @@ export const addMovieSchema = z.object({
   runtime: z.string().min(1, "Runtime is required"),
   genre: z.array(z.string().min(1, "Genre cannot be empty")).min(1, "At least one genre is required"),
   director: z.string().min(1, "Director is required"),
+}).refine((data) => {
+  // This will be handled by the TitleInput component
+  return true;
+}, {
+  message: "A movie with this title already exists",
+  path: ["title"],
 });
 
 export const editMovieSchema = z.object({
