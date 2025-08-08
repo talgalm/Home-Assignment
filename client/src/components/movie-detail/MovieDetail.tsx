@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { useTranslation } from "react-i18next";
 import {
   Box,
@@ -25,6 +25,7 @@ import { formatMovieTitle } from "../../utils/textUtils";
 import type { Movie } from "../../interfaces";
 import type { RootState } from "../../store";
 import { StyledMovieDetail } from "./MovieDetail.styles";
+import ConfirmDialog from "../confirm-dialog";
 
 interface MovieDetailProps {
   movie: Movie;
@@ -36,6 +37,7 @@ const MovieDetail: React.FC<MovieDetailProps> = ({ movie, onBack, onEdit }) => {
   const { t } = useTranslation();
   const direction = useLanguageDirection();
   const dispatch = useAppDispatch();
+  const [showDeleteConfirm, setShowDeleteConfirm] = useState(false);
   const favorites = useAppSelector(
     (state: RootState) => (state.favorites as any).movies as Movie[]
   );
@@ -46,21 +48,19 @@ const MovieDetail: React.FC<MovieDetailProps> = ({ movie, onBack, onEdit }) => {
     dispatch(toggleFavorite(movie));
   };
 
-  const handleDelete = () => {
-    if (
-      window.confirm(
-        `${t("DeleteMovie.message")} "${formatMovieTitle(movie.title)}"?`
-      )
-    ) {
-      deleteMovieMutation.mutate(movie, {
-        onSuccess: () => {
-          if (isFavorite) {
-            dispatch(removeFavorite(movie.id));
-          }
-          onBack();
-        },
-      });
-    }
+  const handleDeleteClick = () => {
+    setShowDeleteConfirm(true);
+  };
+
+  const handleDeleteConfirm = () => {
+    deleteMovieMutation.mutate(movie, {
+      onSuccess: () => {
+        if (isFavorite) {
+          dispatch(removeFavorite(movie.id));
+        }
+        onBack();
+      },
+    });
   };
 
   const genres = movie.genre.split(", ").filter(Boolean);
@@ -177,7 +177,7 @@ const MovieDetail: React.FC<MovieDetailProps> = ({ movie, onBack, onEdit }) => {
                       <EditIcon color="primary" />
                     </IconButton>
                     <IconButton
-                      onClick={handleDelete}
+                      onClick={handleDeleteClick}
                       color="primary"
                       disabled={deleteMovieMutation.isPending}
                     >
@@ -274,6 +274,19 @@ const MovieDetail: React.FC<MovieDetailProps> = ({ movie, onBack, onEdit }) => {
           </Grid>
         </Grid>
       </Card>
+
+      <ConfirmDialog
+        open={showDeleteConfirm}
+        onClose={() => setShowDeleteConfirm(false)}
+        onConfirm={handleDeleteConfirm}
+        title={t("DeleteMovie.title")}
+        message={`${t("DeleteMovie.message")} "${formatMovieTitle(
+          movie.title
+        )}"?`}
+        confirmText={t("DeleteMovie.confirm")}
+        cancelText={t("DeleteMovie.cancel")}
+        severity="warning"
+      />
     </StyledMovieDetail>
   );
 };

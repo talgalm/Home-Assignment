@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { useTranslation } from "react-i18next";
 import {
   Card,
@@ -24,6 +24,7 @@ import type { RootState } from "../../store";
 import { formatMovieTitle } from "../../utils/textUtils";
 import { useDeleteMovie } from "../../hooks/useDeleteMovie";
 import { removeFavorite } from "../../store/favoritesSlice";
+import ConfirmDialog from "../confirm-dialog";
 
 type Props = {
   movie: Movie;
@@ -31,9 +32,10 @@ type Props = {
   onEditClick: (movie: Movie) => void;
 };
 
-const MovieCard: React.FC<Props> = ({ movie, onClick , onEditClick }) => {
+const MovieCard: React.FC<Props> = ({ movie, onClick, onEditClick }) => {
   const { t } = useTranslation();
   const dispatch = useAppDispatch();
+  const [showDeleteConfirm, setShowDeleteConfirm] = useState(false);
   const favorites = useAppSelector(
     (state: RootState) => (state.favorites as any).movies as Movie[]
   );
@@ -48,21 +50,19 @@ const MovieCard: React.FC<Props> = ({ movie, onClick , onEditClick }) => {
     dispatch(toggleFavorite(movie));
   };
 
-  const handleDelete = () => {
-    if (
-      window.confirm(
-        `${t("DeleteMovie.message")} "${formatMovieTitle(movie.title)}"?`
-      )
-    ) {
-      deleteMovieMutation.mutate(movie, {
-        onSuccess: () => {
-          // Also remove from favorites if it was favorited
-          if (isFavorite) {
-            dispatch(removeFavorite(movie.id));
-          }
-        },
-      });
-    }
+  const handleDeleteClick = () => {
+    setShowDeleteConfirm(true);
+  };
+
+  const handleDeleteConfirm = () => {
+    deleteMovieMutation.mutate(movie, {
+      onSuccess: () => {
+        // Also remove from favorites if it was favorited
+        if (isFavorite) {
+          dispatch(removeFavorite(movie.id));
+        }
+      },
+    });
   };
   return (
     <MovieCardContainer>
@@ -108,7 +108,8 @@ const MovieCard: React.FC<Props> = ({ movie, onClick , onEditClick }) => {
               {formatMovieTitle(movie.title)}
             </Typography>
             <Typography color="text.secondary">
-              {movie.year} {`${movie.runtime !== "N/A" ? `• ${movie.runtime}` : ''}`}
+              {movie.year}{" "}
+              {`${movie.runtime !== "N/A" ? `• ${movie.runtime}` : ""}`}
             </Typography>
             <Typography color="text.secondary" variant="body2" noWrap>
               {movie.genre}
@@ -125,7 +126,7 @@ const MovieCard: React.FC<Props> = ({ movie, onClick , onEditClick }) => {
           </IconButton>
           <IconButton
             color="primary"
-            onClick={handleDelete}
+            onClick={handleDeleteClick}
             disabled={deleteMovieMutation.isPending}
           >
             {deleteMovieMutation.isPending ? (
@@ -139,6 +140,19 @@ const MovieCard: React.FC<Props> = ({ movie, onClick , onEditClick }) => {
           </IconButton>
         </CardActions>
       </Card>
+
+      <ConfirmDialog
+        open={showDeleteConfirm}
+        onClose={() => setShowDeleteConfirm(false)}
+        onConfirm={handleDeleteConfirm}
+        title={t("DeleteMovie.title")}
+        message={`${t("DeleteMovie.message")} "${formatMovieTitle(
+          movie.title
+        )}"?`}
+        confirmText={t("DeleteMovie.confirm")}
+        cancelText={t("DeleteMovie.cancel")}
+        severity="warning"
+      />
     </MovieCardContainer>
   );
 };
