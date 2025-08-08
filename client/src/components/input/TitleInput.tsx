@@ -5,6 +5,7 @@ import { useCheckTitleExists } from "../../hooks/useCheckTitleExists";
 import GeneralInput from "./Input";
 import { TitleInputContainer, TitleStatus } from "./TitleInput.styles";
 import { CheckCircle, Error, Info } from "@mui/icons-material";
+import { useLanguageDirection } from "../../hooks/useLanguageDirection";
 
 interface TitleInputProps {
   name: string;
@@ -16,6 +17,7 @@ const TitleInput: React.FC<TitleInputProps> = ({
   placeholder = "Movie Title",
 }) => {
   const { watch, setError, clearErrors } = useFormContext();
+  const direction = useLanguageDirection();
   const title = watch(name);
   const debouncedTitle = useDebounce(title, 1000); // 500ms debounce
   const { data, isLoading, error } = useCheckTitleExists(debouncedTitle);
@@ -58,7 +60,7 @@ const TitleInput: React.FC<TitleInputProps> = ({
   };
 
   return (
-    <TitleInputContainer>
+    <TitleInputContainer $direction={direction}>
       <GeneralInput name={name} placeholder={placeholder} />
       {debouncedTitle && debouncedTitle.length >= 2 && (
         <TitleStatus color={getStatusColor()}>

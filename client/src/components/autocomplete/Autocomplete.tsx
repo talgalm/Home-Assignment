@@ -2,6 +2,7 @@ import React from "react";
 import { Controller, useFormContext } from "react-hook-form";
 import { TextField } from "@mui/material";
 import { StyledAutocomplete } from "./Autocomplete.styles";
+import { useLanguageDirection } from "../../hooks/useLanguageDirection";
 
 interface AutocompleteProps {
   name: string;
@@ -23,6 +24,7 @@ const Autocomplete: React.FC<AutocompleteProps> = ({
   defaultValue = [],
 }) => {
   const { control } = useFormContext();
+  const direction = useLanguageDirection();
 
   return (
     <Controller
@@ -35,6 +37,7 @@ const Autocomplete: React.FC<AutocompleteProps> = ({
           freeSolo={freeSolo}
           options={options}
           value={field.value || []}
+          dir={direction}
           onChange={(_, newValueRaw) => {
             if (multiple && Array.isArray(newValueRaw)) {
               const normalized = newValueRaw.map(
@@ -50,12 +53,27 @@ const Autocomplete: React.FC<AutocompleteProps> = ({
           renderInput={(params) => (
             <TextField
               {...params}
-              label={label}
+              label={''}
               placeholder={placeholder}
               variant="outlined"
               error={!!fieldState.error}
               helperText={fieldState.error?.message}
               fullWidth
+              InputLabelProps={{
+                shrink: true,
+                style: {
+                  direction,
+                  textAlign: direction === "rtl" ? "right" : "left",
+                },
+              }}
+              inputProps={{
+                ...params.inputProps,
+                dir: direction,
+                style: {
+                  direction,
+                  textAlign: direction === "rtl" ? "right" : "left",
+                },
+              }}
             />
           )}
         />

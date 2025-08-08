@@ -1,4 +1,5 @@
 import React from "react";
+import { useTranslation } from "react-i18next";
 import { useFormContext } from "react-hook-form";
 import { useQueryClient } from "@tanstack/react-query";
 import type { AddMovieInput } from "../../validation/movieScheme";
@@ -13,12 +14,15 @@ import { GENRES } from "./consts";
 import GeneralInput from "../../components/input/Input";
 import TitleInput from "../../components/input/TitleInput";
 import Autocomplete from "../../components/autocomplete";
+import { useLanguageDirection } from "../../hooks/useLanguageDirection";
 
 type AddMovieProps = {
   onClose?: () => void;
 };
 
 const AddMovie: React.FC<AddMovieProps> = ({ onClose }) => {
+  const { t } = useTranslation();
+  const direction = useLanguageDirection();
   const queryClient = useQueryClient();
   const {
     handleSubmit,
@@ -43,34 +47,40 @@ const AddMovie: React.FC<AddMovieProps> = ({ onClose }) => {
   };
 
   return (
-    <FormContainer>
-      <FormTitle>Add New Movie</FormTitle>
+    <FormContainer $direction={direction}>
+      <FormTitle>{t("AddMovie.title")}</FormTitle>
       <StyledForm onSubmit={handleSubmit(onSubmit)}>
-        <TitleInput name="title" placeholder="Movie Title" />
+        <TitleInput
+          name="title"
+          placeholder={t("AddMovie.form.titlePlaceholder")}
+        />
         <GeneralInput
           name="year"
           type="number"
-          placeholder="Release Year"
+          placeholder={t("AddMovie.form.yearPlaceholder")}
           defaultValue="2000"
         />
         <GeneralInput
           name="runtime"
           type="number"
-          placeholder="Runtime (minutes)"
+          placeholder={t("AddMovie.form.runtimePlaceholder")}
           defaultValue={90}
         />
 
         <Autocomplete
           name="genre"
           options={GENRES}
-          label="Genres"
-          placeholder="Add genres (e.g., Action, Drama)"
+          label={t("AddMovie.form.genre")}
+          placeholder={t("AddMovie.form.genrePlaceholder")}
           multiple={true}
           freeSolo={true}
           defaultValue={[]}
         />
 
-        <GeneralInput name="director" placeholder="Director" />
+        <GeneralInput
+          name="director"
+          placeholder={t("AddMovie.form.directorPlaceholder")}
+        />
 
         <StyledSubmitButton
           type="submit"
@@ -78,7 +88,9 @@ const AddMovie: React.FC<AddMovieProps> = ({ onClose }) => {
           fullWidth
           variant="outlined"
         >
-          {addMovieMutation.isPending ? "Adding Movie..." : "Add Movie"}
+          {addMovieMutation.isPending
+            ? t("AddMovie.submitting")
+            : t("AddMovie.submit")}
         </StyledSubmitButton>
       </StyledForm>
     </FormContainer>

@@ -1,6 +1,7 @@
 import React from "react";
 import { Controller, useFormContext } from "react-hook-form";
 import { StyledInput } from "./Input.styles";
+import { useLanguageDirection } from "../../hooks/useLanguageDirection";
 
 type GeneralInputProps = {
   name: string;
@@ -18,6 +19,7 @@ const GeneralInput: React.FC<GeneralInputProps> = ({
   defaultValue,
 }) => {
   const { control } = useFormContext();
+  const direction = useLanguageDirection();
 
   return (
     <Controller
@@ -34,6 +36,14 @@ const GeneralInput: React.FC<GeneralInputProps> = ({
           variant="outlined"
           error={!!fieldState.error}
           helperText={fieldState.error?.message}
+          $direction={direction}
+          inputProps={{
+            dir: direction,
+            style: {
+              direction,
+              textAlign: direction === "rtl" ? "right" : "left",
+            },
+          }}
         />
       )}
     />

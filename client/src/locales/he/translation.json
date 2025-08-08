@@ -1,0 +1,116 @@
+{
+  "Header": {
+    "title": "מנהל סרטים",
+    "search": "חיפוש סרטים...",
+    "favorites": "מועדפים",
+    "language": "שפה"
+  },
+  "Home": {
+    "title": "אוסף סרטים",
+    "loading": "טוען סרטים...",
+    "error": "שגיאה בטעינת סרטים",
+    "noMovies": "לא נמצאו סרטים",
+    "loadMore": "טוען עוד סרטים...",
+    "noMoreMovies": "אין עוד סרטים לטעינה"
+  },
+  "MovieCard": {
+    "rating": "דירוג",
+    "genre": "ז'אנר",
+    "director": "במאי",
+    "year": "שנה",
+    "runtime": "משך",
+    "minutes": "דקות",
+    "addToFavorites": "הוסף למועדפים",
+    "removeFromFavorites": "הסר מהמועדפים"
+  },
+  "Search": {
+    "placeholder": "חיפוש סרטים...",
+    "noResults": "לא נמצאו סרטים לחיפוש שלך",
+    "searching": "מחפש..."
+  },
+  "AddMovie": {
+    "title": "הוסף סרט חדש",
+    "form": {
+      "title": "כותרת הסרט",
+      "titlePlaceholder": "הכנס כותרת סרט",
+      "year": "שנת יציאה",
+      "yearPlaceholder": "הכנס שנת יציאה",
+      "runtime": "משך (דקות)",
+      "runtimePlaceholder": "הכנס משך בדקות",
+      "genre": "ז'אנרים",
+      "genrePlaceholder": "הוסף ז'אנרים (למשל, אקשן, דרמה)",
+      "director": "במאי",
+      "directorPlaceholder": "הכנס שם במאי"
+    },
+    "submit": "הוסף סרט",
+    "submitting": "מוסיף סרט...",
+    "success": "הסרט נוסף בהצלחה!",
+    "error": "שגיאה בהוספת סרט"
+  },
+  "EditMovie": {
+    "title": "ערוך סרט",
+    "form": {
+      "title": "כותרת הסרט",
+      "titlePlaceholder": "הכנס כותרת סרט",
+      "year": "שנת יציאה",
+      "yearPlaceholder": "הכנס שנת יציאה",
+      "runtime": "משך (דקות)",
+      "runtimePlaceholder": "הכנס משך בדקות",
+      "genre": "ז'אנרים",
+      "genrePlaceholder": "הוסף ז'אנרים (למשל, אקשן, דרמה)",
+      "director": "במאי",
+      "directorPlaceholder": "הכנס שם במאי"
+    },
+    "submit": "עדכן סרט",
+    "submitting": "מעדכן...",
+    "success": "הסרט עודכן בהצלחה!",
+    "error": "שגיאה בעדכון סרט"
+  },
+  "DeleteMovie": {
+    "title": "מחק סרט",
+    "message": "האם אתה בטוח שברצונך למחוק סרט זה?",
+    "confirm": "מחק",
+    "cancel": "ביטול",
+    "deleting": "מוחק...",
+    "success": "הסרט נמחק בהצלחה!",
+    "error": "שגיאה במחיקת סרט"
+  },
+  "Favorites": {
+    "title": "המועדפים שלי",
+    "noFavorites": "עדיין לא הוספת סרטים למועדפים",
+    "count": "{{count}} מועדף",
+    "count_plural": "{{count}} מועדפים"
+  },
+  "Validation": {
+    "required": "שדה זה נדרש",
+    "minLength": "חייב להיות לפחות {{min}} תווים",
+    "maxLength": "חייב להיות לא יותר מ-{{max}} תווים",
+    "yearRange": "השנה חייבת להיות בין 1900 ל-{{currentYear}}",
+    "yearFormat": "השנה חייבת להיות מספר בן 4 ספרות",
+    "runtimeFormat": "המשך חייב להיות מספר תקין",
+    "atLeastOneGenre": "נדרש לפחות ז'אנר אחד"
+  },
+  "Common": {
+    "loading": "טוען...",
+    "error": "אירעה שגיאה",
+    "success": "הצלחה!",
+    "cancel": "ביטול",
+    "save": "שמור",
+    "edit": "ערוך",
+    "delete": "מחק",
+    "close": "סגור",
+    "back": "חזור",
+    "next": "הבא",
+    "previous": "הקודם",
+    "search": "חיפוש",
+    "clear": "נקה",
+    "filter": "סנן",
+    "sort": "מיין",
+    "refresh": "רענן",
+    "retry": "נסה שוב"
+  },
+  "Languages": {
+    "en": "English",
+    "he": "עברית"
+  }
+}

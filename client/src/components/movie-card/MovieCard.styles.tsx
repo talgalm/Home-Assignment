@@ -1,11 +1,14 @@
 import styled from "@emotion/styled";
 import { Typography, Box } from "@mui/material";
 
-export const MovieCardContainer = styled.div`
+export const MovieCardContainer = styled.div<{ $direction?: "ltr" | "rtl" }>`
   cursor: pointer;
   transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
   width: 100%;
   height: 100%;
+  direction: ${({ $direction = "ltr" }) => $direction};
+  text-align: ${({ $direction = "ltr" }) =>
+    $direction === "rtl" ? "right" : "left"};
 
   &:hover {
     transform: translateY(-4px);

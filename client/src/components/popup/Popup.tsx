@@ -7,6 +7,7 @@ import {
 } from "./Popup.styles";
 import AddMovieForm from "../../movies/add-movie/AddMovie.form";
 import EditMovieForm from "../../movies/edit-movie/EditMovie.form";
+import { useLanguageDirection } from "../../hooks/useLanguageDirection";
 import type { Movie } from "../../interfaces";
 
 interface PopupProps {
@@ -14,7 +15,7 @@ interface PopupProps {
   onClose: () => void;
   size?: "small" | "medium" | "large";
   styleProps?: React.CSSProperties;
-  movie?: Movie
+  movie?: Movie;
 }
 
 const Popup: React.FC<PopupProps> = ({
@@ -24,23 +25,25 @@ const Popup: React.FC<PopupProps> = ({
   styleProps,
   movie,
 }) => {
+  const direction = useLanguageDirection();
   if (!isOpen) return null;
 
   return (
     <StyledPopupOverlay onClick={onClose}>
-      <StyledCloseButton onClick={onClose}>
+      <StyledCloseButton $direction={direction} onClick={onClose}>
         <CloseIcon />
       </StyledCloseButton>
 
       <StyledPopup
         size={size}
+        $direction={direction}
         onClick={(e: React.MouseEvent) => e.stopPropagation()}
         sx={{
           ...styleProps,
         }}
       >
         {!movie ? (
-          <AddMovieForm onClose={onClose}/>
+          <AddMovieForm onClose={onClose} />
         ) : (
           <EditMovieForm movie={movie!} onSuccess={onClose} />
         )}

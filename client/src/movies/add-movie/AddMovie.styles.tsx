@@ -52,11 +52,15 @@ export const FormTitle = styled("h2")({
   letterSpacing: "-0.02em",
 });
 
-export const FormContainer = styled(Box)({
-  width: "100%",
-  maxWidth: "500px",
-  margin: "0 auto",
-});
+export const FormContainer = styled(Box)<{ $direction?: "ltr" | "rtl" }>(
+  ({ $direction = "ltr" }) => ({
+    width: "100%",
+    maxWidth: "500px",
+    margin: "0 auto",
+    direction: $direction,
+    textAlign: $direction === "rtl" ? "right" : "left",
+  })
+);
 
 export const StyledAutocomplete = styled(Autocomplete)({
   "& .MuiOutlinedInput-root": {

@@ -1,7 +1,11 @@
 import { styled } from "@mui/material/styles";
 import { Autocomplete as MuiAutocomplete } from "@mui/material";
 
-export const StyledAutocomplete = styled(MuiAutocomplete)(() => ({
+export const StyledAutocomplete = styled(MuiAutocomplete)<{
+  $direction?: "ltr" | "rtl";
+}>(({ $direction = "ltr" }) => ({
+  direction: $direction,
+
   "& .MuiOutlinedInput-root": {
     backgroundColor: "rgba(255, 255, 255, 0.1)",
     borderRadius: "12px",
@@ -26,6 +30,8 @@ export const StyledAutocomplete = styled(MuiAutocomplete)(() => ({
     color: "white",
     fontSize: "16px",
     padding: "16px 20px",
+    direction: $direction,
+    textAlign: $direction === "rtl" ? "right" : "left",
 
     "&::placeholder": {
       color: "rgba(255, 255, 255, 0.6)",
@@ -40,10 +46,19 @@ export const StyledAutocomplete = styled(MuiAutocomplete)(() => ({
   "& .MuiInputLabel-root": {
     color: "rgba(255, 255, 255, 0.7)",
     fontSize: "14px",
+    direction: $direction,
+    textAlign: $direction === "rtl" ? "right" : "left",
+    transformOrigin: $direction === "rtl" ? "top right" : "top left",
 
     "&.Mui-focused": {
       color: "rgba(255, 255, 255, 0.9)",
     },
+  },
+
+  "& .MuiInputLabel-shrink": {
+    direction: $direction,
+    textAlign: $direction === "rtl" ? "right" : "left",
+    transformOrigin: $direction === "rtl" ? "top right" : "top left",
   },
 
   "& .MuiAutocomplete-popupIndicator": {
@@ -58,6 +73,8 @@ export const StyledAutocomplete = styled(MuiAutocomplete)(() => ({
     backgroundColor: "rgba(255, 255, 255, 0.2)",
     color: "white",
     border: "1px solid rgba(255, 255, 255, 0.3)",
+    direction: $direction,
+    textAlign: $direction === "rtl" ? "right" : "left",
     "& .MuiChip-deleteIcon": {
       color: "rgba(255, 255, 255, 0.7)",
       "&:hover": {
@@ -73,9 +90,13 @@ export const StyledAutocomplete = styled(MuiAutocomplete)(() => ({
     borderRadius: "12px",
     marginTop: "4px",
     boxShadow: "0 8px 32px rgba(0, 0, 0, 0.8)",
+    direction: $direction,
+    textAlign: $direction === "rtl" ? "right" : "left",
 
     "& .MuiAutocomplete-option": {
       color: "white",
+      direction: $direction,
+      textAlign: $direction === "rtl" ? "right" : "left",
       "&[data-focus='true']": {
         backgroundColor: "rgba(255, 255, 255, 0.1)",
       },

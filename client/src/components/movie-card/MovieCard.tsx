@@ -1,4 +1,5 @@
 import React from "react";
+import { useTranslation } from "react-i18next";
 import {
   Card,
   CardContent,
@@ -29,9 +30,10 @@ type Props = {
 };
 
 const MovieCard: React.FC<Props> = ({ movie, onClick }) => {
+  const { t } = useTranslation();
   const dispatch = useAppDispatch();
   const favorites = useAppSelector(
-    (state: RootState) => state.favorites.movies as Movie[]
+    (state: RootState) => (state.favorites as any).movies as Movie[]
   );
   const isFavorite = favorites.some(
     (favMovie: Movie) => favMovie.id === movie.id
@@ -47,7 +49,7 @@ const MovieCard: React.FC<Props> = ({ movie, onClick }) => {
   const handleDelete = () => {
     if (
       window.confirm(
-        `Are you sure you want to delete "${formatMovieTitle(movie.title)}"?`
+        `${t("DeleteMovie.message")} "${formatMovieTitle(movie.title)}"?`
       )
     ) {
       deleteMovieMutation.mutate(movie, {
@@ -104,7 +106,7 @@ const MovieCard: React.FC<Props> = ({ movie, onClick }) => {
               {formatMovieTitle(movie.title)}
             </Typography>
             <Typography color="text.secondary">
-              {movie.year} • {movie.runtime} min
+              {movie.year} • {movie.runtime} {t("MovieCard.minutes")}
             </Typography>
             <Typography color="text.secondary" variant="body2" noWrap>
               {movie.genre}

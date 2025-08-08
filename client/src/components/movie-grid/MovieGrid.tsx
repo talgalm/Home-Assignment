@@ -1,4 +1,5 @@
 import React from "react";
+import { useTranslation } from "react-i18next";
 import { MovieGridContainer } from "./MovieGrid.styles";
 import type { Movie } from "../../interfaces";
 import MovieCard from "../movie-card/MovieCard";
@@ -6,6 +7,7 @@ import { Box, Typography, CircularProgress } from "@mui/material";
 import MovieIcon from "@mui/icons-material/Movie";
 import { showFavoritesOnlyAtom } from "../../store/favoritesViewAtom";
 import { useAtom } from "jotai";
+import { useLanguageDirection } from "../../hooks/useLanguageDirection";
 
 interface MovieGridProps {
   movies: Movie[];
@@ -24,6 +26,8 @@ const MovieGrid: React.FC<MovieGridProps> = ({
   hasNextPage = false,
   isLoading = false,
 }) => {
+  const { t } = useTranslation();
+  const direction = useLanguageDirection();
   const isEmpty = movies.length === 0 && !error && !isLoading;
   const [showFavoritesOnly] = useAtom(showFavoritesOnlyAtom);
 
@@ -48,10 +52,10 @@ const MovieGrid: React.FC<MovieGridProps> = ({
             color={error ? "error.main" : "text.secondary"}
           >
             {error
-              ? `Error loading movies: ${error}`
+              ? `${t("Home.error")}: ${error}`
               : showFavoritesOnly
-              ? "No Favorites"
-              : "No movies to display"}
+              ? t("Favorites.noFavorites")
+              : t("Home.noMovies")}
           </Typography>
         </Box>
       ) : (
@@ -79,7 +83,7 @@ const MovieGrid: React.FC<MovieGridProps> = ({
               >
                 <CircularProgress size={40} />
                 <Typography variant="body2" color="text.secondary">
-                  Loading more movies...
+                  {t("Home.loadMore")}
                 </Typography>
               </Box>
             </Box>
@@ -94,7 +98,7 @@ const MovieGrid: React.FC<MovieGridProps> = ({
               gridColumn="1 / -1"
             >
               <Typography variant="body2" color="text.secondary">
-                No more movies to load
+                {t("Home.noMoreMovies")}
               </Typography>
             </Box>
           )}

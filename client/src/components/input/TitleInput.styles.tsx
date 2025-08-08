@@ -1,12 +1,16 @@
 import styled from "styled-components";
 import { Box } from "@mui/material";
 
-export const TitleInputContainer = styled(Box)({
-  display: "flex",
-  flexDirection: "column",
-  gap: "8px",
-  width: "100%",
-});
+export const TitleInputContainer = styled(Box)<{ $direction?: "ltr" | "rtl" }>(
+  ({ $direction = "ltr" }) => ({
+    display: "flex",
+    flexDirection: "column",
+    gap: "8px",
+    width: "100%",
+    direction: $direction,
+    textAlign: $direction === "rtl" ? "right" : "left",
+  })
+);
 
 export const TitleStatus = styled(Box)<{ color: string }>(({ color }) => ({
   display: "flex",

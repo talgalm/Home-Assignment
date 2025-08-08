@@ -1,4 +1,5 @@
 import React, { useState, useMemo } from "react";
+import { useTranslation } from "react-i18next";
 import GeneralLoader from "../components/loader/loader";
 import { useMovies } from "../hooks/useMovies";
 import { useInfiniteSearchMovies } from "../hooks/useSearchMovies";
@@ -13,9 +14,12 @@ import { useAppSelector } from "../store/hooks";
 import { useAtom } from "jotai";
 import { showFavoritesOnlyAtom } from "../store/favoritesViewAtom";
 import { Box, Typography } from "@mui/material";
+import { useLanguageDirection } from "../hooks/useLanguageDirection";
 import type { RootState } from "../store";
 
 const Home: React.FC = () => {
+  const { t } = useTranslation();
+  const direction = useLanguageDirection();
   const { searchValue } = useSearch();
   const debouncedSearchValue = useDebounce(searchValue, 500);
 
@@ -95,7 +99,7 @@ const Home: React.FC = () => {
     return (
       <GeneralLoader
         loading={true}
-        text={debouncedSearchValue ? "Searching..." : "Loading movies..."}
+        text={debouncedSearchValue ? t('Search.searching') : t('Home.loading')}
       />
     );
 
@@ -105,11 +109,11 @@ const Home: React.FC = () => {
   };
 
   return (
-    <HomeContainer>
+    <HomeContainer $direction={direction}>
       {showFavoritesOnly && (
         <Box sx={{ mb: 2, p: 2, bgcolor: "background.paper", borderRadius: 1 }}>
           <Typography variant="h6" color="primary">
-            ⭐ Favorites
+            ⭐ {t('Favorites.title')}
           </Typography>
         </Box>
       )}

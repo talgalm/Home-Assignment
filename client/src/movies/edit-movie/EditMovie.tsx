@@ -1,4 +1,5 @@
 import React from "react";
+import { useTranslation } from "react-i18next";
 import { useFormContext } from "react-hook-form";
 import { useQueryClient } from "@tanstack/react-query";
 import type { EditMovieInput } from "../../validation/movieScheme";
@@ -12,6 +13,7 @@ import {
 import { GENRES } from "../add-movie/consts";
 import GeneralInput from "../../components/input/Input";
 import Autocomplete from "../../components/autocomplete";
+import { useLanguageDirection } from "../../hooks/useLanguageDirection";
 import type { Movie } from "../../interfaces";
 
 interface EditMovieProps {
@@ -20,6 +22,8 @@ interface EditMovieProps {
 }
 
 const EditMovie: React.FC<EditMovieProps> = ({ movie, onSuccess }) => {
+  const { t } = useTranslation();
+  const direction = useLanguageDirection();
   const queryClient = useQueryClient();
   const { handleSubmit } = useFormContext<EditMovieInput>();
   const editMovieMutation = useEditMovie();
@@ -38,31 +42,31 @@ const EditMovie: React.FC<EditMovieProps> = ({ movie, onSuccess }) => {
   };
 
   return (
-    <FormContainer>
-      <FormTitle>Edit Movie</FormTitle>
+    <FormContainer $direction={direction}>
+      <FormTitle>{t("EditMovie.title")}</FormTitle>
       <StyledForm onSubmit={handleSubmit(onSubmit)}>
         <GeneralInput
           name="title"
-          placeholder="Movie Title"
+          placeholder={t("EditMovie.form.titlePlaceholder")}
           defaultValue={movie.title}
         />
         <GeneralInput
           name="year"
           type="number"
-          placeholder="Release Year"
+          placeholder={t("EditMovie.form.yearPlaceholder")}
           defaultValue={movie.year.toString()}
         />
         <GeneralInput
           name="runtime"
-          placeholder="Runtime (minutes)"
+          placeholder={t("EditMovie.form.runtimePlaceholder")}
           defaultValue={movie.runtime}
         />
 
         <Autocomplete
           name="genre"
           options={GENRES}
-          label="Genres"
-          placeholder="Add genres (e.g., Action, Drama)"
+          label={t("EditMovie.form.genre")}
+          placeholder={t("EditMovie.form.genrePlaceholder")}
           multiple={true}
           freeSolo={true}
           defaultValue={movie.genre.split(", ").filter(Boolean)}
@@ -70,7 +74,7 @@ const EditMovie: React.FC<EditMovieProps> = ({ movie, onSuccess }) => {
 
         <GeneralInput
           name="director"
-          placeholder="Director"
+          placeholder={t("EditMovie.form.directorPlaceholder")}
           defaultValue={movie.director}
         />
 
@@ -80,7 +84,9 @@ const EditMovie: React.FC<EditMovieProps> = ({ movie, onSuccess }) => {
           fullWidth
           variant="outlined"
         >
-          {editMovieMutation.isPending ? "Updating..." : "Update Movie"}
+          {editMovieMutation.isPending
+            ? t("EditMovie.submitting")
+            : t("EditMovie.submit")}
         </StyledSubmitButton>
       </StyledForm>
     </FormContainer>
