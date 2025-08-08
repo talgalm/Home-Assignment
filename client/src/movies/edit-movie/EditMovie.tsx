@@ -21,36 +21,21 @@ interface EditMovieProps {
 
 const EditMovie: React.FC<EditMovieProps> = ({ movie, onSuccess }) => {
   const queryClient = useQueryClient();
-  const { handleSubmit, } = useFormContext<EditMovieInput>();
+  const { handleSubmit } = useFormContext<EditMovieInput>();
   const editMovieMutation = useEditMovie();
 
-
   const onSubmit = (data: EditMovieInput) => {
-    // Only include fields that have changed
-    const changes: Partial<EditMovieInput> = {};
+    const currentGenres = data.genre.join(", ").trim();
 
-    if (data.title !== movie.title) changes.title = data.title;
-    if (data.year !== movie.year) changes.year = data.year;
-    if (data.runtime !== movie.runtime) changes.runtime = data.runtime;
-    if (data.genre.join(", ") !== movie.genre)
-      changes.genre = data.genre.join(", ");
-    if (data.director !== movie.director) changes.director = data.director;
-
-    // Only submit if there are changes
-    if (Object.keys(changes).length > 0) {
-      editMovieMutation.mutate(
-        { id: Number(movie.id), ...changes },
-        {
-          onSuccess: () => {
-            queryClient.invalidateQueries({ queryKey: ["movies"] });
-            onSuccess?.();
-          },
-        }
-      );
-    } else {
-      // No changes, just close the popup
-      onSuccess?.();
-    }
+    editMovieMutation.mutate(
+      { id: Number(movie.id), ...data, genre: currentGenres },
+      {
+        onSuccess: () => {
+          queryClient.invalidateQueries({ queryKey: ["movies"] });
+          onSuccess?.();
+        },
+      }
+    );
   };
 
   return (

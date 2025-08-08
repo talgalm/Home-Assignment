@@ -2,7 +2,7 @@ import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { ApiService, HTTPMethod } from '../api/apiService';
 import type { Movie } from '../interfaces';
 
-const editMovie = async (movie: Partial<Movie> & { id: number }): Promise<Movie> => {
+const editMovie = async (movie: Movie): Promise<Movie> => {
   const { id, ...payload } = movie;
 
   return ApiService.makeRequest<Movie>(`/movies/${id}`, HTTPMethod.PUT, payload);
