@@ -1,0 +1,10 @@
+{
+  "rating": "דירוג",
+  "genre": "ז'אנר",
+  "director": "במאי",
+  "year": "שנה",
+  "runtime": "משך",
+  "minutes": "דקות",
+  "addToFavorites": "הוסף למועדפים",
+  "removeFromFavorites": "הסר מהמועדפים"
+}

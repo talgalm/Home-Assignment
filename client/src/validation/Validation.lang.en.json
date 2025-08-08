@@ -1,0 +1,9 @@
+{
+  "required": "This field is required",
+  "minLength": "Must be at least {{min}} characters",
+  "maxLength": "Must be no more than {{max}} characters",
+  "yearRange": "Year must be between 1900 and {{currentYear}}",
+  "yearFormat": "Year must be a 4-digit number",
+  "runtimeFormat": "Runtime must be a valid number",
+  "atLeastOneGenre": "At least one genre is required"
+}

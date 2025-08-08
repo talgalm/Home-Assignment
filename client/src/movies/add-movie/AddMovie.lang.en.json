@@ -1,0 +1,19 @@
+{
+  "title": "Add New Movie",
+  "form": {
+    "title": "Movie Title",
+    "titlePlaceholder": "Enter movie title",
+    "year": "Release Year",
+    "yearPlaceholder": "Enter release year",
+    "runtime": "Runtime (minutes)",
+    "runtimePlaceholder": "Enter runtime in minutes",
+    "genre": "Genres",
+    "genrePlaceholder": "Add genres (e.g., Action, Drama)",
+    "director": "Director",
+    "directorPlaceholder": "Enter director name"
+  },
+  "submit": "Add Movie",
+  "submitting": "Adding Movie...",
+  "success": "Movie added successfully!",
+  "error": "Error adding movie"
+}

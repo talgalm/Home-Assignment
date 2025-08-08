@@ -1,0 +1,6 @@
+{
+  "title": "My Favorites",
+  "noFavorites": "You haven't added any movies to favorites yet",
+  "count": "{{count}} favorite",
+  "count_plural": "{{count}} favorites"
+}

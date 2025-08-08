@@ -1,0 +1,20 @@
+{
+  "loading": "טוען...",
+  "error": "אירעה שגיאה",
+  "success": "הצלחה!",
+  "cancel": "ביטול",
+  "confirm": "אישור",
+  "save": "שמור",
+  "edit": "ערוך",
+  "delete": "מחק",
+  "close": "סגור",
+  "back": "חזור",
+  "next": "הבא",
+  "previous": "הקודם",
+  "search": "חיפוש",
+  "clear": "נקה",
+  "filter": "סנן",
+  "sort": "מיין",
+  "refresh": "רענן",
+  "retry": "נסה שוב"
+}

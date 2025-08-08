@@ -1,0 +1,9 @@
+{
+  "title": "Delete Movie",
+  "message": "Are you sure you want to delete this movie?",
+  "confirm": "Delete",
+  "cancel": "Cancel",
+  "deleting": "Deleting...",
+  "success": "Movie deleted successfully!",
+  "error": "Error deleting movie"
+}

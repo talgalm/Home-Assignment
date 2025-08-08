@@ -1,0 +1,19 @@
+{
+  "title": "הוסף סרט חדש",
+  "form": {
+    "title": "כותרת הסרט",
+    "titlePlaceholder": "הכנס כותרת סרט",
+    "year": "שנת יציאה",
+    "yearPlaceholder": "הכנס שנת יציאה",
+    "runtime": "משך (דקות)",
+    "runtimePlaceholder": "הכנס משך בדקות",
+    "genre": "ז'אנרים",
+    "genrePlaceholder": "הוסף ז'אנרים (למשל, אקשן, דרמה)",
+    "director": "במאי",
+    "directorPlaceholder": "הכנס שם במאי"
+  },
+  "submit": "הוסף סרט",
+  "submitting": "מוסיף סרט...",
+  "success": "הסרט נוסף בהצלחה!",
+  "error": "שגיאה בהוספת סרט"
+}

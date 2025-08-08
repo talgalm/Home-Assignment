@@ -1,0 +1,10 @@
+{
+  "rating": "Rating",
+  "genre": "Genre",
+  "director": "Director",
+  "year": "Year",
+  "runtime": "Runtime",
+  "minutes": "min",
+  "addToFavorites": "Add to favorites",
+  "removeFromFavorites": "Remove from favorites"
+}
