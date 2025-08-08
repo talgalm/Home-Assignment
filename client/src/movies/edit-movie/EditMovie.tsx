@@ -31,7 +31,6 @@ const EditMovie: React.FC<EditMovieProps> = ({ movie, onSuccess }) => {
       { id: Number(movie.id), ...data, genre: currentGenres },
       {
         onSuccess: () => {
-          queryClient.invalidateQueries({ queryKey: ["movies"] });
           onSuccess?.();
         },
       }

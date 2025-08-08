@@ -6,8 +6,10 @@ import { filterMoviesByQuery, sortMoviesByRelevance } from "../utils/movieUtils"
 
 // Utility function to generate unique 10-digit random IDs for OMDb movies
 const generateOMDbId = (): number => {
-  // Generate a random 10-digit number (1000000000 to 9999999999)
-  return Math.floor(Math.random() * 9000000000) + 1000000000;
+  // Generate a random 9-digit number (100000000 to 2147483647 max)
+  const min = 100000000;
+  const max = 2147483647; // max 32-bit signed int
+  return Math.floor(Math.random() * (max - min + 1)) + min;
 };
 
 export const MoviesService = {
@@ -115,7 +117,26 @@ export const MoviesService = {
     return movieRepository.create(movieData);
   },
 
-  update: async (id: number, movieData: Partial<Omit<Movie, 'id' | 'createdAt' | 'updatedAt'>>): Promise<Movie | null> => {
+  update: async (
+    id: number,
+    movieData: Partial<Omit<Movie, 'id' | 'createdAt' | 'updatedAt'>>
+  ): Promise<Movie | null> => {
+    console.log(id)
+    const movie = await movieRepository.findById(id);
+    console.log("!!2")
+    console.log(movie)
+    if (!movie) {
+      const newMovieData: Omit<Movie, 'id' | 'createdAt' | 'updatedAt'> = {
+        title: movieData.title ?? "Unknown Title",
+        director: movieData.director ?? "Unknown Director",
+        year: movieData.year ?? new Date().getFullYear().toString(),
+        genre: movieData.genre ?? '',
+        runtime: movieData.runtime ?? "Unknown",
+        img: movieData.img ?? "",
+        action: "updated",
+      };
+      return movieRepository.create(newMovieData);
+    }
     return movieRepository.update(id, movieData);
   },
 
