@@ -2,23 +2,15 @@ import { Movie } from "@prisma/client";
 import prisma from "../db/prisma";
 import omdbService from "./omdb.service";
 import { movieRepository } from "../repositories/movie.repository";
-import { filterMoviesByQuery, sortMoviesByRelevance } from "../utils/movieUtils";
+import { filterMoviesByQuery, generateOMDbId } from "../utils/movieUtils";
 
-// Utility function to generate unique 10-digit random IDs for OMDb movies
-const generateOMDbId = (): number => {
-  // Generate a random 9-digit number (100000000 to 2147483647 max)
-  const min = 100000000;
-  const max = 2147483647; // max 32-bit signed int
-  return Math.floor(Math.random() * (max - min + 1)) + min;
-};
+const pageSize = 12;
 
 export const MoviesService = {
   getAll: async (page: number = 1): Promise<Movie[]> => {
-    const pageSize = 12;
     const skip = (page - 1) * pageSize;
 
     const dbMovies = await movieRepository.findAll(skip, pageSize);
-    const totalMovies = await movieRepository.countAll();
 
     if (dbMovies.length < pageSize) {
       const additionalCount = pageSize - dbMovies.length;
@@ -38,11 +30,9 @@ export const MoviesService = {
         return [];
       }
 
-      // Get movies from DB
       const dbMovies = await movieRepository.findManyBySearchQuery(query);
 
-      // Get external OMDb movies
-      const omdbMovies = await omdbService.searchMoviesWithDetails(query, 10);
+      const omdbMovies = await omdbService.searchMoviesWithDetails(query, 12);
       const externalMovies: Movie[] = omdbMovies.map(omdbMovie => ({
         id: generateOMDbId(),
         title: omdbMovie.Title,
@@ -56,7 +46,6 @@ export const MoviesService = {
         updatedAt: new Date(),
       }));
 
-      // Filter out external movies that already exist in the DB by title
       const uniqueExternalMovies: Movie[] = [];
       for (const movie of externalMovies) {
         const exists = await prisma.movie.findFirst({
@@ -67,16 +56,11 @@ export const MoviesService = {
         }
       }
 
-      // Combine dbMovies + uniqueExternalMovies
       const combinedMovies = [...dbMovies, ...uniqueExternalMovies];
 
-      // Filter movies by query
       const filteredMovies = filterMoviesByQuery(combinedMovies, cleanQuery);
 
-      // Sort movies by relevance
-      const sortedMovies = sortMoviesByRelevance(filteredMovies, cleanQuery);
-
-      return sortedMovies;
+      return filteredMovies;
     } catch (error) {
       console.error('Error searching movies:', error);
       throw new Error('Failed to search movies');

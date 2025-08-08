@@ -1,31 +1,11 @@
 import { Movie } from "@prisma/client";
 
-export function multiWordPhraseMatches(title: string, phrase: string): boolean {
-    const index = title.indexOf(phrase);
-    if (index === -1) return false;
-    const before = title.substring(0, index);
-    const after = title.substring(index + phrase.length);
-  
-    if (before === '' || after === '') return true;
-    if ((before.endsWith(' ') || before === '') && (after.startsWith(' ') || after === '')) return true;
-  
-    if (phrase.startsWith('the ')) {
-      const withoutThe = phrase.substring(4);
-      if (title.startsWith('the ') && title.includes(withoutThe)) return true;
-      return false;
-    }
-  
-    return false;
-  }
-  
-  export function singleWordMatches(title: string, word: string): boolean {
-    const words = title.split(/\s+/);
-    if (words.includes(word)) return true;
-    if (words.some(w => w.startsWith(word))) return true;
-    if (word.length <= 2) return words.includes(word);
-    return false;
-  }
-
+export const generateOMDbId = (): number => {
+  // Generate a random 9-digit number (100000000 to 2147483647 max)
+  const min = 100000000;
+  const max = 2147483647; // max 32-bit signed int
+  return Math.floor(Math.random() * (max - min + 1)) + min;
+};
 
 export function filterMoviesByQuery(movies: Movie[], query: string): Movie[] {
   const cleanQuery = query.trim().toLowerCase();
@@ -67,20 +47,3 @@ export function filterMoviesByQuery(movies: Movie[], query: string): Movie[] {
   });
 }
 
-
-  export function sortMoviesByRelevance(movies: Movie[], query: string): Movie[] {
-    const cleanQuery = query.trim().toLowerCase();
-  
-    return movies.sort((a, b) => {
-      const aTitle = a.title.toLowerCase();
-      const bTitle = b.title.toLowerCase();
-  
-      if (aTitle === cleanQuery && bTitle !== cleanQuery) return -1;
-      if (bTitle === cleanQuery && aTitle !== cleanQuery) return 1;
-  
-      if (aTitle.startsWith(cleanQuery) && !bTitle.startsWith(cleanQuery)) return -1;
-      if (bTitle.startsWith(cleanQuery) && !aTitle.startsWith(cleanQuery)) return 1;
-  
-      return aTitle.localeCompare(bTitle);
-    });
-  }

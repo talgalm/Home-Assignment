@@ -72,7 +72,7 @@ const MovieCard: React.FC<Props> = ({ movie, onClick }) => {
           flexDirection: "column",
         }}
       >
-        {movie.img ? (
+        {movie.img && movie.img !== "N/A" ? (
           <CardMedia
             component="img"
             sx={{ height: 150, objectFit: "cover" }}
@@ -106,7 +106,7 @@ const MovieCard: React.FC<Props> = ({ movie, onClick }) => {
               {formatMovieTitle(movie.title)}
             </Typography>
             <Typography color="text.secondary">
-              {movie.year} • {movie.runtime} {t("MovieCard.minutes")}
+              {movie.year} {`${movie.runtime !== "N/A" ? `• ${movie.runtime}` : ''}`}
             </Typography>
             <Typography color="text.secondary" variant="body2" noWrap>
               {movie.genre}

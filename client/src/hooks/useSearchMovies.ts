@@ -22,7 +22,7 @@ export const useInfiniteSearchMovies = (searchTerm: string) => {
       
       // If the last page has fewer items than expected, we might be at the end
       // Adjust this threshold based on your API's page size
-      const expectedPageSize = 10; // Adjust this based on your API
+      const expectedPageSize = 12; // Adjust this based on your API
       if (lastPage.length < expectedPageSize) {
         return undefined;
       }
