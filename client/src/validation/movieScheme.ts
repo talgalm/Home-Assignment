@@ -1,44 +1,55 @@
 import { z } from "zod";
+import i18n from "../i18n";
 
-const minStr = (field: string) => z.string().min(3, `${field} must be at least 3 characters`);
+// Helper function to get translated validation message
+const t = (key: string, options?: Record<string, string | number>) => {
+  return i18n.t(`Validation.${key}`, options);
+};
 
-export const addMovieSchema = z.object({
-  title: minStr("Title"),
-  year: z
-    .string()
-    .regex(/^\d{4}$/, "Year must be a 4-digit number")
-    .refine((val) => {
-      const num = Number(val);
-      return num >= 1900 && num <= new Date().getFullYear();
-    }, "Year must be between 1900 and current year"),
-  runtime: minStr("Runtime"),
-  genre: z
-    .array(minStr("Genre"))
-    .min(1, "At least one genre is required"),
-  director: minStr("Director"),
-}).refine(
-  () => true,
-  {
-    message: "A movie with this title already exists",
-    path: ["title"],
-  }
-);
+// Helper function to create minimum string validation with translation
+const minStr = (field: string, min: number = 3) => 
+  z.string().min(min, t("minLength", { min, field }));
 
-export const editMovieSchema = z.object({
-  title: minStr("Title"),
-  year: z
-    .string()
-    .regex(/^\d{4}$/, "Year must be a 4-digit number")
-    .refine((val) => {
-      const num = Number(val);
-      return num >= 1900 && num <= new Date().getFullYear();
-    }, "Year must be between 1900 and current year"),
-  runtime: minStr("Runtime"),
-  genre: z
-    .array(minStr("Genre"))
-    .min(1, "At least one genre is required"),
-  director: minStr("Director"),
-});
+// Helper function to create localized schemas
+const createMovieSchema = () => {
+  const currentYear = new Date().getFullYear();
+  
+  return z.object({
+    title: minStr("Title"),
+    year: z
+      .string()
+      .regex(/^\d{4}$/, t("yearFormat"))
+      .refine((val) => {
+        const num = Number(val);
+        return num >= 1900 && num <= currentYear;
+      }, t("yearRange", { currentYear })),
+    runtime: minStr("Runtime"),
+    genre: z
+      .array(minStr("Genre"))
+      .min(1, t("atLeastOneGenre")),
+    director: minStr("Director"),
+  });
+};
+
+// Function to get localized add movie schema
+export const getAddMovieSchema = () => {
+  return createMovieSchema().refine(
+    () => true,
+    {
+      message: t("titleExists"),
+      path: ["title"],
+    }
+  );
+};
+
+// Function to get localized edit movie schema
+export const getEditMovieSchema = () => {
+  return createMovieSchema();
+};
+
+// Static schemas for backward compatibility (using current language)
+export const addMovieSchema = getAddMovieSchema();
+export const editMovieSchema = getEditMovieSchema();
 
 export type AddMovieInput = z.infer<typeof addMovieSchema>;
 export type EditMovieInput = z.infer<typeof editMovieSchema>;

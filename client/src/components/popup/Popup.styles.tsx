@@ -7,7 +7,6 @@ export const StyledPopupOverlay = styled(Box)({
   left: 0,
   right: 0,
   bottom: 0,
-  backgroundColor: "rgba(0, 0, 0, 0.7)",
   display: "flex",
   alignItems: "center",
   justifyContent: "center",
@@ -24,7 +23,6 @@ export const StyledPopup = styled(Box)<{
   size: "small" | "medium" | "large";
   $direction?: "ltr" | "rtl";
 }>(({ size, $direction = "ltr" }) => ({
-  backgroundColor: "rgba(20, 20, 20, 0.95)",
   borderRadius: "16px",
   padding: "24px", // used `theme.spacing(3)` originally
   boxShadow: "0 20px 60px rgba(0, 0, 0, 0.8)",
@@ -46,8 +44,6 @@ export const StyledPopup = styled(Box)<{
     right: 0,
     bottom: 0,
     borderRadius: "16px",
-    background:
-      "linear-gradient(135deg, rgba(255,255,255,0.1) 0%, rgba(255,255,255,0.05) 100%)",
     pointerEvents: "none",
   },
   "@keyframes slideIn": {

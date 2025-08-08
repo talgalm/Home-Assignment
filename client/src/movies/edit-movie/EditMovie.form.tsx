@@ -1,9 +1,10 @@
-import React from "react";
+import React, { useMemo } from "react";
 import { useForm, FormProvider } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { useTranslation } from "react-i18next";
 import EditMovie from "./EditMovie";
 import {
-  editMovieSchema,
+  getEditMovieSchema,
   type EditMovieInput,
 } from "../../validation/movieScheme";
 import type { Movie } from "../../interfaces";
@@ -14,8 +15,13 @@ interface EditMovieFormProps {
 }
 
 const EditMovieForm: React.FC<EditMovieFormProps> = ({ movie, onSuccess }) => {
+  const { i18n } = useTranslation();
+
+  // Create schema based on current language
+  const schema = useMemo(() => getEditMovieSchema(), [i18n.language]);
+
   const methods = useForm<EditMovieInput>({
-    resolver: zodResolver(editMovieSchema),
+    resolver: zodResolver(schema),
     defaultValues: {
       title: movie.title,
       year: movie.year.toString(),

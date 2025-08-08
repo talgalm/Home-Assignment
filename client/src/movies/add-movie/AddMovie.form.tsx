@@ -1,9 +1,10 @@
-import React from "react";
+import React, { useMemo } from "react";
 import { useForm, FormProvider } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { useTranslation } from "react-i18next";
 import AddMovie from "./AddMovie";
 import {
-  addMovieSchema,
+  getAddMovieSchema,
   type AddMovieInput,
 } from "../../validation/movieScheme";
 
@@ -12,8 +13,12 @@ type AddMovieFormProps = {
 };
 
 const AddMovieForm: React.FC<AddMovieFormProps> = ({ onClose }) => {
+  const { i18n } = useTranslation();
+
+  const schema = useMemo(() => getAddMovieSchema(), [i18n.language]);
+
   const methods = useForm<AddMovieInput>({
-    resolver: zodResolver(addMovieSchema),
+    resolver: zodResolver(schema),
     defaultValues: {
       title: "",
       year: "2000",

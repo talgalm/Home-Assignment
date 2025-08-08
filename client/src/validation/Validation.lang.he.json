@@ -1,9 +1,13 @@
 {
   "required": "שדה זה נדרש",
-  "minLength": "חייב להיות לפחות {{min}} תווים",
+  "minLength": " חייב להיות לפחות {{min}} תווים",
   "maxLength": "חייב להיות לא יותר מ-{{max}} תווים",
   "yearRange": "השנה חייבת להיות בין 1900 ל-{{currentYear}}",
   "yearFormat": "השנה חייבת להיות מספר בן 4 ספרות",
   "runtimeFormat": "המשך חייב להיות מספר תקין",
-  "atLeastOneGenre": "נדרש לפחות ז'אנר אחד"
+  "atLeastOneGenre": "נדרש לפחות ז'אנר אחד",
+  "titleExists": "סרט עם הכותרת הזו כבר קיים",
+  "invalidNumber": "חייב להיות מספר תקין",
+  "tooShort": "קצר מדי",
+  "tooLong": "ארוך מדי"
 }

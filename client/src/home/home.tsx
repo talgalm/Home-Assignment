@@ -141,7 +141,7 @@ const Home: React.FC = () => {
           <GeneralTypography 
             variant="h6" 
             value={` ${t('Favorites.title')}`}
-            styleProps={{ color: "primary" }}
+            styleProps={{ color: "#f5c518" }}
           />
         </Box>
       )}

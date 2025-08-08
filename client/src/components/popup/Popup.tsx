@@ -41,6 +41,7 @@ const Popup: React.FC<PopupProps> = ({
         sx={{
           ...styleProps,
         }}
+        style={{ backgroundColor: "rgba(20, 20, 20, 0.95)" }}
       >
         {!movie ? (
           <AddMovieForm onClose={onClose} />
