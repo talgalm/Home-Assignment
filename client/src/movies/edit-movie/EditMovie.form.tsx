@@ -17,7 +17,6 @@ interface EditMovieFormProps {
 const EditMovieForm: React.FC<EditMovieFormProps> = ({ movie, onSuccess }) => {
   const { i18n } = useTranslation();
 
-  // Create schema based on current language
   const schema = useMemo(() => getEditMovieSchema(), [i18n.language]);
 
   const methods = useForm<EditMovieInput>({

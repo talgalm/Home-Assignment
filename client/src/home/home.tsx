@@ -26,7 +26,7 @@ const Home: React.FC = () => {
   const debouncedSearchValue = useDebounce(searchValue, 500);
   const [selectedMovie, setSelectedMovie] = useState<Movie | null>(null);
 
-  // Use infinite queries for both regular movies and search results
+
   const {
     data: moviesData,
     isLoading: isLoadingMovies,
@@ -52,7 +52,7 @@ const Home: React.FC = () => {
   );
   const [showFavoritesOnly] = useAtom(showFavoritesOnlyAtom);
 
-  // Flatten all pages of movies into a single array
+
   const allMovies = useMemo(() => {
     if (debouncedSearchValue) {
       return searchData?.pages.flatMap((page) => page) || [];
@@ -60,7 +60,7 @@ const Home: React.FC = () => {
     return moviesData?.pages.flatMap((page) => page) || [];
   }, [debouncedSearchValue, moviesData, searchData]);
 
-  // Filter to show only favorites if showFavoritesOnly is true
+
   const displayMovies = useMemo(() => {
     if (showFavoritesOnly && allMovies) {
       return allMovies.filter((movie: Movie) =>
@@ -70,7 +70,7 @@ const Home: React.FC = () => {
     return allMovies;
   }, [showFavoritesOnly, allMovies, favorites]);
 
-  // Determine loading states
+
   const isLoadingData = debouncedSearchValue
     ? isLoadingSearch
     : isLoadingMovies;
@@ -82,7 +82,7 @@ const Home: React.FC = () => {
     : hasNextMoviesPage;
   const error = debouncedSearchValue ? searchError : moviesError;
 
-  // Set up infinite scroll
+
   const handleLoadMore = () => {
     if (debouncedSearchValue) {
       fetchNextSearchPage();
@@ -97,7 +97,7 @@ const Home: React.FC = () => {
     isLoading: isFetchingNextPage,
   });
 
-  // Only show the general loader if we're loading and have no movies at all
+
   if (isLoadingData && displayMovies.length === 0)
     return (
       <GeneralLoader
@@ -119,7 +119,7 @@ const Home: React.FC = () => {
     setSelectedMovie(null);
   };
 
-  // Show detailed view if a movie is selected
+
   if (selectedMovie) {
     return (
       <HomeContainer $direction={direction}>
@@ -133,7 +133,7 @@ const Home: React.FC = () => {
     );
   }
 
-  // Show movie grid view
+
   return (
     <HomeContainer $direction={direction}>
       {showFavoritesOnly && (

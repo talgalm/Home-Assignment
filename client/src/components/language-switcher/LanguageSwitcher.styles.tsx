@@ -13,7 +13,6 @@ export const StyledLanguageSwitcher = styled.div<{
     $direction === "rtl" ? "16px" : "0"};
 `;
 
-// Styled IconButton with hover effect
 export const StyledIconButton = styled(IconButton)`
   color: white;
 
@@ -22,7 +21,6 @@ export const StyledIconButton = styled(IconButton)`
   }
 `;
 
-// Styled Menu with paper styles moved here
 export const StyledMenu = styled(
   (props: JSX.IntrinsicAttributes & MenuProps) => (
     <Menu
@@ -39,7 +37,6 @@ export const StyledMenu = styled(
   )
 )``;
 
-// Styled MenuItem with selected and hover styles and color based on prop
 interface StyledMenuItemProps {
   selected?: boolean;
 }

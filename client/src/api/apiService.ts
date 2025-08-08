@@ -50,7 +50,6 @@ export const ApiService = {
 
       xhr.onerror = () => reject(new Error('Network error'));
 
-      // Send data
       if (isGet) {
         xhr.send();
       } else {

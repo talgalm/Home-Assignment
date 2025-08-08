@@ -11,7 +11,7 @@ const serializeMovie = (movie: Movie): Record<string, string | number | boolean>
     runtime: movie.runtime,
     genre: movie.genre,
     director: movie.director,
-    // add other fields if necessary, but only string/number/boolean
+
   };
 };
 
@@ -24,7 +24,7 @@ export const useDeleteMovie = () => {
   return useMutation({
     mutationFn: deleteMovie,
     onSuccess: (_, deletedMovie) => {
-      // Remove from regular movies cache
+
       queryClient.setQueryData(['movies'], (oldData: InfiniteData<Movie[]> | undefined) => {
         if (!oldData) return oldData;
         
@@ -36,7 +36,7 @@ export const useDeleteMovie = () => {
         };
       });
 
-      // Remove from search results cache for all search terms
+
       queryClient.setQueriesData(
         { queryKey: ['search-movies'] },
         (oldData: InfiniteData<Movie[]> | undefined) => {
@@ -51,7 +51,7 @@ export const useDeleteMovie = () => {
         }
       );
 
-      // Also invalidate queries to ensure data consistency
+
       queryClient.invalidateQueries({ queryKey: ['movies'] });
       queryClient.invalidateQueries({ queryKey: ['search-movies'] });
     },

@@ -105,10 +105,7 @@ export const MoviesService = {
     id: number,
     movieData: Partial<Omit<Movie, 'id' | 'createdAt' | 'updatedAt'>>
   ): Promise<Movie | null> => {
-    console.log(id)
     const movie = await movieRepository.findById(id);
-    console.log("!!2")
-    console.log(movie)
     if (!movie) {
       const newMovieData: Omit<Movie, 'id' | 'createdAt' | 'updatedAt'> = {
         title: movieData.title ?? "Unknown Title",

@@ -15,7 +15,6 @@ export const useEditMovie = () => {
   return useMutation({
     mutationFn: editMovie,
     onSuccess: (updatedMovie) => {
-      // Update the cache directly with the new movie data
       queryClient.setQueryData(['movies'], (oldData: InfiniteData<Movie[]> | undefined) => {
         if (!oldData) return oldData;
         
@@ -29,7 +28,6 @@ export const useEditMovie = () => {
         };
       });
 
-      // Also update search-movies cache for all search terms
       queryClient.setQueriesData(
         { queryKey: ['search-movies'] },
         (oldData: InfiniteData<Movie[]> | undefined) => {
@@ -46,7 +44,6 @@ export const useEditMovie = () => {
         }
       );
 
-      // Invalidate queries as fallback to ensure consistency
       queryClient.invalidateQueries({ queryKey: ['movies'] });
       queryClient.invalidateQueries({ queryKey: ['search-movies'] });
     },

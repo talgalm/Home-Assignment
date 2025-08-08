@@ -12,7 +12,6 @@ export const useAddMovie = () => {
   return useMutation({
     mutationFn: addMovie,
     onSuccess: () => {
-      // Invalidate both movies and search queries since a new movie might appear in search results
       queryClient.invalidateQueries({ queryKey: ['movies'] });
       queryClient.invalidateQueries({ queryKey: ['search-movies'] });
     },

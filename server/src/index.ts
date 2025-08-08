@@ -11,7 +11,6 @@ app.use(express.json());
 
 app.use('/api/movies', moviesRoutes);
 
-// Graceful shutdown
 process.on('SIGINT', async () => {
   console.log('Shutting down gracefully...');
   await prisma.$disconnect();

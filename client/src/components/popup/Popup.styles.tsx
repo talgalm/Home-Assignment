@@ -24,7 +24,7 @@ export const StyledPopup = styled(Box)<{
   $direction?: "ltr" | "rtl";
 }>(({ size, $direction = "ltr" }) => ({
   borderRadius: "16px",
-  padding: "24px", // used `theme.spacing(3)` originally
+  padding: "24px",
   boxShadow: "0 20px 60px rgba(0, 0, 0, 0.8)",
   border: "1px solid rgba(255, 255, 255, 0.1)",
   backdropFilter: "blur(10px)",

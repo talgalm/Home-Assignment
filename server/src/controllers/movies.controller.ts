@@ -121,7 +121,6 @@ export const MoviesController = {
         exists = await MoviesService.getByTitle(title);
       }
       if (exists === null) {
-        // Add OMDb movie to database with action = deleted
         const { title, director, year, genre, runtime, img } = req.body;
         if (!title || !director || !year || !genre || !runtime) {
           return res.status(400).json({ message: 'Missing required fields for OMDb movie deletion' });
@@ -140,8 +139,6 @@ export const MoviesController = {
         });
         res.json({ message: 'OMDb movie marked as deleted', movie: deletedMovie });
       } else {
-
-        // Handle database movie deletion
         const success = await MoviesService.delete(id);
         if (success) {
           res.json({ message: 'Movie deleted' });

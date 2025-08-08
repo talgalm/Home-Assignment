@@ -1,16 +1,13 @@
 import { z } from "zod";
 import i18n from "../i18n";
 
-// Helper function to get translated validation message
 const t = (key: string, options?: Record<string, string | number>) => {
   return i18n.t(`Validation.${key}`, options);
 };
 
-// Helper function to create minimum string validation with translation
 const minStr = (field: string, min: number = 3) => 
   z.string().min(min, t("minLength", { min, field }));
 
-// Helper function to create localized schemas
 const createMovieSchema = () => {
   const currentYear = new Date().getFullYear();
   
@@ -31,7 +28,6 @@ const createMovieSchema = () => {
   });
 };
 
-// Function to get localized add movie schema
 export const getAddMovieSchema = () => {
   return createMovieSchema().refine(
     () => true,
@@ -42,12 +38,10 @@ export const getAddMovieSchema = () => {
   );
 };
 
-// Function to get localized edit movie schema
 export const getEditMovieSchema = () => {
   return createMovieSchema();
 };
 
-// Static schemas for backward compatibility (using current language)
 export const addMovieSchema = getAddMovieSchema();
 export const editMovieSchema = getEditMovieSchema();
 

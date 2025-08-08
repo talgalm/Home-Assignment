@@ -1,29 +1,29 @@
 # Movie API Server
 
-A comprehensive RESTful API for managing movies with integration to external movie databases (OMDb API). Built with Node.js, Express, TypeScript, Prisma ORM, and PostgreSQL.
+A comprehensive RESTful API for managing movies with external API integration. Built with Node.js, Express, TypeScript, Prisma ORM, and PostgreSQL.
 
 ## 🚀 Features
 
 ### Core Functionality
-- **CRUD Operations** - Create, Read, Update, Delete movies
-- **Pagination Support** - Get movies with page-based pagination
-- **Advanced Search** - Search movies with intelligent filtering and relevance scoring
-- **External API Integration** - Fetch additional movies from OMDb API
-- **Soft Delete** - Mark movies as deleted without removing from database
-- **Title Existence Check** - Check if a movie title exists in database or external API
-- **Duplicate Prevention** - Smart filtering to avoid duplicate movies between database and external API
+- **CRUD Operations** - Complete Create, Read, Update, Delete operations
+- **Advanced Search** - Intelligent search with relevance filtering
+- **External API Integration** - OMDb API integration for additional movie data
+- **Soft Delete** - Mark movies as deleted without database removal
+- **Title Existence Check** - Verify movie titles across database and external sources
+- **Duplicate Prevention** - Smart filtering to prevent duplicate entries
 
 ### Database Features
-- **PostgreSQL Database** - AWS RDS integration
-- **Prisma ORM** - Type-safe database operations
-- **Migration Support** - Database schema versioning
-- **Soft Delete** - Movies marked as deleted are filtered out from results
+- **PostgreSQL Database** - Production-ready AWS RDS integration
+- **Prisma ORM** - Type-safe database operations and migrations
+- **Soft Delete System** - Movies marked as deleted are automatically filtered
+- **Pagination Support** - Efficient page-based data retrieval
+- **Data Validation** - Comprehensive input validation and sanitization
 
 ### External API Integration
 - **OMDb API Integration** - Fetch movie data from Open Movie Database
-- **Fallback Mechanism** - Graceful handling when external API is unavailable
-- **Random Movie Fetching** - Get random popular movies to fill results
-- **Error Handling** - Robust error handling with fallback data
+- **Error Handling** - Graceful fallback when external services are unavailable
+- **Rate Limit Handling** - Automatic empty array return when API limits are reached
+- **Random Movie Fetching** - Dynamic content population from external sources
 
 ## 🛠️ Tech Stack
 
@@ -39,82 +39,61 @@ A comprehensive RESTful API for managing movies with integration to external mov
 
 - Node.js (v16 or higher)
 - PostgreSQL database (AWS RDS or local)
-- OMDb API key (optional, fallback data available)
+- OMDb API key (optional, graceful degradation when unavailable)
 
 ## 🚀 Installation & Setup
 
-### 1. Clone the repository
-```bash
+### 1. Clone and Install
+   ```bash
 git clone <repository-url>
 cd server
-```
+   npm install
+   ```
 
-### 2. Install dependencies
-```bash
-npm install
-```
-
-### 3. Environment Configuration
-Create a `.env` file in the root directory:
-```env
-PORT=3001
+### 2. Environment Configuration
+Create `.env` file:
+   ```env
+   PORT=3001
 DATABASE_URL="postgresql://username:password@host:port/database"
 OMDB_API_KEY=your_omdb_api_key_here
-```
+   ```
 
-### 4. Database Setup
-```bash
-# Generate Prisma client
+### 3. Database Setup
+   ```bash
 npx prisma generate
-
-# Run database migrations
 npx prisma migrate dev --name init
 ```
 
-### 5. Start the server
-```bash
-# Development mode
-npm run dev
-
-# Production mode
-npm start
-```
+### 4. Start Server
+   ```bash
+   npm run dev
+   ```
 
 ## 📚 API Endpoints
 
-### Movies
+### Movies Management
 
-#### Get All Movies (with pagination)
+#### Get All Movies
 ```http
 GET /api/movies?page={pageNumber}
 ```
 
-**Response:**
+**Example Response:**
 ```json
-{
-  "movies": [
-    {
-      "id": 1,
-      "title": "Movie Title",
-      "director": "Director Name",
-      "year": "2024",
-      "genre": "Action",
-      "runtime": "120 min",
-      "img": "https://example.com/poster.jpg",
-      "action": null,
-      "createdAt": "2024-01-01T00:00:00.000Z",
-      "updatedAt": "2024-01-01T00:00:00.000Z"
-    }
-  ],
-  "totalPages": 5,
-  "currentPage": 1,
-  "totalMovies": 50
-}
-```
-
-#### Get Movie by ID
-```http
-GET /api/movies/{id}
+[
+  {
+    "id": 1,
+    "title": "Movie Title",
+    "director": "Director Name",
+    "year": "2024",
+    "genre": "Action",
+    "runtime": "120 min",
+    "img": "https://example.com/poster.jpg",
+    "action": null,
+    "createdAt": "2024-01-01T00:00:00.000Z",
+    "updatedAt": "2024-01-01T00:00:00.000Z"
+  }
+]
 ```
 
 #### Search Movies
@@ -125,9 +104,14 @@ GET /api/movies/search?query={searchTerm}
 **Features:**
 - Case-insensitive search
 - Exact match prioritization
-- Phrase matching for multi-word queries
-- Relevance-based sorting
+- Multi-word phrase matching
 - Duplicate prevention between database and external API
+- Relevance-based results
+
+#### Get Movie by ID
+```http
+GET /api/movies/{id}
+```
 
 #### Check Title Existence
 ```http
@@ -172,12 +156,12 @@ Content-Type: application/json
 DELETE /api/movies/{id}
 ```
 
-**Database Movies:** Soft delete (marks as deleted)
-**External Movies:** Requires movie data in request body to add to database with `action: "deleted"`
+**Behavior:**
+- **Database Movies**: Soft delete (marks as deleted)
+- **External Movies**: Requires movie data in request body
 
 ## 🗄️ Database Schema
 
-### Movie Model
 ```prisma
 model Movie {
   id        Int      @id @default(autoincrement())
@@ -195,8 +179,8 @@ model Movie {
 }
 ```
 
-**Fields:**
-- `id`: Unique identifier (positive for database, 10-digit for external)
+**Field Descriptions:**
+- `id`: Unique identifier (positive for database, 10-digit random for external)
 - `title`: Movie title
 - `director`: Movie director
 - `year`: Release year (string format)
@@ -204,34 +188,32 @@ model Movie {
 - `runtime`: Movie runtime
 - `img`: Optional poster image URL
 - `action`: Status field (null = active, "deleted" = soft deleted)
-- `createdAt`: Creation timestamp
-- `updatedAt`: Last update timestamp
 
 ## 🔧 Configuration
 
 ### Environment Variables
 - `PORT`: Server port (default: 3001)
 - `DATABASE_URL`: PostgreSQL connection string
-- `OMDB_API_KEY`: OMDb API key (optional)
+- `OMDB_API_KEY`: OMDb API key (optional, graceful degradation)
 
 ### Pagination
-- Default page size: 10 movies per page
-- Page numbers start from 1
+- Default page size: 12 movies per page
+- Page numbers start from 0
 - Invalid page numbers return error
 
 ### Search Features
 - **Exact Match**: Highest priority
 - **Starts With**: Second priority
 - **Contains**: Third priority
-- **Phrase Matching**: Smart handling of multi-word queries
-- **Duplicate Prevention**: Filters out movies that already exist in database
+- **Phrase Matching**: Intelligent multi-word query handling
+- **Duplicate Prevention**: Filters existing database titles from external results
 
 ## 🚨 Error Handling
 
 ### HTTP Status Codes
 - `200`: Success
 - `201`: Created
-- `400`: Bad Request (invalid input)
+- `400`: Bad Request
 - `404`: Not Found
 - `500`: Internal Server Error
 
@@ -245,49 +227,18 @@ model Movie {
 ## 🔄 External API Integration
 
 ### OMDb API Features
-- **Search Movies**: Find movies by title
-- **Random Movies**: Fetch popular movies for filling results
-- **Fallback Data**: Curated movie list when API is unavailable
-- **Error Handling**: Graceful degradation when API fails
+- **Movie Search**: Find movies by title with detailed information
+- **Random Movie Fetching**: Populate additional content
+- **Graceful Degradation**: Returns empty arrays when API is unavailable
+- **Rate Limit Handling**: Automatic fallback behavior
 
-### Fallback Mechanism
-When OMDb API is unavailable or reaches rate limits:
-1. Logs error for debugging
-2. Uses curated fallback movie list
-3. Continues serving requests without interruption
+### Fallback Behavior
+When OMDb API is unavailable:
+1. Returns empty array instead of fallback data
+2. Logs errors for monitoring
+3. Continues normal operation with database-only results
 
-## 🧪 Testing
-
-### Manual Testing Examples
-
-#### Get all movies (page 1)
-```bash
-curl http://localhost:3001/api/movies?page=1
-```
-
-#### Search for movies
-```bash
-curl "http://localhost:3001/api/movies/search?query=batman"
-```
-
-#### Check if title exists
-```bash
-curl "http://localhost:3001/api/movies/check-title?title=The%20Batman"
-```
-
-#### Add a new movie
-```bash
-curl -X POST -H "Content-Type: application/json" \
-  -d '{"title":"Test Movie","director":"Test Director","year":"2024","genre":"Action","runtime":"120 min"}' \
-  http://localhost:3001/api/movies
-```
-
-#### Delete a movie
-```bash
-curl -X DELETE http://localhost:3001/api/movies/1
-```
-
-## 📁 Project Structure
+## 📁 Project Architecture
 
 ```
 server/
@@ -295,15 +246,22 @@ server/
 │   ├── schema.prisma          # Database schema
 │   └── migrations/            # Database migrations
 ├── src/
+│   ├── config/                # Configuration files
 │   ├── controllers/
 │   │   └── movies.controller.ts    # Request handlers
 │   ├── services/
 │   │   ├── movies.service.ts       # Business logic
 │   │   └── omdb.service.ts         # External API service
+│   ├── repositories/
+│   │   └── movie.repository.ts     # Database operations
 │   ├── routes/
 │   │   └── movies.routes.ts        # API routes
 │   ├── models/
-│   │   └── Movie.interface.ts      # TypeScript interfaces
+│   │   ├── Movie.interface.ts      # Core interfaces
+│   │   └── ExternalMovie/
+│   │       └── OMDB.interface.ts   # External API interfaces
+│   ├── utils/
+│   │   └── movieUtils.ts           # Utility functions
 │   ├── db/
 │   │   └── prisma.ts              # Prisma client
 │   ├── middlewares/
@@ -314,36 +272,93 @@ server/
 └── README.md
 ```
 
+## 🧪 Testing Examples
+
+### Basic Operations
+```bash
+# Get all movies (page 0)
+curl http://localhost:3001/api/movies
+
+# Search for movies
+curl "http://localhost:3001/api/movies/search?query=batman"
+
+# Check title existence
+curl "http://localhost:3001/api/movies/check-title?title=The%20Batman"
+
+# Add movie
+curl -X POST -H "Content-Type: application/json" \
+  -d '{"title":"Test Movie","director":"Test Director","year":"2024","genre":"Action","runtime":"120 min"}' \
+  http://localhost:3001/api/movies
+
+# Update movie
+curl -X PUT -H "Content-Type: application/json" \
+  -d '{"title":"Updated Title"}' \
+  http://localhost:3001/api/movies/1
+
+# Delete movie
+curl -X DELETE http://localhost:3001/api/movies/1
+```
+
 ## 🚀 Deployment
 
 ### AWS RDS Setup
 1. Create PostgreSQL RDS instance
-2. Configure security groups
-3. Update `DATABASE_URL` in environment
+2. Configure security groups for database access
+3. Update `DATABASE_URL` in environment variables
 4. Run migrations: `npx prisma migrate deploy`
 
-### Environment Variables
-Ensure all required environment variables are set in production:
-- `DATABASE_URL`
+### Production Environment
+Ensure environment variables are configured:
+- `DATABASE_URL` (required)
 - `OMDB_API_KEY` (optional)
 - `PORT` (optional, defaults to 3001)
+
+## 🔍 Key Features Explained
+
+### Smart Search System
+The search functionality combines database and external API results with intelligent filtering:
+- Searches local database first
+- Fetches additional results from OMDb API
+- Removes duplicates based on title matching
+- Filters results by query relevance
+- Returns combined, deduplicated results
+
+### Soft Delete System
+Movies are never permanently deleted:
+- Database movies: Marked with `action: "deleted"`
+- External movies: Added to database with `action: "deleted"`
+- Deleted movies are automatically filtered from all results
+- Enables data recovery and audit trails
+
+### External API Integration
+Seamless integration with OMDb API:
+- Automatic additional content when database has insufficient data
+- Graceful handling of API failures and rate limits
+- Consistent data structure between internal and external sources
+- No fallback data - returns empty arrays when API unavailable
+
+### Data Architecture
+- **Repository Pattern**: Clean separation of data access logic
+- **Service Layer**: Business logic isolation
+- **Type Safety**: Full TypeScript coverage with Prisma types
+- **Error Handling**: Comprehensive error handling throughout the stack
 
 ## 🤝 Contributing
 
 1. Fork the repository
-2. Create a feature branch
-3. Make your changes
-4. Add tests if applicable
-5. Submit a pull request
+2. Create feature branch
+3. Make changes with proper TypeScript typing
+4. Test all endpoints
+5. Submit pull request
 
 ## 📄 License
 
-This project is licensed under the MIT License.
+MIT License
 
 ## 🆘 Support
 
-For issues and questions:
-1. Check the documentation
-2. Review error logs
-3. Test with provided examples
-4. Create an issue with detailed information 
+For issues:
+1. Check logs for error details
+2. Verify environment variables
+3. Test API endpoints individually
+4. Create issue with reproduction steps

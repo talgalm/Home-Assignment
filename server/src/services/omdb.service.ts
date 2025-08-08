@@ -83,7 +83,6 @@ class OMDbService {
 
   async getRandomMovies(count: number): Promise<OMDbMovie[]> {
     try {
-      // First, try to get a real API key test
       const testResponse = await axios.get(this.baseUrl, {
         params: {
           apikey: this.apiKey,
@@ -93,13 +92,11 @@ class OMDbService {
         }
       });
 
-      // If we get an error response, return empty array
       if (testResponse.data.Response === 'False' || testResponse.data.Error) {
         console.log('OMDb API error, returning empty array');
         return [];
       }
 
-      // Popular movie titles to search for
       const popularTitles = [
         'Batman', 'Spider-Man', 'Iron Man', 'Avengers', 'Star Wars',
         'Harry Potter', 'Lord of the Rings', 'Jurassic Park', 'Titanic',
@@ -111,28 +108,23 @@ class OMDbService {
       const movies: OMDbMovie[] = [];
       const usedIds = new Set<string>();
 
-      // Shuffle the titles for randomness
       const shuffledTitles = [...popularTitles].sort(() => Math.random() - 0.5);
 
       for (const title of shuffledTitles) {
         if (movies.length >= count) break;
 
         try {
-          // Search for movies with this title
           const searchResponse = await this.searchMovies(title, 1);
           
           if (searchResponse.Response === 'True' && searchResponse.Search) {
-            // Shuffle the search results for randomness
             const shuffledResults = [...searchResponse.Search].sort(() => Math.random() - 0.5);
             
             for (const result of shuffledResults) {
               if (movies.length >= count) break;
               
-              // Skip if we already have this movie
               if (usedIds.has(result.imdbID)) continue;
               
               try {
-                // Get detailed information for this movie
                 const detailResponse = await this.getMovieDetails(result.imdbID);
                 
                 if (detailResponse.Response === 'True' && detailResponse.Director) {
@@ -159,7 +151,6 @@ class OMDbService {
         }
       }
 
-      // Return whatever movies we got, even if less than requested
       return movies;
     } catch (error) {
       console.error('Error getting random movies from OMDb, returning empty array:', error);
