@@ -14,7 +14,9 @@ export const useEditMovie = () => {
   return useMutation({
     mutationFn: editMovie,
     onSuccess: () => {
+      // Invalidate both movies and search queries since edited movie might affect search results
       queryClient.invalidateQueries({ queryKey: ['movies'] });
+      queryClient.invalidateQueries({ queryKey: ['search-movies'] });
     },
   });
 };
