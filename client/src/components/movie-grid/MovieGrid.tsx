@@ -12,6 +12,7 @@ import { useLanguageDirection } from "../../hooks/useLanguageDirection";
 interface MovieGridProps {
   movies: Movie[];
   onMovieClick: (movie: Movie) => void;
+  onMovieEditClick: (movie: Movie) => void;
   error?: string | null;
   isLoadingMore?: boolean;
   hasNextPage?: boolean;
@@ -21,6 +22,7 @@ interface MovieGridProps {
 const MovieGrid: React.FC<MovieGridProps> = ({
   movies,
   onMovieClick,
+  onMovieEditClick,
   error,
   isLoadingMore = false,
   hasNextPage = false,
@@ -62,7 +64,11 @@ const MovieGrid: React.FC<MovieGridProps> = ({
         <>
           {movies.map((movie: Movie) => (
             <div key={movie.id}>
-              <MovieCard movie={movie} onClick={() => onMovieClick(movie)} />
+              <MovieCard
+                movie={movie}
+                onClick={() => onMovieClick(movie)}
+                onEditClick={() => onMovieEditClick(movie)}
+              />
             </div>
           ))}
           {isLoadingMore && (

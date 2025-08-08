@@ -109,6 +109,10 @@
     "refresh": "רענן",
     "retry": "נסה שוב"
   },
+  "MovieDetail": {
+    "additionalInfo": "מידע נוסף",
+    "description": "{{title}} הוא סרט מ-{{year}} בבימויו של {{director}}, עם משך של {{runtime}} דקות. סרט זה מציג את החזון הייחודי וגישת הסיפור של הבמאי."
+  },
   "Languages": {
     "en": "English",
     "he": "עברית"

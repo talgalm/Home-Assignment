@@ -109,6 +109,10 @@
     "refresh": "Refresh",
     "retry": "Retry"
   },
+  "MovieDetail": {
+    "additionalInfo": "Additional Information",
+    "description": "{{title}} is a {{year}} film directed by {{director}}, with a runtime of {{runtime}} minutes. This movie showcases the director's unique vision and storytelling approach."
+  },
   "Languages": {
     "en": "English",
     "he": "עברית"

@@ -11,6 +11,7 @@ import {
 } from "@mui/material";
 import MovieIcon from "@mui/icons-material/Movie";
 import EditIcon from "@mui/icons-material/Edit";
+import InfoIcon from "@mui/icons-material/Info";
 import DeleteIcon from "@mui/icons-material/Delete";
 import StarOutlineIcon from "@mui/icons-material/StarOutline";
 import StarIcon from "@mui/icons-material/Star";
@@ -27,9 +28,10 @@ import { removeFavorite } from "../../store/favoritesSlice";
 type Props = {
   movie: Movie;
   onClick: (movie: Movie) => void;
+  onEditClick: (movie: Movie) => void;
 };
 
-const MovieCard: React.FC<Props> = ({ movie, onClick }) => {
+const MovieCard: React.FC<Props> = ({ movie, onClick , onEditClick }) => {
   const { t } = useTranslation();
   const dispatch = useAppDispatch();
   const favorites = useAppSelector(
@@ -115,8 +117,11 @@ const MovieCard: React.FC<Props> = ({ movie, onClick }) => {
         </CardContent>
 
         <CardActions sx={{ justifyContent: "space-between", paddingX: 1 }}>
-          <IconButton color="primary" onClick={() => onClick(movie)}>
+          <IconButton color="primary" onClick={() => onEditClick(movie)}>
             <EditIcon />
+          </IconButton>
+          <IconButton color="primary" onClick={() => onClick(movie)}>
+            <InfoIcon />
           </IconButton>
           <IconButton
             color="primary"

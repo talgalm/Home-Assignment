@@ -9,6 +9,7 @@ import Popup from "../components/popup/Popup";
 import { HomeContainer } from "./Home.styles";
 import type { Movie } from "../interfaces";
 import MovieGrid from "../components/movie-grid/MovieGrid";
+import MovieDetail from "../components/movie-detail";
 import { useSearch } from "../context/SearchContext";
 import { useAppSelector } from "../store/hooks";
 import { useAtom } from "jotai";
@@ -22,6 +23,7 @@ const Home: React.FC = () => {
   const direction = useLanguageDirection();
   const { searchValue } = useSearch();
   const debouncedSearchValue = useDebounce(searchValue, 500);
+  const [selectedMovie, setSelectedMovie] = useState<Movie | null>(null);
 
   // Use infinite queries for both regular movies and search results
   const {
@@ -103,11 +105,34 @@ const Home: React.FC = () => {
       />
     );
 
-  const handlEditMovie = (movie: Movie) => {
+  const handleMovieClick = (movie: Movie) => {
+    setSelectedMovie(movie);
+  };
+
+  const handleEditMovie = (movie: Movie) => {
     setEditMovie(movie);
     setModal(true);
   };
 
+  const handleBackToList = () => {
+    setSelectedMovie(null);
+  };
+
+  // Show detailed view if a movie is selected
+  if (selectedMovie) {
+    return (
+      <HomeContainer $direction={direction}>
+        <MovieDetail
+          movie={selectedMovie}
+          onBack={handleBackToList}
+          onEdit={handleEditMovie}
+        />
+        <Popup isOpen={modal} onClose={() => setModal(false)} movie={editMovie} />
+      </HomeContainer>
+    );
+  }
+
+  // Show movie grid view
   return (
     <HomeContainer $direction={direction}>
       {showFavoritesOnly && (
@@ -119,7 +144,8 @@ const Home: React.FC = () => {
       )}
       <MovieGrid
         movies={displayMovies}
-        onMovieClick={handlEditMovie}
+        onMovieClick={handleMovieClick}
+        onMovieEditClick={handleEditMovie}
         error={error?.message}
         isLoadingMore={isFetchingNextPage}
         hasNextPage={!!hasNextPage}
