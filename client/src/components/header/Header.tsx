@@ -19,19 +19,17 @@ import {
 } from "../../store/favoritesViewAtom";
 import logo from "../../assets/logo.svg";
 import Popup from "../popup/Popup";
-import LanguageSwitcher from "../language-switcher";
-import { useLanguageDirection } from "../../hooks/useLanguageDirection";
 import type { RootState } from "../../store";
 import StarOutlineIcon from "@mui/icons-material/StarOutline";
 import StarIcon from "@mui/icons-material/Star";
+import LanguageSwitcher from "../language-switcher/LanguageSwitcher";
 
 const Header: React.FC = () => {
   const { t } = useTranslation();
-  const direction = useLanguageDirection();
   const { searchValue, setSearchValue } = useSearch();
   const [modal, setModal] = useState(false);
   const favorites = useAppSelector(
-    (state: RootState) => (state.favorites as any).movies
+    (state: RootState) => state.favorites.movies
   );
   const [showFavoritesOnly] = useAtom(showFavoritesOnlyAtom);
   const [, toggleFavoritesView] = useAtom(toggleFavoritesViewAtom);

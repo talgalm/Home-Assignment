@@ -1,7 +1,6 @@
 import React from "react";
 import { useTranslation } from "react-i18next";
 import { useFormContext } from "react-hook-form";
-import { useQueryClient } from "@tanstack/react-query";
 import type { EditMovieInput } from "../../validation/movieScheme";
 import { useEditMovie } from "../../hooks/useEditMovie";
 import {
@@ -12,9 +11,9 @@ import {
 } from "../add-movie/AddMovie.styles";
 import { GENRES } from "../add-movie/consts";
 import GeneralInput from "../../components/input/Input";
-import Autocomplete from "../../components/autocomplete";
 import { useLanguageDirection } from "../../hooks/useLanguageDirection";
 import type { Movie } from "../../interfaces";
+import Autocomplete from "../../components/autocomplete/Autocomplete";
 
 interface EditMovieProps {
   movie: Movie;
@@ -24,7 +23,6 @@ interface EditMovieProps {
 const EditMovie: React.FC<EditMovieProps> = ({ movie, onSuccess }) => {
   const { t } = useTranslation();
   const direction = useLanguageDirection();
-  const queryClient = useQueryClient();
   const { handleSubmit } = useFormContext<EditMovieInput>();
   const editMovieMutation = useEditMovie();
 
@@ -65,7 +63,6 @@ const EditMovie: React.FC<EditMovieProps> = ({ movie, onSuccess }) => {
         <Autocomplete
           name="genre"
           options={GENRES}
-          label={t("EditMovie.form.genre")}
           placeholder={t("EditMovie.form.genrePlaceholder")}
           multiple={true}
           freeSolo={true}

@@ -2,10 +2,10 @@ import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { ThemeProvider, createTheme } from "@mui/material/styles";
 import { useLanguageDirection } from "./hooks/useLanguageDirection";
 import Home from "./home/home";
-import Header from "./components/header";
 import { AppContainer } from "./App.styles";
 import { SearchProvider } from "./context/SearchContext";
 import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
+import Header from "./components/header/Header";
 
 const queryClient = new QueryClient();
 

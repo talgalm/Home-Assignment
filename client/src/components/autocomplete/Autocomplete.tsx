@@ -8,7 +8,6 @@ interface AutocompleteProps {
   name: string;
   options: string[];
   placeholder?: string;
-  label?: string;
   multiple?: boolean;
   freeSolo?: boolean;
   defaultValue?: string[];
@@ -18,7 +17,6 @@ const Autocomplete: React.FC<AutocompleteProps> = ({
   name,
   options,
   placeholder = "Select options",
-  label,
   multiple = true,
   freeSolo = true,
   defaultValue = [],

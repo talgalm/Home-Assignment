@@ -1,13 +1,20 @@
 import React from "react";
 import { useTranslation } from "react-i18next";
-import { MovieGridContainer } from "./MovieGrid.styles";
 import type { Movie } from "../../interfaces";
 import MovieCard from "../movie-card/MovieCard";
-import { Box, Typography, CircularProgress } from "@mui/material";
-import MovieIcon from "@mui/icons-material/Movie";
 import { showFavoritesOnlyAtom } from "../../store/favoritesViewAtom";
 import { useAtom } from "jotai";
-import { useLanguageDirection } from "../../hooks/useLanguageDirection";
+import {
+  MovieGridContainer,
+  EmptyStateWrapper,
+  EmptyStateIcon,
+  EmptyStateText,
+  LoadMoreWrapper,
+  LoadMoreContent,
+  NoMoreMoviesWrapper,
+  NoMoreMoviesText,
+} from "./MovieGrid.styles";
+import { CircularProgress } from "@mui/material";
 
 interface MovieGridProps {
   movies: Movie[];
@@ -29,28 +36,17 @@ const MovieGrid: React.FC<MovieGridProps> = ({
   isLoading = false,
 }) => {
   const { t } = useTranslation();
-  const direction = useLanguageDirection();
   const isEmpty = movies.length === 0 && !error && !isLoading;
   const [showFavoritesOnly] = useAtom(showFavoritesOnlyAtom);
 
   return (
     <MovieGridContainer isEmpty={isEmpty || !!error}>
       {isEmpty || error ? (
-        <Box
-          display="flex"
-          flexDirection="column"
-          alignItems="center"
-          justifyContent="center"
-          height="300px"
-          width="100%"
-          textAlign="center"
-        >
-          <MovieIcon
-            sx={{ fontSize: 60, color: error ? "error.main" : "gray" }}
+        <EmptyStateWrapper>
+          <EmptyStateIcon
+            sx={{ fontSize: 60, color: error ? "error.main" : "#f5c518" }}
           />
-          <Typography
-            variant="h6"
-            mt={2}
+          <EmptyStateText
             color={error ? "error.main" : "text.secondary"}
           >
             {error
@@ -58,8 +54,8 @@ const MovieGrid: React.FC<MovieGridProps> = ({
               : showFavoritesOnly
               ? t("Favorites.noFavorites")
               : t("Home.noMovies")}
-          </Typography>
-        </Box>
+          </EmptyStateText>
+        </EmptyStateWrapper>
       ) : (
         <>
           {movies.map((movie: Movie) => (
@@ -71,42 +67,24 @@ const MovieGrid: React.FC<MovieGridProps> = ({
               />
             </div>
           ))}
+
           {isLoadingMore && (
-            <Box
-              display="flex"
-              justifyContent="center"
-              alignItems="center"
-              width="100%"
-              py={4}
-              gridColumn="1 / -1"
-              minHeight="100px"
-            >
-              <Box
-                display="flex"
-                flexDirection="column"
-                alignItems="center"
-                gap={2}
-              >
+            <LoadMoreWrapper>
+              <LoadMoreContent>
                 <CircularProgress size={40} />
-                <Typography variant="body2" color="text.secondary">
+                <EmptyStateText>
                   {t("Home.loadMore")}
-                </Typography>
-              </Box>
-            </Box>
+                </EmptyStateText>
+              </LoadMoreContent>
+            </LoadMoreWrapper>
           )}
+
           {!hasNextPage && movies.length > 0 && !isLoadingMore && (
-            <Box
-              display="flex"
-              justifyContent="center"
-              alignItems="center"
-              width="100%"
-              py={3}
-              gridColumn="1 / -1"
-            >
-              <Typography variant="body2" color="text.secondary">
+            <NoMoreMoviesWrapper>
+              <NoMoreMoviesText color="text.secondary">
                 {t("Home.noMoreMovies")}
-              </Typography>
-            </Box>
+              </NoMoreMoviesText>
+            </NoMoreMoviesWrapper>
           )}
         </>
       )}

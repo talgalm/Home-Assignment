@@ -1,14 +1,5 @@
 import React, { useState } from "react";
 import { useTranslation } from "react-i18next";
-import {
-  Card,
-  CardContent,
-  Typography,
-  CardMedia,
-  Box,
-  IconButton,
-  CardActions,
-} from "@mui/material";
 import MovieIcon from "@mui/icons-material/Movie";
 import EditIcon from "@mui/icons-material/Edit";
 import InfoIcon from "@mui/icons-material/Info";
@@ -17,14 +8,23 @@ import StarOutlineIcon from "@mui/icons-material/StarOutline";
 import StarIcon from "@mui/icons-material/Star";
 import CircularProgress from "@mui/material/CircularProgress";
 import type { Movie } from "../../interfaces";
-import { MovieCardContainer } from "./MovieCard.styles";
+import {
+  MovieCardContainer,
+  StyledCard,
+  PlaceholderBox,
+  StyledCardContent,
+  MovieTitle,
+  MovieYearRuntime,
+  MovieGenre,
+  StyledCardActions,
+} from "./MovieCard.styles";
 import { useAppDispatch, useAppSelector } from "../../store/hooks";
-import { toggleFavorite } from "../../store/favoritesSlice";
+import { toggleFavorite, removeFavorite } from "../../store/favoritesSlice";
 import type { RootState } from "../../store";
 import { formatMovieTitle } from "../../utils/textUtils";
 import { useDeleteMovie } from "../../hooks/useDeleteMovie";
-import { removeFavorite } from "../../store/favoritesSlice";
-import ConfirmDialog from "../confirm-dialog";
+import ConfirmDialog from "../confirm-dialog/ConfirmDialog";
+import { CardMedia, IconButton } from "@mui/material";
 
 type Props = {
   movie: Movie;
@@ -37,16 +37,12 @@ const MovieCard: React.FC<Props> = ({ movie, onClick, onEditClick }) => {
   const dispatch = useAppDispatch();
   const [showDeleteConfirm, setShowDeleteConfirm] = useState(false);
   const favorites = useAppSelector(
-    (state: RootState) => (state.favorites as any).movies as Movie[]
+    (state: RootState) => state.favorites.movies
   );
-  const isFavorite = favorites.some(
-    (favMovie: Movie) => favMovie.id === movie.id
-  );
+  const isFavorite = favorites.some((favMovie) => favMovie.id === movie.id);
   const deleteMovieMutation = useDeleteMovie();
 
   const handleFavorite = () => {
-    console.log("Toggling favorite for movie:", movie.id, movie.title);
-    console.log("Current favorites:", favorites);
     dispatch(toggleFavorite(movie));
   };
 
@@ -57,23 +53,16 @@ const MovieCard: React.FC<Props> = ({ movie, onClick, onEditClick }) => {
   const handleDeleteConfirm = () => {
     deleteMovieMutation.mutate(movie, {
       onSuccess: () => {
-        // Also remove from favorites if it was favorited
         if (isFavorite) {
           dispatch(removeFavorite(movie.id));
         }
       },
     });
   };
+
   return (
     <MovieCardContainer>
-      <Card
-        sx={{
-          height: "100%",
-          width: "100%",
-          display: "flex",
-          flexDirection: "column",
-        }}
-      >
+      <StyledCard>
         {movie.img && movie.img !== "N/A" ? (
           <CardMedia
             component="img"
@@ -82,42 +71,26 @@ const MovieCard: React.FC<Props> = ({ movie, onClick, onEditClick }) => {
             alt={formatMovieTitle(movie.title)}
           />
         ) : (
-          <Box
-            sx={{
-              height: 150,
-              display: "flex",
-              justifyContent: "center",
-              alignItems: "center",
-              backgroundColor: "#f5f5f5",
-            }}
-          >
+          <PlaceholderBox>
             <MovieIcon sx={{ fontSize: 60, color: "gray" }} />
-          </Box>
+          </PlaceholderBox>
         )}
 
-        <CardContent
-          sx={{
-            flexGrow: 1,
-            display: "flex",
-            flexDirection: "column",
-            justifyContent: "space-between",
-          }}
-        >
-          <Box>
-            <Typography variant="h6" gutterBottom noWrap>
+        <StyledCardContent>
+          <div>
+            <MovieTitle variant="h6" gutterBottom noWrap>
               {formatMovieTitle(movie.title)}
-            </Typography>
-            <Typography color="text.secondary">
-              {movie.year}{" "}
-              {`${movie.runtime !== "N/A" ? `• ${movie.runtime}` : ""}`}
-            </Typography>
-            <Typography color="text.secondary" variant="body2" noWrap>
+            </MovieTitle>
+            <MovieYearRuntime>
+              {movie.year} {movie.runtime !== "N/A" ? `• ${movie.runtime}` : ""}
+            </MovieYearRuntime>
+            <MovieGenre variant="body2" noWrap>
               {movie.genre}
-            </Typography>
-          </Box>
-        </CardContent>
+            </MovieGenre>
+          </div>
+        </StyledCardContent>
 
-        <CardActions sx={{ justifyContent: "space-between", paddingX: 1 }}>
+        <StyledCardActions>
           <IconButton color="primary" onClick={() => onEditClick(movie)}>
             <EditIcon />
           </IconButton>
@@ -138,8 +111,8 @@ const MovieCard: React.FC<Props> = ({ movie, onClick, onEditClick }) => {
           <IconButton color="primary" onClick={handleFavorite}>
             {isFavorite ? <StarIcon /> : <StarOutlineIcon />}
           </IconButton>
-        </CardActions>
-      </Card>
+        </StyledCardActions>
+      </StyledCard>
 
       <ConfirmDialog
         open={showDeleteConfirm}

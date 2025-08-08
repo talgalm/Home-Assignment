@@ -3,9 +3,20 @@ import { ApiService, HTTPMethod } from '../api/apiService';
 import type { Movie } from '../interfaces';
 import type { InfiniteData } from '@tanstack/react-query';
 
-const deleteMovie = async (movie: Movie): Promise<void> => {
-  return ApiService.makeRequest<void>(`/movies/${movie.id}`, HTTPMethod.DELETE, movie);
+const serializeMovie = (movie: Movie): Record<string, string | number | boolean> => {
+  return {
+    id: movie.id,
+    title: movie.title,
+    year: movie.year,
+    runtime: movie.runtime,
+    genre: movie.genre,
+    director: movie.director,
+    // add other fields if necessary, but only string/number/boolean
+  };
 };
+
+const deleteMovie = async (movie: Movie): Promise<void> => {
+  return ApiService.makeRequest<void>(`/movies/${movie.id}`, HTTPMethod.DELETE, serializeMovie(movie))};
 
 export const useDeleteMovie = () => {
   const queryClient = useQueryClient();

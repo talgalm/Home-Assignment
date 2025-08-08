@@ -1,14 +1,14 @@
 import React from "react";
-import {
-  Dialog,
-  DialogTitle,
-  DialogContent,
-  DialogActions,
-  Button,
-  Typography,
-} from "@mui/material";
+import { Typography } from "@mui/material";
 import { useTranslation } from "react-i18next";
 import { useLanguageDirection } from "../../hooks/useLanguageDirection";
+import GeneralButton from "../button/Button";
+import {
+  StyledDialog,
+  StyledDialogTitle,
+  StyledDialogContent,
+  StyledDialogActions,
+} from "./ConfirmDialog.styles";
 
 interface ConfirmDialogProps {
   open: boolean;
@@ -53,66 +53,39 @@ const ConfirmDialog: React.FC<ConfirmDialogProps> = ({
   };
 
   return (
-    <Dialog
+    <StyledDialog
       open={open}
       onClose={onClose}
       maxWidth="sm"
       fullWidth
       dir={direction}
-      PaperProps={{
-        sx: {
-          // background: "rgba(255, 255, 255, 0.95)",
-          backdropFilter: "blur(10px)",
-          border: "1px solid rgba(255, 255, 255, 0.2)",
-          borderRadius: 2,
-        },
-      }}
     >
-      <DialogTitle
-        sx={{
-          color: `${getSeverityColor()}.main`,
-          fontWeight: "bold",
-          borderBottom: `2px solid ${getSeverityColor()}.light`,
-        }}
+      <StyledDialogTitle
+        severityColor={`${getSeverityColor()}.main`}
+        borderColor={`${getSeverityColor()}.light`}
       >
         {title}
-      </DialogTitle>
-      <DialogContent sx={{ pt: 2 }}>
+      </StyledDialogTitle>
+
+      <StyledDialogContent>
         <Typography variant="body1" color="text.primary">
           {message}
         </Typography>
-      </DialogContent>
-      <DialogActions sx={{ p: 2, gap: 1 }}>
-        <Button
+      </StyledDialogContent>
+
+      <StyledDialogActions>
+        <GeneralButton
+          variantType="cancel"
+          text={cancelText || t("Common.cancel")}
           onClick={onClose}
-          variant="outlined"
-          sx={{
-            borderColor: "rgba(0, 0, 0, 0.2)",
-            color: "text.primary",
-            "&:hover": {
-              borderColor: "rgba(0, 0, 0, 0.4)",
-              backgroundColor: "rgba(0, 0, 0, 0.04)",
-            },
-          }}
-        >
-          {cancelText || t("Common.cancel")}
-        </Button>
-        <Button
+        />
+        <GeneralButton
+          variantType="confirm"
+          text={confirmText || t("Common.confirm")}
           onClick={handleConfirm}
-          variant="contained"
-          color={getSeverityColor()}
-          sx={{
-            fontWeight: "bold",
-            "&:hover": {
-              transform: "translateY(-1px)",
-              boxShadow: 2,
-            },
-          }}
-        >
-          {confirmText || t("Common.confirm")}
-        </Button>
-      </DialogActions>
-    </Dialog>
+        />
+      </StyledDialogActions>
+    </StyledDialog>
   );
 };
 

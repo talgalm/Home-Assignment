@@ -3,7 +3,7 @@ import { styled } from "@mui/material/styles";
 
 export const StyledTextField = styled(TextField)(({ theme }) => ({
   "& .MuiInputBase-root": {
-    fontSize: "1rem", // smaller than 1.2rem
+    fontSize: "1rem",
     padding: `${theme.spacing(1)} ${theme.spacing(1.5)}`,
     color: theme.palette.common.white,
     [theme.breakpoints.down("sm")]: {

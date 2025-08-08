@@ -9,7 +9,6 @@ import Popup from "../components/popup/Popup";
 import { HomeContainer } from "./Home.styles";
 import type { Movie } from "../interfaces";
 import MovieGrid from "../components/movie-grid/MovieGrid";
-import MovieDetail from "../components/movie-detail";
 import { useSearch } from "../context/SearchContext";
 import { useAppSelector } from "../store/hooks";
 import { useAtom } from "jotai";
@@ -17,6 +16,7 @@ import { showFavoritesOnlyAtom } from "../store/favoritesViewAtom";
 import { Box, Typography } from "@mui/material";
 import { useLanguageDirection } from "../hooks/useLanguageDirection";
 import type { RootState } from "../store";
+import MovieDetail from "../components/movie-detail/MovieDetail";
 
 const Home: React.FC = () => {
   const { t } = useTranslation();

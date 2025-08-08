@@ -13,8 +13,8 @@ import {
 import { GENRES } from "./consts";
 import GeneralInput from "../../components/input/Input";
 import TitleInput from "../../components/input/TitleInput";
-import Autocomplete from "../../components/autocomplete";
 import { useLanguageDirection } from "../../hooks/useLanguageDirection";
+import Autocomplete from "../../components/autocomplete/Autocomplete";
 
 type AddMovieProps = {
   onClose?: () => void;
@@ -70,7 +70,6 @@ const AddMovie: React.FC<AddMovieProps> = ({ onClose }) => {
         <Autocomplete
           name="genre"
           options={GENRES}
-          label={t("AddMovie.form.genre")}
           placeholder={t("AddMovie.form.genrePlaceholder")}
           multiple={true}
           freeSolo={true}
