@@ -21,17 +21,15 @@ import {
   BackButtonWrapper,
   StyledCard,
   PosterPlaceholder,
-  MovieTitle,
   ActionButtonsWrapper,
   FavoriteButton,
   EditButton,
   DeleteButton,
-  StyledYearRuntime,
   StyledDivider,
-  InfoLabel,
-  InfoValue,
   GenreChip,
+  StyledGeneralTypography,
 } from "./MovieDetail.styles";
+import GeneralTypography from "../typography/Typography";
 
 interface MovieDetailProps {
   movie: Movie;
@@ -50,20 +48,14 @@ const MovieDetail: React.FC<MovieDetailProps> = ({ movie, onBack, onEdit }) => {
   const isFavorite = favorites.some((fav: Movie) => fav.id === movie.id);
   const deleteMovieMutation = useDeleteMovie();
 
-  const handleFavorite = () => {
-    dispatch(toggleFavorite(movie));
-  };
+  const handleFavorite = () => dispatch(toggleFavorite(movie));
 
-  const handleDeleteClick = () => {
-    setShowDeleteConfirm(true);
-  };
+  const handleDeleteClick = () => setShowDeleteConfirm(true);
 
   const handleDeleteConfirm = () => {
     deleteMovieMutation.mutate(movie, {
       onSuccess: () => {
-        if (isFavorite) {
-          dispatch(removeFavorite(movie.id));
-        }
+        if (isFavorite) dispatch(removeFavorite(movie.id));
         onBack();
       },
     });
@@ -83,19 +75,28 @@ const MovieDetail: React.FC<MovieDetailProps> = ({ movie, onBack, onEdit }) => {
 
       <StyledCard>
         <Box
-          sx={{ display: "flex", flexDirection: { xs: "column", md: "row" } }}
+          sx={{
+            display: "flex",
+            flexDirection: { xs: "column", md: "row" },
+            gap: { xs: 3, md: 4 },
+          }}
         >
           <Box
             sx={{
               width: { xs: "100%", md: "33.33%" },
-              minHeight: { xs: "300px", md: "auto" },
+              minHeight: { xs: 300, md: "auto" },
+              borderRadius: 2,
+              overflow: "hidden",
+              boxShadow: 3,
+              backgroundColor: "#222",
             }}
           >
-            {movie.img ? (
+            {movie.img && movie.img !== "N/A" ? (
               <CardMedia
                 component="img"
                 image={movie.img}
                 alt={formatMovieTitle(movie.title)}
+                sx={{ width: "100%", height: "100%", objectFit: "cover" }}
               />
             ) : (
               <PosterPlaceholder>
@@ -106,17 +107,30 @@ const MovieDetail: React.FC<MovieDetailProps> = ({ movie, onBack, onEdit }) => {
             )}
           </Box>
 
-          <Box sx={{ width: { xs: "100%", md: "66.67%" }, p: 3 }}>
-            <Box
-              display="flex"
-              justifyContent="space-between"
-              alignItems="flex-start"
-              mb={2}
-            >
-              <Box flex={1}>
-                <MovieTitle variant="h3">
-                  {formatMovieTitle(movie.title)}
-                </MovieTitle>
+          <Box
+            sx={{
+              width: { xs: "100%", md: "66.67%" },
+              display: "flex",
+              flexDirection: "column",
+              justifyContent: "space-between",
+              color: "white",
+              p: { xs: 0, md: 2 },
+            }}
+          >
+            <Box>
+              <Box
+                sx={{
+                  display: "flex",
+                  justifyContent: "space-between",
+                  alignItems: "flex-start",
+                  mb: 1.5,
+                }}
+              >
+                <StyledGeneralTypography
+                  variant="h3"
+                  value={formatMovieTitle(movie.title)}
+                />
+
                 <ActionButtonsWrapper>
                   <FavoriteButton onClick={handleFavorite} $active={isFavorite}>
                     {isFavorite ? (
@@ -132,16 +146,23 @@ const MovieDetail: React.FC<MovieDetailProps> = ({ movie, onBack, onEdit }) => {
                     onClick={handleDeleteClick}
                     disabled={deleteMovieMutation.isPending}
                   >
-                    <DeleteIcon />
+                    <DeleteIcon color="primary"/>
                   </DeleteButton>
                 </ActionButtonsWrapper>
-                <StyledYearRuntime variant="h6" color="text.secondary">
-                  {movie.year} • {movie.runtime} {t("MovieCard.minutes")}
-                </StyledYearRuntime>
               </Box>
-            </Box>
 
-            <StyledDivider />
+              <GeneralTypography
+                variant="h6"
+                value={`${movie.year} • ${movie.runtime} ${t(
+                  "MovieCard.minutes"
+                )}`}
+                styleProps={{
+                  color: "text.secondary",
+                }}
+              />
+
+              <StyledDivider />
+            </Box>
 
             <Box
               sx={{
@@ -152,37 +173,46 @@ const MovieDetail: React.FC<MovieDetailProps> = ({ movie, onBack, onEdit }) => {
               }}
             >
               <Box>
-                <InfoLabel variant="subtitle2" color="text.secondary">
-                  {t("MovieCard.director")}
-                </InfoLabel>
-                <InfoValue variant="body1">{movie.director}</InfoValue>
+                <GeneralTypography
+                  variant="subtitle2"
+                  value={t("MovieCard.director")}
+                  styleProps={{ color: "text.secondary" }}
+                />
+                <GeneralTypography variant="body1" value={movie.director} />
               </Box>
 
               <Box>
-                <InfoLabel variant="subtitle2" color="text.secondary">
-                  {t("MovieCard.genre")}
-                </InfoLabel>
+                <GeneralTypography
+                  variant="subtitle2"
+                  value={t("MovieCard.genre")}
+                  styleProps={{ color: "text.secondary" }}
+                />
                 <Box display="flex" flexWrap="wrap" gap={1}>
-                  {genres.map((genre, index) => (
-                    <GenreChip key={index} label={genre} size="small" />
+                  {genres.map((genre, idx) => (
+                    <GenreChip key={idx} label={genre} size="small" />
                   ))}
                 </Box>
               </Box>
 
               <Box>
-                <InfoLabel variant="subtitle2" color="text.secondary">
-                  {t("MovieCard.year")}
-                </InfoLabel>
-                <InfoValue variant="body1">{movie.year}</InfoValue>
+                <GeneralTypography
+                  variant="subtitle2"
+                  value={t("MovieCard.year")}
+                  styleProps={{ color: "text.secondary" }}
+                />
+                <GeneralTypography variant="body1" value={movie.year} />
               </Box>
 
               <Box>
-                <InfoLabel variant="subtitle2" color="text.secondary">
-                  {t("MovieCard.runtime")}
-                </InfoLabel>
-                <InfoValue variant="body1">
-                  {movie.runtime} {t("MovieCard.minutes")}
-                </InfoValue>
+                <GeneralTypography
+                  variant="subtitle2"
+                  value={t("MovieCard.runtime")}
+                  styleProps={{ color: "text.secondary" }}
+                />
+                <GeneralTypography
+                  variant="body1"
+                  value={`${movie.runtime} ${t("MovieCard.minutes")}`}
+                />
               </Box>
             </Box>
           </Box>

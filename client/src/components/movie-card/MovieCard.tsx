@@ -13,11 +13,11 @@ import {
   StyledCard,
   PlaceholderBox,
   StyledCardContent,
-  MovieTitle,
-  MovieYearRuntime,
-  MovieGenre,
   StyledCardActions,
+  StyledGeneralTypography,
+  GenersGeneralTypography,
 } from "./MovieCard.styles";
+import GeneralTypography from "../typography/Typography";
 import { useAppDispatch, useAppSelector } from "../../store/hooks";
 import { toggleFavorite, removeFavorite } from "../../store/favoritesSlice";
 import type { RootState } from "../../store";
@@ -78,29 +78,44 @@ const MovieCard: React.FC<Props> = ({ movie, onClick, onEditClick }) => {
 
         <StyledCardContent>
           <div>
-            <MovieTitle variant="h6" gutterBottom noWrap>
-              {formatMovieTitle(movie.title)}
-            </MovieTitle>
-            <MovieYearRuntime>
-              {movie.year} {movie.runtime !== "N/A" ? `• ${movie.runtime}` : ""}
-            </MovieYearRuntime>
-            <MovieGenre variant="body2" noWrap>
-              {movie.genre}
-            </MovieGenre>
+            <StyledGeneralTypography
+              variant="h6"
+              value={formatMovieTitle(movie.title)}
+            />
+            <GeneralTypography
+              variant="body2"
+              value={`${movie.year} ${
+                movie.runtime !== "N/A" ? `• ${movie.runtime}` : ""
+              }`}
+              styleProps={{
+                color: "text.secondary",
+                marginBottom: 8,
+              }}
+            />
+            <GenersGeneralTypography variant="body2" value={movie.genre} />
           </div>
         </StyledCardContent>
 
         <StyledCardActions>
-          <IconButton color="primary" onClick={() => onEditClick(movie)}>
+          <IconButton
+            color="primary"
+            onClick={() => onEditClick(movie)}
+            aria-label={t("Edit")}
+          >
             <EditIcon />
           </IconButton>
-          <IconButton color="primary" onClick={() => onClick(movie)}>
+          <IconButton
+            color="primary"
+            onClick={() => onClick(movie)}
+            aria-label={t("Details")}
+          >
             <InfoIcon />
           </IconButton>
           <IconButton
             color="primary"
             onClick={handleDeleteClick}
             disabled={deleteMovieMutation.isPending}
+            aria-label={t("Delete")}
           >
             {deleteMovieMutation.isPending ? (
               <CircularProgress size={20} />
@@ -108,7 +123,11 @@ const MovieCard: React.FC<Props> = ({ movie, onClick, onEditClick }) => {
               <DeleteIcon />
             )}
           </IconButton>
-          <IconButton color="primary" onClick={handleFavorite}>
+          <IconButton
+            color="primary"
+            onClick={handleFavorite}
+            aria-label={t("Favorite")}
+          >
             {isFavorite ? <StarIcon /> : <StarOutlineIcon />}
           </IconButton>
         </StyledCardActions>

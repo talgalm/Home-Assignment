@@ -68,7 +68,7 @@ const MovieGrid: React.FC<MovieGridProps> = ({
             </div>
           ))}
 
-          {isLoadingMore && (
+          {isLoadingMore && !showFavoritesOnly &&  (
             <LoadMoreWrapper>
               <LoadMoreContent>
                 <CircularProgress size={40} />

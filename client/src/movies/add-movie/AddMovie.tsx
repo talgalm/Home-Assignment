@@ -7,8 +7,8 @@ import { useAddMovie } from "../../hooks/useAddMovie";
 import {
   StyledForm,
   StyledSubmitButton,
-  FormTitle,
   FormContainer,
+  StyledGeneralTypography,
 } from "./AddMovie.styles";
 import { GENRES } from "./consts";
 import GeneralInput from "../../components/input/Input";
@@ -48,7 +48,10 @@ const AddMovie: React.FC<AddMovieProps> = ({ onClose }) => {
 
   return (
     <FormContainer $direction={direction}>
-      <FormTitle>{t("AddMovie.title")}</FormTitle>
+      <StyledGeneralTypography
+        variant="h2"
+        value={t("AddMovie.title")}
+      />
       <StyledForm onSubmit={handleSubmit(onSubmit)}>
         <TitleInput
           name="title"

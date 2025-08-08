@@ -6,8 +6,8 @@ import { useEditMovie } from "../../hooks/useEditMovie";
 import {
   StyledForm,
   StyledSubmitButton,
-  FormTitle,
   FormContainer,
+  StyledGeneralTypography,
 } from "../add-movie/AddMovie.styles";
 import { GENRES } from "../add-movie/consts";
 import GeneralInput from "../../components/input/Input";
@@ -41,7 +41,7 @@ const EditMovie: React.FC<EditMovieProps> = ({ movie, onSuccess }) => {
 
   return (
     <FormContainer $direction={direction}>
-      <FormTitle>{t("EditMovie.title")}</FormTitle>
+      <StyledGeneralTypography variant="h2" value={t("EditMovie.title")} />
       <StyledForm onSubmit={handleSubmit(onSubmit)}>
         <GeneralInput
           name="title"

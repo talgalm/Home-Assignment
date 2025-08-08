@@ -4,6 +4,7 @@ import { styled } from "@mui/material/styles";
 export const StyledTextField = styled(TextField)(({ theme }) => ({
   "& .MuiInputBase-root": {
     fontSize: "1rem",
+    gap: 5,
     padding: `${theme.spacing(1)} ${theme.spacing(1.5)}`,
     color: theme.palette.common.white,
     [theme.breakpoints.down("sm")]: {

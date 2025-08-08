@@ -1,5 +1,6 @@
 import { styled } from "@mui/material/styles";
 import { Box, Button, Autocomplete } from "@mui/material";
+import GeneralTypography from "../../components/typography/Typography";
 
 export const StyledForm = styled("form")({
   display: "flex",
@@ -40,16 +41,6 @@ export const StyledSubmitButton = styled(Button)({
     transform: "none",
     boxShadow: "none",
   },
-});
-
-export const FormTitle = styled("h2")({
-  color: "white",
-  fontSize: "1.8rem",
-  fontWeight: 700,
-  margin: "0 0 30px 0",
-  textAlign: "center",
-  textShadow: "0 2px 10px rgba(0,0,0,0.3)",
-  letterSpacing: "-0.02em",
 });
 
 export const FormContainer = styled(Box)<{ $direction?: "ltr" | "rtl" }>(
@@ -145,4 +136,14 @@ export const StyledAutocomplete = styled(Autocomplete)({
       },
     },
   },
+});
+
+export const StyledGeneralTypography = styled(GeneralTypography)({
+  color: "white",
+  fontSize: "1.8rem",
+  fontWeight: 700,
+  margin: "0 0 30px 0",
+  textAlign: "center",
+  textShadow: "0 2px 10px rgba(0,0,0,0.3)",
+  letterSpacing: "-0.02em",
 });

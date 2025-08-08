@@ -6,8 +6,13 @@ import {
   StyledIconButton,
   StyledMenu,
   StyledMenuItem,
-  StyledTypography,
 } from "./LanguageSwitcher.styles";
+import GeneralTypography from "../typography/Typography";
+
+const flags = {
+  he: "🇮🇱",
+  en: "🇺🇸",
+};
 
 const LanguageSwitcher: React.FC = () => {
   const { t, i18n } = useTranslation();
@@ -35,7 +40,7 @@ const LanguageSwitcher: React.FC = () => {
         color="inherit"
         aria-label={t("Header.language")}
       >
-        <LanguageIcon />
+        <LanguageIcon color="primary" />
       </StyledIconButton>
 
       <StyledMenu
@@ -55,18 +60,24 @@ const LanguageSwitcher: React.FC = () => {
           onClick={() => handleLanguageChange("he")}
           selected={currentLanguage === "he"}
         >
-          <StyledTypography variant="body2">
-            {t("Languages.he")}
-          </StyledTypography>
+          <span style={{ marginRight: 8 }}>{flags["he"]}</span>
+          <GeneralTypography
+            variant="body2"
+            value={t("Languages.he")}
+            styleProps={{ fontFamily: "inherit", display: "inline-block" }}
+          />
         </StyledMenuItem>
 
         <StyledMenuItem
           onClick={() => handleLanguageChange("en")}
           selected={currentLanguage === "en"}
         >
-          <StyledTypography variant="body2">
-            {t("Languages.en")}
-          </StyledTypography>
+          <span style={{ marginRight: 8 }}>{flags["en"]}</span>
+          <GeneralTypography
+            variant="body2"
+            value={t("Languages.en")}
+            styleProps={{ fontFamily: "inherit", display: "inline-block" }}
+          />
         </StyledMenuItem>
       </StyledMenu>
     </StyledLanguageSwitcher>

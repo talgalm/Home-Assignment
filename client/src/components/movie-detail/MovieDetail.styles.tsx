@@ -1,13 +1,6 @@
 import styled from "@emotion/styled";
-import {
-  Box,
-  Typography,
-  Card,
-  CardMedia,
-  Chip,
-  Divider,
-  IconButton,
-} from "@mui/material";
+import { Box, Card, CardMedia, Chip, Divider, IconButton } from "@mui/material";
+import GeneralTypography from "../typography/Typography";
 
 export const StyledMovieDetail = styled.div<{ $direction?: "ltr" | "rtl" }>(
   ({ $direction = "ltr" }) => ({
@@ -55,13 +48,6 @@ export const PosterPlaceholder = styled(Box)({
   },
 });
 
-export const MovieTitle = styled(Typography)({
-  fontWeight: 700,
-  marginBottom: 8,
-  color: "white",
-  lineHeight: 1.2,
-});
-
 export const ActionButtonsWrapper = styled(Box)({
   display: "flex",
   gap: 8,
@@ -88,21 +74,9 @@ export const DeleteButton = styled(IconButton)({
   color: "var(--mui-palette-primary-main)",
 });
 
-export const StyledYearRuntime = styled(Typography)({
-  marginBottom: 16,
-});
-
 export const StyledDivider = styled(Divider)({
   margin: "24px 0",
   borderColor: "rgba(255, 255, 255, 0.2)",
-});
-
-export const InfoLabel = styled(Typography)({
-  marginBottom: 8,
-});
-
-export const InfoValue = styled(Typography)({
-  color: "white",
 });
 
 export const GenreChip = styled(Chip)({
@@ -112,4 +86,12 @@ export const GenreChip = styled(Chip)({
   "&:hover": {
     backgroundColor: "rgba(245, 197, 24, 0.3)",
   },
+});
+
+export const StyledGeneralTypography = styled(GeneralTypography)({
+  fontWeight: 700,
+  lineHeight: 1.2,
+  color: "white",
+  flex: 1,
+  marginRight: 2,
 });

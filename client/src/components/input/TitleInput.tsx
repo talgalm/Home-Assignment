@@ -6,6 +6,7 @@ import GeneralInput from "./Input";
 import { TitleInputContainer, TitleStatus } from "./TitleInput.styles";
 import { CheckCircle, Error, Info } from "@mui/icons-material";
 import { useLanguageDirection } from "../../hooks/useLanguageDirection";
+import GeneralTypography from "../typography/Typography";
 
 interface TitleInputProps {
   name: string;
@@ -65,7 +66,11 @@ const TitleInput: React.FC<TitleInputProps> = ({
       {debouncedTitle && debouncedTitle.length >= 2 && (
         <TitleStatus color={getStatusColor()}>
           {getStatusIcon()}
-          <span>{getStatusText()}</span>
+          <GeneralTypography
+            value={getStatusText()}
+            variant="body2"
+            styleProps={{ marginLeft: "8px" }}
+          />
         </TitleStatus>
       )}
     </TitleInputContainer>

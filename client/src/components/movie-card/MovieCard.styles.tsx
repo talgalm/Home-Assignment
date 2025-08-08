@@ -1,12 +1,6 @@
 import { styled } from "@mui/material/styles";
-import {
-  Card,
-  CardMedia,
-  CardContent,
-  CardActions,
-  Box,
-  Typography,
-} from "@mui/material";
+import { Card, CardMedia, CardContent, CardActions, Box } from "@mui/material";
+import GeneralTypography from "../typography/Typography";
 
 export const MovieCardContainer = styled("div")<{ $direction?: "ltr" | "rtl" }>(
   ({ $direction = "ltr" }) => ({
@@ -51,31 +45,28 @@ export const StyledCardContent = styled(CardContent)({
   justifyContent: "space-between",
 });
 
-export const MovieTitle = styled(Typography)({
+export const StyledCardActions = styled(CardActions)({
+  justifyContent: "space-between",
+  paddingLeft: 8,
+  paddingRight: 8,
+});
+
+export const StyledGeneralTypography = styled(GeneralTypography)({
   fontWeight: 600,
   lineHeight: 1.3,
-  marginBottom: 12,
+  marginBottom: 8,
   overflow: "hidden",
   textOverflow: "ellipsis",
   display: "-webkit-box",
   WebkitLineClamp: 2,
   WebkitBoxOrient: "vertical",
+  minHeight: "3rem",
 });
 
-export const MovieYearRuntime = styled(Typography)({
+export const GenersGeneralTypography = styled(GeneralTypography)({
   color: "text.secondary",
-});
-
-export const MovieGenre = styled(Typography)({
-  color: "text.secondary",
-  variant: "body2",
   overflow: "hidden",
   textOverflow: "ellipsis",
   whiteSpace: "nowrap",
-});
-
-export const StyledCardActions = styled(CardActions)({
-  justifyContent: "space-between",
-  paddingLeft: 8,
-  paddingRight: 8,
+  minHeight: "1.5rem",
 });

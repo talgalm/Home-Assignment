@@ -1,5 +1,5 @@
 import styled from "@emotion/styled";
-import { IconButton, Menu, MenuItem, Typography, type MenuProps } from "@mui/material";
+import { IconButton, Menu, MenuItem, type MenuProps } from "@mui/material";
 import type { JSX } from "react/jsx-runtime";
 
 export const StyledLanguageSwitcher = styled.div<{
@@ -23,19 +23,21 @@ export const StyledIconButton = styled(IconButton)`
 `;
 
 // Styled Menu with paper styles moved here
-export const StyledMenu = styled((props: JSX.IntrinsicAttributes & MenuProps) => (
-  <Menu
-    {...props}
-    PaperProps={{
-      sx: {
-        backgroundColor: "rgba(26, 26, 26, 0.95)",
-        backdropFilter: "blur(20px)",
-        border: "1px solid rgba(255, 255, 255, 0.1)",
-        minWidth: 120,
-      },
-    }}
-  />
-))``;
+export const StyledMenu = styled(
+  (props: JSX.IntrinsicAttributes & MenuProps) => (
+    <Menu
+      {...props}
+      PaperProps={{
+        sx: {
+          backgroundColor: "rgba(26, 26, 26, 0.95)",
+          backdropFilter: "blur(20px)",
+          border: "1px solid rgba(255, 255, 255, 0.1)",
+          minWidth: 120,
+        },
+      }}
+    />
+  )
+)``;
 
 // Styled MenuItem with selected and hover styles and color based on prop
 interface StyledMenuItemProps {
@@ -56,9 +58,4 @@ export const StyledMenuItem = styled(MenuItem)<StyledMenuItemProps>`
       background-color: rgba(245, 197, 24, 0.3);
     }
   }
-`;
-
-// Typography styled with inherited font family
-export const StyledTypography = styled(Typography)`
-  font-family: inherit;
 `;

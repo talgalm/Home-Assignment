@@ -1,5 +1,5 @@
 import React from "react";
-import { Typography } from "@mui/material";
+import GeneralTypography from "../typography/Typography";
 import { useTranslation } from "react-i18next";
 import { useLanguageDirection } from "../../hooks/useLanguageDirection";
 import GeneralButton from "../button/Button";
@@ -68,9 +68,11 @@ const ConfirmDialog: React.FC<ConfirmDialogProps> = ({
       </StyledDialogTitle>
 
       <StyledDialogContent>
-        <Typography variant="body1" color="text.primary">
-          {message}
-        </Typography>
+        <GeneralTypography
+          variant="body1"
+          value={message}
+          styleProps={{ color: "var(--mui-palette-text-primary)" }}
+        />
       </StyledDialogContent>
 
       <StyledDialogActions>

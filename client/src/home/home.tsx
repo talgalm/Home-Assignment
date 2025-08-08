@@ -13,7 +13,8 @@ import { useSearch } from "../context/SearchContext";
 import { useAppSelector } from "../store/hooks";
 import { useAtom } from "jotai";
 import { showFavoritesOnlyAtom } from "../store/favoritesViewAtom";
-import { Box, Typography } from "@mui/material";
+import { Box } from "@mui/material";
+import GeneralTypography from "../components/typography/Typography";
 import { useLanguageDirection } from "../hooks/useLanguageDirection";
 import type { RootState } from "../store";
 import MovieDetail from "../components/movie-detail/MovieDetail";
@@ -137,9 +138,11 @@ const Home: React.FC = () => {
     <HomeContainer $direction={direction}>
       {showFavoritesOnly && (
         <Box sx={{ mb: 2, p: 2, bgcolor: "background.paper", borderRadius: 1 }}>
-          <Typography variant="h6" color="primary">
-            ⭐ {t('Favorites.title')}
-          </Typography>
+          <GeneralTypography 
+            variant="h6" 
+            value={` ${t('Favorites.title')}`}
+            styleProps={{ color: "primary" }}
+          />
         </Box>
       )}
       <MovieGrid
