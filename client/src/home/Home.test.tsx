@@ -96,7 +96,7 @@ describe("Home", () => {
 
     render(<Home />);
 
-    expect(screen.getByText("Loading movies...")).toBeInTheDocument();
+    expect(screen.getByText("Home.loading")).toBeInTheDocument();
   });
 
   it("shows search loading state when searching", () => {
@@ -115,7 +115,7 @@ describe("Home", () => {
 
     render(<Home />);
 
-    expect(screen.getByText("Searching...")).toBeInTheDocument();
+    expect(screen.getByText("Search.searching")).toBeInTheDocument();
   });
 
   it("shows error state when movies fail to load", () => {
@@ -131,7 +131,7 @@ describe("Home", () => {
     render(<Home />);
 
     expect(
-      screen.getByText("Error loading movies: Failed to load movies")
+      screen.getByText("Home.error: Failed to load movies")
     ).toBeInTheDocument();
   });
 
@@ -147,7 +147,7 @@ describe("Home", () => {
 
     render(<Home />);
 
-    expect(screen.getByText("No movies to display")).toBeInTheDocument();
+    expect(screen.getByText("Home.noMovies")).toBeInTheDocument();
   });
 
   it("shows favorites section when showFavoritesOnly is true", () => {
@@ -155,7 +155,7 @@ describe("Home", () => {
 
     render(<Home />);
 
-    expect(screen.getByText("⭐ Favorites")).toBeInTheDocument();
+    expect(screen.getByText("⭐ Favorites.title")).toBeInTheDocument();
   });
 
   it("filters movies to show only favorites when showFavoritesOnly is true", () => {
@@ -202,7 +202,7 @@ describe("Home", () => {
 
     render(<Home />);
 
-    expect(screen.getByText("Loading more movies...")).toBeInTheDocument();
+    expect(screen.getByText("Home.loadMore")).toBeInTheDocument();
   });
 
   it("shows end message when no more pages available", () => {
@@ -217,7 +217,7 @@ describe("Home", () => {
 
     render(<Home />);
 
-    expect(screen.getByText("No more movies to load")).toBeInTheDocument();
+    expect(screen.getByText("Home.noMoreMovies")).toBeInTheDocument();
   });
 
   it("handles movie click", () => {
@@ -248,7 +248,7 @@ describe("Home", () => {
 
     render(<Home />);
 
-    expect(screen.getByText("No movies to display")).toBeInTheDocument();
+    expect(screen.getByText("Home.noMovies")).toBeInTheDocument();
   });
 
   it("handles search error", () => {
@@ -267,9 +267,7 @@ describe("Home", () => {
 
     render(<Home />);
 
-    expect(
-      screen.getByText("Error loading movies: Search failed")
-    ).toBeInTheDocument();
+    expect(screen.getByText("Home.error: Search failed")).toBeInTheDocument();
   });
 
   it("does not show loading more indicator when not fetching", () => {
@@ -332,6 +330,6 @@ describe("Home", () => {
 
     render(<Home />);
 
-    expect(screen.getByText("No movies to display")).toBeInTheDocument();
+    expect(screen.getByText("Home.noMovies")).toBeInTheDocument();
   });
 });

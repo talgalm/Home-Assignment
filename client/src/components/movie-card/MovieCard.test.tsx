@@ -22,6 +22,7 @@ vi.mock("../../utils/textUtils", () => ({
 
 describe("MovieCard", () => {
   const mockOnClick = vi.fn();
+  const mockOnEditClick = vi.fn();
   const movie = mockMovies[0];
 
   beforeEach(() => {
@@ -29,17 +30,29 @@ describe("MovieCard", () => {
   });
 
   it("renders movie information correctly", () => {
-    render(<MovieCard movie={movie} onClick={mockOnClick} />);
+    render(
+      <MovieCard
+        movie={movie}
+        onClick={mockOnClick}
+        onEditClick={mockOnEditClick}
+      />
+    );
 
     expect(screen.getByText(movie.title)).toBeInTheDocument();
     expect(
-      screen.getByText(`${movie.year} • ${movie.runtime} min`)
+      screen.getByText(`${movie.year} • ${movie.runtime}`)
     ).toBeInTheDocument();
     expect(screen.getByText(movie.genre)).toBeInTheDocument();
   });
 
   it("displays movie poster image", () => {
-    render(<MovieCard movie={movie} onClick={mockOnClick} />);
+    render(
+      <MovieCard
+        movie={movie}
+        onClick={mockOnClick}
+        onEditClick={mockOnEditClick}
+      />
+    );
 
     const posterImage = screen.getByAltText(movie.title);
     expect(posterImage).toBeInTheDocument();
@@ -48,24 +61,42 @@ describe("MovieCard", () => {
 
   it("displays movie icon when no image is provided", () => {
     const movieWithoutImage = { ...movie, img: undefined };
-    render(<MovieCard movie={movieWithoutImage} onClick={mockOnClick} />);
+    render(
+      <MovieCard
+        movie={movieWithoutImage}
+        onClick={mockOnClick}
+        onEditClick={mockOnEditClick}
+      />
+    );
 
     expect(screen.getByTestId("MovieIcon")).toBeInTheDocument();
   });
 
-  it("calls onClick when edit button is clicked", () => {
-    render(<MovieCard movie={movie} onClick={mockOnClick} />);
+  it("calls onEditClick when edit button is clicked", () => {
+    render(
+      <MovieCard
+        movie={movie}
+        onClick={mockOnClick}
+        onEditClick={mockOnEditClick}
+      />
+    );
 
     const editButton = screen.getByTestId("EditIcon").closest("button");
     fireEvent.click(editButton!);
 
-    expect(mockOnClick).toHaveBeenCalledTimes(1);
-    expect(mockOnClick).toHaveBeenCalledWith(movie);
+    expect(mockOnEditClick).toHaveBeenCalledTimes(1);
+    expect(mockOnEditClick).toHaveBeenCalledWith(movie);
   });
 
   it("handles missing poster URL gracefully", () => {
     const movieWithoutPoster = { ...movie, img: "" };
-    render(<MovieCard movie={movieWithoutPoster} onClick={mockOnClick} />);
+    render(
+      <MovieCard
+        movie={movieWithoutPoster}
+        onClick={mockOnClick}
+        onEditClick={mockOnEditClick}
+      />
+    );
 
     expect(screen.getByTestId("MovieIcon")).toBeInTheDocument();
   });
@@ -76,19 +107,37 @@ describe("MovieCard", () => {
       title:
         "This is a very long movie title that should be handled properly by the component",
     };
-    render(<MovieCard movie={movieWithLongTitle} onClick={mockOnClick} />);
+    render(
+      <MovieCard
+        movie={movieWithLongTitle}
+        onClick={mockOnClick}
+        onEditClick={mockOnEditClick}
+      />
+    );
 
     expect(screen.getByText(movieWithLongTitle.title)).toBeInTheDocument();
   });
 
   it("displays year and runtime correctly", () => {
-    render(<MovieCard movie={movie} onClick={mockOnClick} />);
+    render(
+      <MovieCard
+        movie={movie}
+        onClick={mockOnClick}
+        onEditClick={mockOnEditClick}
+      />
+    );
 
-    expect(screen.getByText("2023 • 120 min")).toBeInTheDocument();
+    expect(screen.getByText("2023 • 120")).toBeInTheDocument();
   });
 
   it("renders all action buttons", () => {
-    render(<MovieCard movie={movie} onClick={mockOnClick} />);
+    render(
+      <MovieCard
+        movie={movie}
+        onClick={mockOnClick}
+        onEditClick={mockOnEditClick}
+      />
+    );
 
     expect(screen.getByTestId("EditIcon")).toBeInTheDocument();
     expect(screen.getByTestId("DeleteIcon")).toBeInTheDocument();
@@ -104,15 +153,27 @@ describe("MovieCard", () => {
       runtime: "180",
       genre: "Sci-Fi",
     };
-    render(<MovieCard movie={differentMovie} onClick={mockOnClick} />);
+    render(
+      <MovieCard
+        movie={differentMovie}
+        onClick={mockOnClick}
+        onEditClick={mockOnEditClick}
+      />
+    );
 
     expect(screen.getByText("Different Movie")).toBeInTheDocument();
-    expect(screen.getByText("2024 • 180 min")).toBeInTheDocument();
+    expect(screen.getByText("2024 • 180")).toBeInTheDocument();
     expect(screen.getByText("Sci-Fi")).toBeInTheDocument();
   });
 
   it("has proper accessibility attributes", () => {
-    render(<MovieCard movie={movie} onClick={mockOnClick} />);
+    render(
+      <MovieCard
+        movie={movie}
+        onClick={mockOnClick}
+        onEditClick={mockOnEditClick}
+      />
+    );
 
     const editButton = screen.getByTestId("EditIcon").closest("button");
     expect(editButton).toBeInTheDocument();

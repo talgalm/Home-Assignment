@@ -2,7 +2,5 @@
   "title": "Movie Collection",
   "loading": "Loading movies...",
   "error": "Error loading movies",
-  "noMovies": "No movies found",
-  "loadMore": "Loading more movies...",
-  "noMoreMovies": "No more movies to load"
+  "noMovies": "No movies to display"
 }

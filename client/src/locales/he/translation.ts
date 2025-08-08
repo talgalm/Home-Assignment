@@ -1,6 +1,6 @@
 import Header from '../../components/header/Header.lang.he.json';
 import Home from '../../home/Home.lang.he.json';
-import MovieCard from '../../components/movie-card/MovieCard.lang.en.json';
+import MovieCard from '../../components/movie-card/MovieCard.lang.he.json';
 import Search from '../../components/search/Search.lang.he.json';
 import AddMovie from '../../movies/add-movie/AddMovie.lang.he.json';
 import EditMovie from '../../movies/edit-movie/EditMovie.lang.he.json';
