@@ -87,6 +87,12 @@ describe('useInfiniteScroll', () => {
   });
 
   it('does not call onLoadMore when isLoading is true', () => {
+    // Mock tall page to avoid initial load
+    Object.defineProperty(document.documentElement, 'scrollHeight', {
+      writable: true,
+      value: 2000,
+    });
+    
     // Mock scroll position near bottom
     Object.defineProperty(window, 'scrollY', {
       writable: true,
@@ -99,6 +105,11 @@ describe('useInfiniteScroll', () => {
       isLoading: true,
     }));
 
+    // Advance timers to handle any scheduled calls
+    act(() => {
+      vi.advanceTimersByTime(100);
+    });
+
     // Trigger scroll event
     window.dispatchEvent(new Event('scroll'));
 
@@ -106,6 +117,12 @@ describe('useInfiniteScroll', () => {
   });
 
   it('does not call onLoadMore when hasNextPage is false', () => {
+    // Mock tall page to avoid initial load
+    Object.defineProperty(document.documentElement, 'scrollHeight', {
+      writable: true,
+      value: 2000,
+    });
+    
     // Mock scroll position near bottom
     Object.defineProperty(window, 'scrollY', {
       writable: true,
@@ -117,6 +134,11 @@ describe('useInfiniteScroll', () => {
       hasNextPage: false,
       isLoading: false,
     }));
+
+    // Advance timers to handle any scheduled calls
+    act(() => {
+      vi.advanceTimersByTime(100);
+    });
 
     // Trigger scroll event
     window.dispatchEvent(new Event('scroll'));

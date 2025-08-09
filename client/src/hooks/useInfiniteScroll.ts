@@ -52,9 +52,4 @@ export const useInfiniteScroll = ({
       clearTimeout(initialCheckTimer);
     };
   }, [handleScroll, handleResize, checkInitialLoad]);
-
-  useEffect(() => {
-    const timer = setTimeout(checkInitialLoad, 100);
-    return () => clearTimeout(timer);
-  }, [hasNextPage, isLoading, checkInitialLoad]);
 };

@@ -1,4 +1,5 @@
 import { describe, it, expect, vi } from "vitest";
+import React from "react";
 import { render, screen, fireEvent, waitFor } from "../test/test-utils";
 import { SearchProvider, useSearch } from "./SearchContext";
 import { renderHook, act } from "@testing-library/react";

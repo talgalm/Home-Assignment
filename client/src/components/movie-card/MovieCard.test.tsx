@@ -1,4 +1,5 @@
 import { describe, it, expect, vi, beforeEach } from "vitest";
+import React from "react";
 import { render, screen, fireEvent } from "../../test/test-utils";
 import MovieCard from "./MovieCard";
 import { mockMovies } from "../../test/test-utils";
@@ -139,9 +140,9 @@ describe("MovieCard", () => {
       />
     );
 
-    expect(screen.getByTestId("EditIcon")).toBeInTheDocument();
-    expect(screen.getByTestId("DeleteIcon")).toBeInTheDocument();
-    expect(screen.getByTestId("StarOutlineIcon")).toBeInTheDocument();
+    expect(screen.getAllByTestId("EditIcon")).toHaveLength(1);
+    expect(screen.getAllByTestId("DeleteIcon")).toHaveLength(1);
+    expect(screen.getAllByTestId("StarOutlineIcon")).toHaveLength(1);
   });
 
   it("handles different movie data", () => {
@@ -175,7 +176,7 @@ describe("MovieCard", () => {
       />
     );
 
-    const editButton = screen.getByTestId("EditIcon").closest("button");
+    const editButton = screen.getAllByTestId("EditIcon")[0].closest("button");
     expect(editButton).toBeInTheDocument();
   });
 });

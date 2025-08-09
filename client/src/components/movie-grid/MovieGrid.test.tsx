@@ -1,4 +1,5 @@
-import { describe, it, expect, vi } from "vitest";
+import { describe, it, expect, vi, beforeEach } from "vitest";
+import React from "react";
 import { render, screen, fireEvent } from "../../test/test-utils";
 import MovieGrid from "./MovieGrid";
 import { mockMovies } from "../../test/test-utils";

@@ -1,7 +1,7 @@
 import React, { useState, useMemo } from "react";
 import { useTranslation } from "react-i18next";
 import GeneralLoader from "../components/loader/loader";
-import { useMovies } from "../hooks/useMovies";
+import { useMovies } from "../hooks/UseMovies";
 import { useInfiniteSearchMovies } from "../hooks/useSearchMovies";
 import { useDebounce } from "../hooks/useDebounce";
 import { useInfiniteScroll } from "../hooks/useInfiniteScroll";

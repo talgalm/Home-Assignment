@@ -36,6 +36,11 @@ export const ApiService = {
 
       xhr.onload = () => {
         if (xhr.status >= 200 && xhr.status < 300) {
+          if (!xhr.responseText) {
+            resolve('' as unknown as T);
+            return;
+          }
+          
           try {
             const json = JSON.parse(xhr.responseText);
             resolve(json);

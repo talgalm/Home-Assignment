@@ -11,12 +11,13 @@ const serializeMovie = (movie: Movie): Record<string, string | number | boolean>
     runtime: movie.runtime,
     genre: movie.genre,
     director: movie.director,
-
+    img: movie.img || '',
   };
 };
 
 const deleteMovie = async (movie: Movie): Promise<void> => {
-  return ApiService.makeRequest<void>(`/movies/${movie.id}`, HTTPMethod.DELETE, serializeMovie(movie))};
+  return ApiService.makeRequest<void>(`/movies/${movie.id}`, HTTPMethod.DELETE, serializeMovie(movie));
+};
 
 export const useDeleteMovie = () => {
   const queryClient = useQueryClient();

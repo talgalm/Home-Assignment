@@ -1,4 +1,5 @@
-import { describe, it, expect, vi } from "vitest";
+import { describe, it, expect, vi, beforeEach } from "vitest";
+import React from "react";
 import { render, screen, fireEvent, waitFor } from "../../test/test-utils";
 import GeneralSearch from "./Search";
 import { Search as SearchIcon } from "@mui/icons-material";

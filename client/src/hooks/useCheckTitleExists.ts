@@ -18,6 +18,6 @@ export const useCheckTitleExists = (title: string) => {
     queryFn: () => checkTitleExists(title),
     enabled: !!title && title.length >= 2, // Only check if title has at least 2 characters
     staleTime: 5 * 60 * 1000, // Cache for 5 minutes
-    retry: 1, // Only retry once
+    retry: false, // No retries for faster tests
   });
 };

@@ -132,6 +132,7 @@ describe('ApiService', () => {
 
     it('handles invalid JSON response', async () => {
       mockXHR.responseText = 'invalid json';
+      mockXHR.status = 200;
 
       const promise = ApiService.makeRequest('/test', HTTPMethod.GET);
 
@@ -143,6 +144,7 @@ describe('ApiService', () => {
 
     it('handles empty response', async () => {
       mockXHR.responseText = '';
+      mockXHR.status = 200;
 
       const promise = ApiService.makeRequest('/test', HTTPMethod.GET);
 
@@ -232,6 +234,7 @@ describe('ApiService', () => {
 
     it('handles non-JSON response', async () => {
       mockXHR.responseText = 'plain text response';
+      mockXHR.status = 200;
 
       const promise = ApiService.makeRequest('/test', HTTPMethod.GET);
 
