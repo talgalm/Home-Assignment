@@ -30,7 +30,12 @@ const EditMovie: React.FC<EditMovieProps> = ({ movie, onSuccess }) => {
     const currentGenres = data.genre.join(", ").trim();
 
     editMovieMutation.mutate(
-      { id: Number(movie.id), ...data, genre: currentGenres },
+      {
+        id: Number(movie.id),
+        ...data,
+        genre: currentGenres,
+        username: movie.username,
+      },
       {
         onSuccess: () => {
           onSuccess?.();
@@ -74,17 +79,23 @@ const EditMovie: React.FC<EditMovieProps> = ({ movie, onSuccess }) => {
           placeholder={t("EditMovie.form.directorPlaceholder")}
           defaultValue={movie.director}
         />
-
-        <StyledSubmitButton
-          type="submit"
-          disabled={editMovieMutation.isPending}
-          fullWidth
-          variant="outlined"
-        >
-          {editMovieMutation.isPending
-            ? t("EditMovie.submitting")
-            : t("EditMovie.submit")}
-        </StyledSubmitButton>
+        <div style={{ display: "flex", flexDirection: "row", gap: 15 }}>
+          <StyledSubmitButton
+            type="submit"
+            disabled={editMovieMutation.isPending}
+            fullWidth
+            variant="outlined"
+          >
+            {editMovieMutation.isPending
+              ? t("EditMovie.submitting")
+              : t("EditMovie.submit")}
+          </StyledSubmitButton>
+          <StyledSubmitButton fullWidth variant="outlined" onClick={onSuccess}>
+            {editMovieMutation.isPending
+              ? t("EditMovie.canceling")
+              : t("EditMovie.cancel")}
+          </StyledSubmitButton>
+        </div>
       </StyledForm>
     </FormContainer>
   );

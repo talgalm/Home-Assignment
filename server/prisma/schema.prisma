@@ -7,6 +7,13 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
+model User {
+  id       Int    @id @default(autoincrement())
+  username String @unique
+
+  @@map("users")
+}
+
 model Movie {
   id        Int      @id @default(autoincrement())
   title     String
@@ -16,6 +23,7 @@ model Movie {
   runtime   String
   img       String?
   action    String?
+  username  String
   createdAt DateTime @default(now()) @map("created_at")
   updatedAt DateTime @updatedAt @map("updated_at")
 

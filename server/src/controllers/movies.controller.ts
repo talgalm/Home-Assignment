@@ -53,11 +53,20 @@ export const MoviesController = {
 
   add: async (req: Request, res: Response) => {
     try {
-      const { title, director, year, genre, runtime, img } = req.body;
+      const { title, director, year, genre, runtime, img, username } = req.body;
       if (!title || !director || !year || !genre || !runtime) {
         return res.status(400).json({ message: 'Missing required fields: title, director, year, genre, runtime' });
       }
-      const newMovie = await MoviesService.add({ title, director, year, genre, runtime, img, action: null });
+      const newMovie = await MoviesService.add({ 
+        title, 
+        director, 
+        year, 
+        genre, 
+        runtime, 
+        img, 
+        action: null,
+        username: username || 'default_user' // Default username if not provided
+      });
       res.status(201).json(newMovie);
     } catch (error) {
       console.error('Error in add:', error);
@@ -134,7 +143,8 @@ export const MoviesController = {
             genre,
             runtime,
             img,
-            action: 'deleted'
+            action: 'deleted',
+            username: 'default_user' // Default username for deleted external movies
           }
         });
         res.json({ message: 'OMDb movie marked as deleted', movie: deletedMovie });

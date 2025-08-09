@@ -8,6 +8,11 @@ export enum HTTPMethod {
   DELETE = 'DELETE',
 }
 
+export interface User {
+  id: number;
+  username: string;
+}
+
 export const ApiService = {
   makeRequest: <T>(
     endpoint: string,
@@ -65,5 +70,18 @@ export const ApiService = {
         }
       }
     });
+  },
+
+  // User API methods
+  createUser: (username: string): Promise<User> => {
+    return ApiService.makeRequest<User>('/users', HTTPMethod.POST, { username });
+  },
+
+  getUsers: (): Promise<User[]> => {
+    return ApiService.makeRequest<User[]>('/users', HTTPMethod.GET);
+  },
+
+  getUserById: (id: number): Promise<User> => {
+    return ApiService.makeRequest<User>(`/users/${id}`, HTTPMethod.GET);
   },
 };

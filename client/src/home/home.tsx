@@ -18,6 +18,9 @@ import GeneralTypography from "../components/typography/Typography";
 import { useLanguageDirection } from "../hooks/useLanguageDirection";
 import type { RootState } from "../store";
 import MovieDetail from "../components/movie-detail/MovieDetail";
+import { userAtom } from "../store/userAtom";
+import UsernameDialog from "../components/username-dialog/UsernameDialog";
+import { useUsernameDialog } from "../hooks/useUsernameDialog";
 
 const Home: React.FC = () => {
   const { t } = useTranslation();
@@ -50,6 +53,9 @@ const Home: React.FC = () => {
     (state: RootState) => state.favorites.movies
   );
   const [showFavoritesOnly] = useAtom(showFavoritesOnlyAtom);
+  const [user] = useAtom(userAtom);
+  const { isOpen, openDialog, closeDialog, handleSuccess } =
+    useUsernameDialog();
 
   const allMovies = useMemo(() => {
     if (debouncedSearchValue) {
@@ -70,12 +76,15 @@ const Home: React.FC = () => {
   const isLoadingData = debouncedSearchValue
     ? isLoadingSearch
     : isLoadingMovies;
+
   const isFetchingNextPage = debouncedSearchValue
     ? isFetchingNextSearchPage
     : isFetchingNextMoviesPage;
+
   const hasNextPage = debouncedSearchValue
     ? hasNextSearchPage
     : hasNextMoviesPage;
+
   const error = debouncedSearchValue ? searchError : moviesError;
 
   const handleLoadMore = () => {
@@ -105,8 +114,15 @@ const Home: React.FC = () => {
   };
 
   const handleEditMovie = (movie: Movie) => {
-    setEditMovie(movie);
-    setModal(true);
+    if (user) {
+      setEditMovie(movie);
+      setModal(true);
+    } else {
+      openDialog(() => {
+        setEditMovie(movie);
+        setModal(true);
+      });
+    }
   };
 
   const handleBackToList = () => {
@@ -151,6 +167,11 @@ const Home: React.FC = () => {
         isLoading={isLoadingData}
       />
       <Popup isOpen={modal} onClose={() => setModal(false)} movie={editMovie} />
+      <UsernameDialog
+        open={isOpen}
+        onClose={closeDialog}
+        onSuccess={handleSuccess}
+      />
     </HomeContainer>
   );
 };

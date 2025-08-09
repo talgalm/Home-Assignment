@@ -14,6 +14,8 @@
   },
   "submit": "Update Movie",
   "submitting": "Updating...",
+  "cancel": "Cancel Movie",
+  "canceling": "Canceling...",
   "success": "Movie updated successfully!",
   "error": "Error updating movie"
 }

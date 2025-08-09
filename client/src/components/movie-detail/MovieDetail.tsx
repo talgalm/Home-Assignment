@@ -30,6 +30,10 @@ import {
   StyledGeneralTypography,
 } from "./MovieDetail.styles";
 import GeneralTypography from "../typography/Typography";
+import { useAtom } from "jotai";
+import { userAtom } from "../../store/userAtom";
+import UsernameDialog from "../username-dialog/UsernameDialog";
+import { useUsernameDialog } from "../../hooks/useUsernameDialog";
 
 interface MovieDetailProps {
   movie: Movie;
@@ -45,12 +49,27 @@ const MovieDetail: React.FC<MovieDetailProps> = ({ movie, onBack, onEdit }) => {
   const favorites = useAppSelector(
     (state: RootState) => state.favorites.movies
   );
+  const [user] = useAtom(userAtom);
+  const { isOpen, openDialog, closeDialog, handleSuccess } =
+    useUsernameDialog();
   const isFavorite = favorites.some((fav: Movie) => fav.id === movie.id);
   const deleteMovieMutation = useDeleteMovie();
 
-  const handleFavorite = () => dispatch(toggleFavorite(movie));
+  const handleFavorite = () => {
+    if (user) {
+      dispatch(toggleFavorite(movie));
+    } else {
+      openDialog(() => dispatch(toggleFavorite(movie)));
+    }
+  };
 
-  const handleDeleteClick = () => setShowDeleteConfirm(true);
+  const handleDeleteClick = () => {
+    if (user) {
+      setShowDeleteConfirm(true);
+    } else {
+      openDialog(() => setShowDeleteConfirm(true));
+    }
+  };
 
   const handleDeleteConfirm = () => {
     deleteMovieMutation.mutate(movie, {
@@ -157,15 +176,6 @@ const MovieDetail: React.FC<MovieDetailProps> = ({ movie, onBack, onEdit }) => {
                   </DeleteButton>
                 </ActionButtonsWrapper>
               </Box>
-
-              <GeneralTypography
-                variant="h6"
-                value={`${movie.year} • ${movie.runtime} `}
-                styleProps={{
-                  color: "text.secondary",
-                  padding: 2,
-                }}
-              />
               <GeneralTypography
                 variant="h6"
                 value={runtimeValue}
@@ -224,10 +234,7 @@ const MovieDetail: React.FC<MovieDetailProps> = ({ movie, onBack, onEdit }) => {
                   value={t("MovieCard.runtime")}
                   styleProps={{ color: "text.secondary" }}
                 />
-                <GeneralTypography
-                  variant="body1"
-                  value={`${movie.runtime} ${t("MovieCard.minutes")}`}
-                />
+                <GeneralTypography variant="body1" value={`${movie.runtime}`} />
               </Box>
             </Box>
           </Box>
@@ -245,6 +252,12 @@ const MovieDetail: React.FC<MovieDetailProps> = ({ movie, onBack, onEdit }) => {
         confirmText={t("DeleteMovie.confirm")}
         cancelText={t("DeleteMovie.cancel")}
         severity="warning"
+      />
+
+      <UsernameDialog
+        open={isOpen}
+        onClose={closeDialog}
+        onSuccess={handleSuccess}
       />
     </StyledMovieDetail>
   );

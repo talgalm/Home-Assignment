@@ -6,4 +6,5 @@ export interface Movie {
     genre: string;
     director: string;
     img?: string;
+    username: string;
   }

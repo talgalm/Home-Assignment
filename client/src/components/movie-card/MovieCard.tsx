@@ -25,6 +25,10 @@ import { formatMovieTitle } from "../../utils/textUtils";
 import { useDeleteMovie } from "../../hooks/useDeleteMovie";
 import ConfirmDialog from "../confirm-dialog/ConfirmDialog";
 import { CardMedia, IconButton } from "@mui/material";
+import { useAtom } from "jotai";
+import { userAtom } from "../../store/userAtom";
+import UsernameDialog from "../username-dialog/UsernameDialog";
+import { useUsernameDialog } from "../../hooks/useUsernameDialog";
 
 type Props = {
   movie: Movie;
@@ -36,6 +40,10 @@ const MovieCard: React.FC<Props> = ({ movie, onClick, onEditClick }) => {
   const { t } = useTranslation();
   const dispatch = useAppDispatch();
   const [showDeleteConfirm, setShowDeleteConfirm] = useState(false);
+  const [user] = useAtom(userAtom);
+  const { isOpen, openDialog, closeDialog, handleSuccess } =
+    useUsernameDialog();
+
   const favorites = useAppSelector(
     (state: RootState) => state.favorites.movies
   );
@@ -43,11 +51,19 @@ const MovieCard: React.FC<Props> = ({ movie, onClick, onEditClick }) => {
   const deleteMovieMutation = useDeleteMovie();
 
   const handleFavorite = () => {
-    dispatch(toggleFavorite(movie));
+    if (user) {
+      dispatch(toggleFavorite(movie));
+    } else {
+      openDialog(() => dispatch(toggleFavorite(movie)));
+    }
   };
 
   const handleDeleteClick = () => {
-    setShowDeleteConfirm(true);
+    if (user) {
+      setShowDeleteConfirm(true);
+    } else {
+      openDialog(() => setShowDeleteConfirm(true));
+    }
   };
 
   const handleDeleteConfirm = () => {
@@ -144,6 +160,12 @@ const MovieCard: React.FC<Props> = ({ movie, onClick, onEditClick }) => {
         confirmText={t("DeleteMovie.confirm")}
         cancelText={t("DeleteMovie.cancel")}
         severity="warning"
+      />
+
+      <UsernameDialog
+        open={isOpen}
+        onClose={closeDialog}
+        onSuccess={handleSuccess}
       />
     </MovieCardContainer>
   );

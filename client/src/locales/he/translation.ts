@@ -10,6 +10,7 @@ import Validation from '../../validation/Validation.lang.he.json';
 import Common from './Common.lang.he.json';
 import MovieDetail from '../../components/movie-detail/MovieDetail.lang.he.json';
 import Languages from '../../components/language-switcher/Languages.lang.he.json';
+import UsernameDialog from '../../components/username-dialog/UsernameDialog.lang.he.json';
 
 export default {
   Header: Header,
@@ -24,4 +25,5 @@ export default {
   Common: Common,
   MovieDetail: MovieDetail,
   Languages: Languages,
+  UsernameDialog: UsernameDialog,
 };

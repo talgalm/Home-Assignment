@@ -25,6 +25,9 @@ import type { RootState } from "../../store";
 import StarOutlineIcon from "@mui/icons-material/StarOutline";
 import StarIcon from "@mui/icons-material/Star";
 import LanguageSwitcher from "../language-switcher/LanguageSwitcher";
+import { userAtom } from "../../store/userAtom";
+import UsernameDialog from "../username-dialog/UsernameDialog";
+import { useUsernameDialog } from "../../hooks/useUsernameDialog";
 
 const Header: React.FC = () => {
   const { t } = useTranslation();
@@ -33,6 +36,18 @@ const Header: React.FC = () => {
   const favorites = useAppSelector(
     (state: RootState) => state.favorites.movies
   );
+  const [user] = useAtom(userAtom);
+  const { isOpen, openDialog, closeDialog, handleSuccess } =
+    useUsernameDialog();
+
+  const handleAdd = () => {
+    if (user) {
+      setModal(true);
+    } else {
+      openDialog(() => setModal(true));
+    }
+  };
+
   const [showFavoritesOnly] = useAtom(showFavoritesOnlyAtom);
   const [, toggleFavoritesView] = useAtom(toggleFavoritesViewAtom);
 
@@ -61,10 +76,15 @@ const Header: React.FC = () => {
             )}
           </Badge>
         </IconButton>
-        <AddIcon onClick={() => setModal(true)} />
+        <AddIcon onClick={handleAdd} />
         <LanguageSwitcher />
       </ButtonsContainer>
       <Popup isOpen={modal} onClose={() => setModal(false)} />
+      <UsernameDialog
+        open={isOpen}
+        onClose={closeDialog}
+        onSuccess={handleSuccess}
+      />
     </HeaderContainer>
   );
 };

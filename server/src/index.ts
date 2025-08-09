@@ -1,5 +1,6 @@
 import express from 'express';
 import moviesRoutes from './routes/movies.routes';
+import usersRoutes from './routes/users.routes';
 import { corsMiddleware } from './middlewares/cors.middleware';
 import prisma from './db/prisma';
 import dotenv from 'dotenv';
@@ -16,6 +17,7 @@ app.get('/health', (req, res) => {
 });
 
 app.use('/api/movies', moviesRoutes);
+app.use('/api/users', usersRoutes);
 
 process.on('SIGINT', async () => {
   console.log('Shutting down gracefully...');

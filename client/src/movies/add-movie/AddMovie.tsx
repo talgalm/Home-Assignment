@@ -15,6 +15,8 @@ import GeneralInput from "../../components/input/Input";
 import TitleInput from "../../components/input/TitleInput";
 import { useLanguageDirection } from "../../hooks/useLanguageDirection";
 import Autocomplete from "../../components/autocomplete/Autocomplete";
+import { useAtom } from "jotai";
+import { userAtom } from "../../store/userAtom";
 
 type AddMovieProps = {
   onClose?: () => void;
@@ -24,6 +26,7 @@ const AddMovie: React.FC<AddMovieProps> = ({ onClose }) => {
   const { t } = useTranslation();
   const direction = useLanguageDirection();
   const queryClient = useQueryClient();
+  const [user] = useAtom(userAtom);
   const {
     handleSubmit,
     reset,
@@ -35,6 +38,7 @@ const AddMovie: React.FC<AddMovieProps> = ({ onClose }) => {
     const formattedData = {
       ...data,
       genre: data.genre.join(", "),
+      username: user?.username || "default_user",
     };
 
     addMovieMutation.mutate(formattedData, {
@@ -48,10 +52,7 @@ const AddMovie: React.FC<AddMovieProps> = ({ onClose }) => {
 
   return (
     <FormContainer $direction={direction}>
-      <StyledGeneralTypography
-        variant="h2"
-        value={t("AddMovie.title")}
-      />
+      <StyledGeneralTypography variant="h2" value={t("AddMovie.title")} />
       <StyledForm onSubmit={handleSubmit(onSubmit)}>
         <TitleInput
           name="title"

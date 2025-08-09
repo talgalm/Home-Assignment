@@ -42,6 +42,7 @@ export const MoviesService = {
         runtime: omdbMovie.Runtime || 'Unknown',
         img: omdbMovie.Poster || null,
         action: null,
+        username: 'default_user', // Default username for external movies
         createdAt: new Date(),
         updatedAt: new Date(),
       }));
@@ -79,6 +80,7 @@ export const MoviesService = {
         runtime: omdbMovie.Runtime || 'Unknown',
         img: omdbMovie.Poster || null,
         action: null,
+        username: 'default_user', // Default username for external movies
         createdAt: new Date(),
         updatedAt: new Date()
       }));
@@ -115,6 +117,7 @@ export const MoviesService = {
         runtime: movieData.runtime ?? "Unknown",
         img: movieData.img ?? "",
         action: "updated",
+        username: movieData.username ?? 'default_user', // Default username if not specified
       };
       return movieRepository.create(newMovieData);
     }
