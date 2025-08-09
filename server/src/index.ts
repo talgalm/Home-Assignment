@@ -4,7 +4,7 @@ import { corsMiddleware } from './middlewares/cors.middleware';
 import prisma from './db/prisma';
 
 const app = express();
-const PORT = process.env.PORT || 3001;
+const PORT = Number(process.env.PORT) || 3001;
 
 app.use(corsMiddleware);
 app.use(express.json());
@@ -23,6 +23,6 @@ process.on('SIGTERM', async () => {
   process.exit(0);
 });
 
-app.listen(PORT, () => {
-  console.log(`Server listening on http://localhost:${PORT}`);
+app.listen(PORT, '0.0.0.0', () => {
+  console.log(`Server listening on port ${PORT}`);
 });
