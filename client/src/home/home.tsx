@@ -6,7 +6,7 @@ import { useInfiniteSearchMovies } from "../hooks/useSearchMovies";
 import { useDebounce } from "../hooks/useDebounce";
 import { useInfiniteScroll } from "../hooks/useInfiniteScroll";
 import Popup from "../components/popup/Popup";
-import { HomeContainer } from "./Home.styles";
+import { HomeContainer } from "./home.styles";
 import type { Movie } from "../interfaces";
 import MovieGrid from "../components/movie-grid/MovieGrid";
 import { useSearch } from "../context/SearchContext";
@@ -25,7 +25,6 @@ const Home: React.FC = () => {
   const { searchValue } = useSearch();
   const debouncedSearchValue = useDebounce(searchValue, 500);
   const [selectedMovie, setSelectedMovie] = useState<Movie | null>(null);
-
 
   const {
     data: moviesData,
@@ -52,14 +51,12 @@ const Home: React.FC = () => {
   );
   const [showFavoritesOnly] = useAtom(showFavoritesOnlyAtom);
 
-
   const allMovies = useMemo(() => {
     if (debouncedSearchValue) {
       return searchData?.pages.flatMap((page) => page) || [];
     }
     return moviesData?.pages.flatMap((page) => page) || [];
   }, [debouncedSearchValue, moviesData, searchData]);
-
 
   const displayMovies = useMemo(() => {
     if (showFavoritesOnly && allMovies) {
@@ -69,7 +66,6 @@ const Home: React.FC = () => {
     }
     return allMovies;
   }, [showFavoritesOnly, allMovies, favorites]);
-
 
   const isLoadingData = debouncedSearchValue
     ? isLoadingSearch
@@ -81,7 +77,6 @@ const Home: React.FC = () => {
     ? hasNextSearchPage
     : hasNextMoviesPage;
   const error = debouncedSearchValue ? searchError : moviesError;
-
 
   const handleLoadMore = () => {
     if (debouncedSearchValue) {
@@ -97,12 +92,11 @@ const Home: React.FC = () => {
     isLoading: isFetchingNextPage,
   });
 
-
   if (isLoadingData && displayMovies.length === 0)
     return (
       <GeneralLoader
         loading={true}
-        text={debouncedSearchValue ? t('Search.searching') : t('Home.loading')}
+        text={debouncedSearchValue ? t("Search.searching") : t("Home.loading")}
       />
     );
 
@@ -119,7 +113,6 @@ const Home: React.FC = () => {
     setSelectedMovie(null);
   };
 
-
   if (selectedMovie) {
     return (
       <HomeContainer $direction={direction}>
@@ -128,19 +121,22 @@ const Home: React.FC = () => {
           onBack={handleBackToList}
           onEdit={handleEditMovie}
         />
-        <Popup isOpen={modal} onClose={() => setModal(false)} movie={editMovie} />
+        <Popup
+          isOpen={modal}
+          onClose={() => setModal(false)}
+          movie={editMovie}
+        />
       </HomeContainer>
     );
   }
-
 
   return (
     <HomeContainer $direction={direction}>
       {showFavoritesOnly && (
         <Box sx={{ mb: 2, p: 2, bgcolor: "background.paper", borderRadius: 1 }}>
-          <GeneralTypography 
-            variant="h6" 
-            value={` ${t('Favorites.title')}`}
+          <GeneralTypography
+            variant="h6"
+            value={` ${t("Favorites.title")}`}
             styleProps={{ color: "#f5c518" }}
           />
         </Box>

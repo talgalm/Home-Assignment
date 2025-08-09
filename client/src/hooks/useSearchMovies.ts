@@ -1,7 +1,6 @@
 import { useInfiniteQuery } from '@tanstack/react-query';
 import { ApiService, HTTPMethod } from '../api/apiService';
 import type { Movie } from '../interfaces';
-import type { AxiosError } from 'axios';
 
 const fetchSearchMovies = async (searchTerm: string, page: number): Promise<Movie[]> => {
   return ApiService.makeRequest<Movie[]>(
@@ -11,9 +10,9 @@ const fetchSearchMovies = async (searchTerm: string, page: number): Promise<Movi
 };
 
 export const useInfiniteSearchMovies = (searchTerm: string) => {
-  return useInfiniteQuery<Movie[], AxiosError>({
+  return useInfiniteQuery<Movie[], Error>({
     queryKey: ['search-movies', searchTerm],
-    queryFn: ({ pageParam = 1 }) => fetchSearchMovies(searchTerm, pageParam),
+    queryFn: ({ pageParam = 1 }) => fetchSearchMovies(searchTerm, pageParam as number),
     getNextPageParam: (lastPage, allPages) => {
       if (lastPage.length === 0) {
         return undefined;
