@@ -12,6 +12,7 @@ export const StyledMovieDetail = styled("div")<{ $direction?: "ltr" | "rtl" }>(
     textAlign: $direction === "rtl" ? "right" : "left",
     "@media (max-width: 768px)": {
       padding: 16,
+      marginTop: 55
     },
   })
 );
@@ -39,11 +40,14 @@ export const PosterPlaceholder = styled(Box)(() => ({
   },
 }));
 
-export const ActionButtonsWrapper = styled(Box)(() => ({
+export const ActionButtonsWrapper = styled(Box)({
   display: "flex",
   gap: 8,
   marginLeft: 16,
-}));
+  "@media (max-width: 600px)": {
+    flexDirection: "column",
+  },
+});
 
 export const FavoriteButton = styled(IconButton)<{ $active?: boolean }>(
   ({ $active }) => ({
@@ -77,6 +81,7 @@ export const GenreChip = styled(Chip)(() => ({
   "&:hover": {
     backgroundColor: "rgba(245, 197, 24, 0.3)",
   },
+
 }));
 
 export const StyledGeneralTypography = styled(GeneralTypography)(() => ({

@@ -63,6 +63,12 @@ const MovieDetail: React.FC<MovieDetailProps> = ({ movie, onBack, onEdit }) => {
 
   const genres = movie.genre.split(", ").filter(Boolean);
 
+  const runtimeValue = `${movie.year} • ${
+    movie.runtime.includes("min")
+      ? movie.runtime.replace("min", t("MovieCard.minutes"))
+      : movie.runtime + " " + t("MovieCard.minutes")
+  }`;
+
   return (
     <StyledMovieDetail $direction={direction}>
       <BackButtonWrapper>
@@ -124,6 +130,7 @@ const MovieDetail: React.FC<MovieDetailProps> = ({ movie, onBack, onEdit }) => {
                   justifyContent: "space-between",
                   alignItems: "flex-start",
                   mb: 1.5,
+                  padding: 2,
                 }}
               >
                 <StyledGeneralTypography
@@ -146,18 +153,25 @@ const MovieDetail: React.FC<MovieDetailProps> = ({ movie, onBack, onEdit }) => {
                     onClick={handleDeleteClick}
                     disabled={deleteMovieMutation.isPending}
                   >
-                    <DeleteIcon color="primary"/>
+                    <DeleteIcon color="primary" />
                   </DeleteButton>
                 </ActionButtonsWrapper>
               </Box>
 
               <GeneralTypography
                 variant="h6"
-                value={`${movie.year} • ${movie.runtime} ${t(
-                  "MovieCard.minutes"
-                )}`}
+                value={`${movie.year} • ${movie.runtime} `}
                 styleProps={{
                   color: "text.secondary",
+                  padding: 2,
+                }}
+              />
+              <GeneralTypography
+                variant="h6"
+                value={runtimeValue}
+                styleProps={{
+                  color: "text.secondary",
+                  padding: 2,
                 }}
               />
 
@@ -170,6 +184,7 @@ const MovieDetail: React.FC<MovieDetailProps> = ({ movie, onBack, onEdit }) => {
                 gridTemplateColumns: { xs: "1fr", sm: "1fr 1fr" },
                 gap: 3,
                 mt: 3,
+                padding: 2,
               }}
             >
               <Box>
