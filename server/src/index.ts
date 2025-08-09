@@ -2,6 +2,8 @@ import express from 'express';
 import moviesRoutes from './routes/movies.routes';
 import { corsMiddleware } from './middlewares/cors.middleware';
 import prisma from './db/prisma';
+import dotenv from 'dotenv';
+dotenv.config();
 
 const app = express();
 const PORT = Number(process.env.PORT) || 3001;
