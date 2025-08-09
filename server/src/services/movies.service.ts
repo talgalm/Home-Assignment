@@ -150,21 +150,18 @@ export const MoviesService = {
   },
 
   addFavorite: async (movieData: Omit<Movie, 'id' | 'createdAt' | 'updatedAt'>): Promise<Movie> => {
-    // Check if this movie is already favorited by this user
     const existingFavorite = await movieRepository.findFavoriteByTitleAndUsername(
       movieData.title,
       movieData.username
     );
     
     if (existingFavorite) {
-      // If it exists but was unfavorited, update it back to favorite
       if (existingFavorite.action !== 'favorite') {
         return movieRepository.update(existingFavorite.id, { action: 'favorite' });
       }
       return existingFavorite;
     }
     
-    // Create new favorite entry
     return movieRepository.create(movieData);
   },
 
@@ -174,7 +171,6 @@ export const MoviesService = {
       return false;
     }
     
-    // Remove the favorite by deleting the record completely
     return movieRepository.hardDelete(id);
   },
 
