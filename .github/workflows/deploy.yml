@@ -1,0 +1,39 @@
+name: Deploy to EC2
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Setup SSH key
+        uses: webfactory/ssh-agent@v0.5.4
+        with:
+          ssh-private-key: ${{ secrets.EC2_SSH_KEY }}
+
+      - name: Deploy Backend
+        run: |
+          ssh -o StrictHostKeyChecking=no ubuntu@13.53.80.101 << 'EOF'
+            cd ~/Home-Assignment/server
+            git pull
+            npm install
+            npm run build
+            pm2 restart backend --update-env
+          EOF
+
+      - name: Deploy Frontend
+        run: |
+          ssh -o StrictHostKeyChecking=no ubuntu@13.51.30.88 << 'EOF'
+            cd ~/Home-Assignment/client
+            git pull
+            npm install
+            npm run build
+            sudo systemctl reload nginx
+          EOF
