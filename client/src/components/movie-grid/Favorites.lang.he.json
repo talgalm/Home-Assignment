@@ -2,5 +2,6 @@
   "title": "המועדפים שלי",
   "noFavorites": "עדיין לא הוספת סרטים למועדפים",
   "count": "{{count}} מועדף",
-  "count_plural": "{{count}} מועדפים"
+  "count_plural": "{{count}} מועדפים",
+  "loading": "טוען מועדפים..."
 }

@@ -18,10 +18,10 @@ import {
   GenersGeneralTypography,
 } from "./MovieCard.styles";
 import GeneralTypography from "../typography/Typography";
-import { useAppDispatch, useAppSelector } from "../../store/hooks";
-import { toggleFavorite, removeFavorite } from "../../store/favoritesSlice";
-import type { RootState } from "../../store";
+import { useAppDispatch } from "../../store/hooks";
+import { removeFavorite } from "../../store/favoritesSlice";
 import { formatMovieTitle } from "../../utils/textUtils";
+import { useFavorites } from "../../hooks/useFavorites";
 import { useDeleteMovie } from "../../hooks/useDeleteMovie";
 import ConfirmDialog from "../confirm-dialog/ConfirmDialog";
 import { CardMedia, IconButton } from "@mui/material";
@@ -44,17 +44,27 @@ const MovieCard: React.FC<Props> = ({ movie, onClick, onEditClick }) => {
   const { isOpen, openDialog, closeDialog, handleSuccess } =
     useUsernameDialog();
 
-  const favorites = useAppSelector(
-    (state: RootState) => state.favorites.movies
-  );
-  const isFavorite = favorites.some((favMovie) => favMovie.id === movie.id);
+  const { isFavorite, toggleFavoriteWithBackend, isTogglingFavorite } =
+    useFavorites();
+  const isMovieFavorite = isFavorite(movie.id);
+  const isToggling = isTogglingFavorite(movie.id);
   const deleteMovieMutation = useDeleteMovie();
 
-  const handleFavorite = () => {
+  const handleFavorite = async () => {
     if (user) {
-      dispatch(toggleFavorite(movie));
+      try {
+        await toggleFavoriteWithBackend(movie);
+      } catch (error) {
+        console.error("Failed to toggle favorite:", error);
+      }
     } else {
-      openDialog(() => dispatch(toggleFavorite(movie)));
+      openDialog(async () => {
+        try {
+          await toggleFavoriteWithBackend(movie);
+        } catch (error) {
+          console.error("Failed to toggle favorite:", error);
+        }
+      });
     }
   };
 
@@ -69,7 +79,7 @@ const MovieCard: React.FC<Props> = ({ movie, onClick, onEditClick }) => {
   const handleDeleteConfirm = () => {
     deleteMovieMutation.mutate(movie, {
       onSuccess: () => {
-        if (isFavorite) {
+        if (isMovieFavorite) {
           dispatch(removeFavorite(movie.id));
         }
       },
@@ -142,9 +152,16 @@ const MovieCard: React.FC<Props> = ({ movie, onClick, onEditClick }) => {
           <IconButton
             color="primary"
             onClick={handleFavorite}
+            disabled={isToggling}
             aria-label={t("Favorite")}
           >
-            {isFavorite ? <StarIcon /> : <StarOutlineIcon />}
+            {isToggling ? (
+              <CircularProgress size={20} />
+            ) : isMovieFavorite ? (
+              <StarIcon />
+            ) : (
+              <StarOutlineIcon />
+            )}
           </IconButton>
         </StyledCardActions>
       </StyledCard>

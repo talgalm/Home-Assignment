@@ -126,5 +126,38 @@ export const movieRepository = {
     if (movie.action === 'deleted') return true;
     await prisma.movie.update({ where: { id }, data: { action: 'deleted' } });
     return true;
+  },
+
+  hardDelete: async (id: number): Promise<boolean> => {
+    try {
+      await prisma.movie.delete({ where: { id } });
+      return true;
+    } catch (error) {
+      console.error('Error in hardDelete:', error);
+      return false;
+    }
+  },
+
+  findFavoritesByUsername: async (username: string): Promise<Movie[]> => {
+    return prisma.movie.findMany({
+      where: {
+        username: username,
+        action: 'favorite'
+      },
+      orderBy: { createdAt: 'desc' }
+    });
+  },
+
+  findFavoriteByTitleAndUsername: async (title: string, username: string): Promise<Movie | null> => {
+    return prisma.movie.findFirst({
+      where: {
+        title: {
+          equals: title,
+          mode: 'insensitive'
+        },
+        username: username,
+        action: 'favorite'
+      }
+    });
   }
 };

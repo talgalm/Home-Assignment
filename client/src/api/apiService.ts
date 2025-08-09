@@ -84,4 +84,17 @@ export const ApiService = {
   getUserById: (id: number): Promise<User> => {
     return ApiService.makeRequest<User>(`/users/${id}`, HTTPMethod.GET);
   },
+
+  // Favorites API methods
+  addFavorite: (movieData: any): Promise<any> => {
+    return ApiService.makeRequest<any>('/movies/add-favorite', HTTPMethod.POST, movieData);
+  },
+
+  deleteFavorite: (id: number): Promise<any> => {
+    return ApiService.makeRequest<any>(`/movies/delete-favorite/${id}`, HTTPMethod.DELETE);
+  },
+
+  getFavorites: (username: string): Promise<any[]> => {
+    return ApiService.makeRequest<any[]>(`/movies/favorites/${username}`, HTTPMethod.GET);
+  },
 };

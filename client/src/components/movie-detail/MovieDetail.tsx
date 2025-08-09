@@ -1,19 +1,19 @@
 import React, { useState } from "react";
 import { useTranslation } from "react-i18next";
-import { Box, CardMedia } from "@mui/material";
+import { Box, CardMedia, CircularProgress } from "@mui/material";
 import {
   Star as StarIcon,
   StarOutline as StarOutlineIcon,
   Edit as EditIcon,
   Delete as DeleteIcon,
 } from "@mui/icons-material";
-import { useAppDispatch, useAppSelector } from "../../store/hooks";
-import { toggleFavorite, removeFavorite } from "../../store/favoritesSlice";
+import { useAppDispatch } from "../../store/hooks";
+import { removeFavorite } from "../../store/favoritesSlice";
 import { useDeleteMovie } from "../../hooks/useDeleteMovie";
 import { useLanguageDirection } from "../../hooks/useLanguageDirection";
 import { formatMovieTitle } from "../../utils/textUtils";
 import type { Movie } from "../../interfaces";
-import type { RootState } from "../../store";
+import { useFavorites } from "../../hooks/useFavorites";
 import GeneralButton from "../button/Button";
 import ConfirmDialog from "../confirm-dialog/ConfirmDialog";
 import {
@@ -46,20 +46,30 @@ const MovieDetail: React.FC<MovieDetailProps> = ({ movie, onBack, onEdit }) => {
   const direction = useLanguageDirection();
   const dispatch = useAppDispatch();
   const [showDeleteConfirm, setShowDeleteConfirm] = useState(false);
-  const favorites = useAppSelector(
-    (state: RootState) => state.favorites.movies
-  );
   const [user] = useAtom(userAtom);
   const { isOpen, openDialog, closeDialog, handleSuccess } =
     useUsernameDialog();
-  const isFavorite = favorites.some((fav: Movie) => fav.id === movie.id);
+  const { isFavorite, toggleFavoriteWithBackend, isTogglingFavorite } =
+    useFavorites();
+  const isMovieFavorite = isFavorite(movie.id);
+  const isToggling = isTogglingFavorite(movie.id);
   const deleteMovieMutation = useDeleteMovie();
 
-  const handleFavorite = () => {
+  const handleFavorite = async () => {
     if (user) {
-      dispatch(toggleFavorite(movie));
+      try {
+        await toggleFavoriteWithBackend(movie);
+      } catch (error) {
+        console.error("Failed to toggle favorite:", error);
+      }
     } else {
-      openDialog(() => dispatch(toggleFavorite(movie)));
+      openDialog(async () => {
+        try {
+          await toggleFavoriteWithBackend(movie);
+        } catch (error) {
+          console.error("Failed to toggle favorite:", error);
+        }
+      });
     }
   };
 
@@ -74,7 +84,7 @@ const MovieDetail: React.FC<MovieDetailProps> = ({ movie, onBack, onEdit }) => {
   const handleDeleteConfirm = () => {
     deleteMovieMutation.mutate(movie, {
       onSuccess: () => {
-        if (isFavorite) dispatch(removeFavorite(movie.id));
+        if (isMovieFavorite) dispatch(removeFavorite(movie.id));
         onBack();
       },
     });
@@ -158,8 +168,14 @@ const MovieDetail: React.FC<MovieDetailProps> = ({ movie, onBack, onEdit }) => {
                 />
 
                 <ActionButtonsWrapper>
-                  <FavoriteButton onClick={handleFavorite} $active={isFavorite}>
-                    {isFavorite ? (
+                  <FavoriteButton
+                    onClick={handleFavorite}
+                    $active={isMovieFavorite}
+                    disabled={isToggling}
+                  >
+                    {isToggling ? (
+                      <CircularProgress size={20} />
+                    ) : isMovieFavorite ? (
                       <StarIcon color="primary" />
                     ) : (
                       <StarOutlineIcon color="primary" />

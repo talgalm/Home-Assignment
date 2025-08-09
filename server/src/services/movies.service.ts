@@ -147,5 +147,38 @@ export const MoviesService = {
       return movieRepository.softDelete(id);
     }
     return false;
+  },
+
+  addFavorite: async (movieData: Omit<Movie, 'id' | 'createdAt' | 'updatedAt'>): Promise<Movie> => {
+    // Check if this movie is already favorited by this user
+    const existingFavorite = await movieRepository.findFavoriteByTitleAndUsername(
+      movieData.title,
+      movieData.username
+    );
+    
+    if (existingFavorite) {
+      // If it exists but was unfavorited, update it back to favorite
+      if (existingFavorite.action !== 'favorite') {
+        return movieRepository.update(existingFavorite.id, { action: 'favorite' });
+      }
+      return existingFavorite;
+    }
+    
+    // Create new favorite entry
+    return movieRepository.create(movieData);
+  },
+
+  deleteFavorite: async (id: number): Promise<boolean> => {
+    const movie = await movieRepository.findById(id);
+    if (!movie || movie.action !== 'favorite') {
+      return false;
+    }
+    
+    // Remove the favorite by deleting the record completely
+    return movieRepository.hardDelete(id);
+  },
+
+  getFavoritesByUsername: async (username: string): Promise<Movie[]> => {
+    return movieRepository.findFavoritesByUsername(username);
   }
 };

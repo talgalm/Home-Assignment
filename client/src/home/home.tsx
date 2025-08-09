@@ -10,13 +10,12 @@ import { HomeContainer } from "./home.styles";
 import type { Movie } from "../interfaces";
 import MovieGrid from "../components/movie-grid/MovieGrid";
 import { useSearch } from "../context/SearchContext";
-import { useAppSelector } from "../store/hooks";
 import { useAtom } from "jotai";
 import { showFavoritesOnlyAtom } from "../store/favoritesViewAtom";
+import { useFavorites } from "../hooks/useFavorites";
 import { Box } from "@mui/material";
 import GeneralTypography from "../components/typography/Typography";
 import { useLanguageDirection } from "../hooks/useLanguageDirection";
-import type { RootState } from "../store";
 import MovieDetail from "../components/movie-detail/MovieDetail";
 import { userAtom } from "../store/userAtom";
 import UsernameDialog from "../components/username-dialog/UsernameDialog";
@@ -49,9 +48,7 @@ const Home: React.FC = () => {
 
   const [modal, setModal] = useState(false);
   const [editMovie, setEditMovie] = useState<Movie | undefined>(undefined);
-  const favorites = useAppSelector(
-    (state: RootState) => state.favorites.movies
-  );
+  const { favorites, loading: favoritesLoading } = useFavorites();
   const [showFavoritesOnly] = useAtom(showFavoritesOnlyAtom);
   const [user] = useAtom(userAtom);
   const { isOpen, openDialog, closeDialog, handleSuccess } =
@@ -65,10 +62,8 @@ const Home: React.FC = () => {
   }, [debouncedSearchValue, moviesData, searchData]);
 
   const displayMovies = useMemo(() => {
-    if (showFavoritesOnly && allMovies) {
-      return allMovies.filter((movie: Movie) =>
-        favorites.some((fav: Movie) => fav.id === movie.id)
-      );
+    if (showFavoritesOnly) {
+      return favorites;
     }
     return allMovies;
   }, [showFavoritesOnly, allMovies, favorites]);
@@ -101,11 +96,20 @@ const Home: React.FC = () => {
     isLoading: isFetchingNextPage,
   });
 
-  if (isLoadingData && displayMovies.length === 0)
+  if (
+    (isLoadingData && displayMovies.length === 0) ||
+    (showFavoritesOnly && favoritesLoading && favorites.length === 0)
+  )
     return (
       <GeneralLoader
         loading={true}
-        text={debouncedSearchValue ? t("Search.searching") : t("Home.loading")}
+        text={
+          showFavoritesOnly
+            ? t("Favorites.loading")
+            : debouncedSearchValue
+            ? t("Search.searching")
+            : t("Home.loading")
+        }
       />
     );
 

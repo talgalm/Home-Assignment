@@ -161,4 +161,71 @@ export const MoviesController = {
       res.status(500).json({ message: 'Internal server error' });
     }
   },
+
+  addFavorite: async (req: Request, res: Response) => {
+    try {
+      const { title, director, year, genre, runtime, img, username } = req.body;
+      
+      if (!username) {
+        return res.status(400).json({ message: 'Username is required' });
+      }
+      
+      if (!title || !director || !year || !genre || !runtime) {
+        return res.status(400).json({ message: 'Missing required fields: title, director, year, genre, runtime' });
+      }
+
+      const favoriteMovie = await MoviesService.addFavorite({
+        title,
+        director,
+        year,
+        genre,
+        runtime,
+        img,
+        username,
+        action: 'favorite'
+      });
+      
+      res.status(201).json(favoriteMovie);
+    } catch (error) {
+      console.error('Error in addFavorite:', error);
+      res.status(500).json({ message: 'Internal server error' });
+    }
+  },
+
+  deleteFavorite: async (req: Request, res: Response) => {
+    try {
+      const id = Number(req.params.id);
+      
+      if (isNaN(id)) {
+        return res.status(400).json({ message: 'Invalid movie ID' });
+      }
+
+      const success = await MoviesService.deleteFavorite(id);
+      
+      if (success) {
+        res.json({ message: 'Favorite removed successfully' });
+      } else {
+        res.status(404).json({ message: 'Favorite movie not found' });
+      }
+    } catch (error) {
+      console.error('Error in deleteFavorite:', error);
+      res.status(500).json({ message: 'Internal server error' });
+    }
+  },
+
+  getFavorites: async (req: Request, res: Response) => {
+    try {
+      const { username } = req.params;
+      
+      if (!username) {
+        return res.status(400).json({ message: 'Username is required' });
+      }
+
+      const favorites = await MoviesService.getFavoritesByUsername(username);
+      res.json(favorites);
+    } catch (error) {
+      console.error('Error in getFavorites:', error);
+      res.status(500).json({ message: 'Internal server error' });
+    }
+  },
 };
