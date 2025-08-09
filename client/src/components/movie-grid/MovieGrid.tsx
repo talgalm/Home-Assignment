@@ -82,7 +82,7 @@ const MovieGrid: React.FC<MovieGridProps> = ({
           {!hasNextPage && movies.length > 0 && !isLoadingMore && (
             <NoMoreMoviesWrapper>
               <NoMoreMoviesText color="text.secondary">
-                {t("Home.noMoreMovies")}
+                {t("Home.noMovies")}
               </NoMoreMoviesText>
             </NoMoreMoviesWrapper>
           )}

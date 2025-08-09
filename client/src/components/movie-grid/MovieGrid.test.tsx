@@ -92,7 +92,7 @@ describe("MovieGrid", () => {
       />
     );
 
-    expect(screen.getByText("Home.noMoreMovies")).toBeInTheDocument();
+    expect(screen.getByText("Home.noMovies")).toBeInTheDocument();
   });
 
   it("does not show end message when hasNextPage is true", () => {
@@ -105,7 +105,7 @@ describe("MovieGrid", () => {
       />
     );
 
-    expect(screen.queryByText("Home.noMoreMovies")).not.toBeInTheDocument();
+    expect(screen.queryByText("Home.noMovies")).not.toBeInTheDocument();
   });
 
   it("does not show end message when isLoadingMore is true", () => {
@@ -119,7 +119,7 @@ describe("MovieGrid", () => {
       />
     );
 
-    expect(screen.queryByText("Home.noMoreMovies")).not.toBeInTheDocument();
+    expect(screen.queryByText("Home.noMovies")).not.toBeInTheDocument();
   });
 
   it("renders correct number of movie cards", () => {
