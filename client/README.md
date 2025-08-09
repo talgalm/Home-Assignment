@@ -246,10 +246,21 @@ npm run test:coverage     # Coverage report
 - **Git Hooks**: Pre-commit validation
 
 ### Environment Setup
-```bash
-# Environment variables
-VITE_BET_BASE_URL=your_api_url
 
+Create a `.env` file in the client directory with the following variables:
+
+```bash
+# API Base URL for the backend server
+# For local development:
+VITE_BET_BASE_URL=http://localhost:3001/api
+
+# For production deployment:
+# VITE_BET_BASE_URL=http://your-server-ip:3001/api
+```
+
+**Important**: Make sure to set `VITE_BET_BASE_URL` in your production environment. If not set, the app will fallback to `http://13.51.30.88:3001/api`.
+
+```bash
 # Development tools
 npm run dev          # Development server
 npm run build        # Production build
