@@ -1,4 +1,4 @@
-const BASE_URL = import.meta.env.VITE_BET_BASE_URL || 'http://13.51.30.88:3001/api';
+const BASE_URL = import.meta.env.VITE_BET_BASE_URL || 'http://13.53.80.101:3001/api';
 
 export enum HTTPMethod {
   GET = 'GET',
