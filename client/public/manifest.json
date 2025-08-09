@@ -1,0 +1,22 @@
+{
+  "name": "Movie Explorer - Discover Amazing Films",
+  "short_name": "Movie Explorer",
+  "description": "Your ultimate movie discovery platform",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#0f0f0f",
+  "theme_color": "#f5c518",
+  "icons": [
+    {
+      "src": "/logo.png",
+      "type": "image/png",
+      "sizes": "512x512",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "/logo.svg",
+      "type": "image/svg+xml",
+      "sizes": "any"
+    }
+  ]
+}

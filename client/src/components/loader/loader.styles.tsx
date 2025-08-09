@@ -7,6 +7,9 @@ export const LoaderContainer = styled(Box)(({ theme }) => ({
   alignItems: "center",
   marginTop: theme.spacing(6), // 48px
   marginBottom: theme.spacing(6),
+  "@media (max-width: 600px)": {
+    marginTop: "100px"
+  },
 }));
 
 export const LoaderSpinner = styled(CircularProgress)(() => ({

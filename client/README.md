@@ -258,7 +258,16 @@ VITE_BET_BASE_URL=http://localhost:3001/api
 # VITE_BET_BASE_URL=http://your-server-ip:3001/api
 ```
 
-**Important**: Make sure to set `VITE_BET_BASE_URL` in your production environment. If not set, the app will fallback to `http://13.51.30.88:3001/api`.
+**Important**: Make sure to set `VITE_BET_BASE_URL` in your production environment. If not set, the app will fallback to `http://13.53.80.101:3001/api`.
+
+**Environment Variables Template**:
+```bash
+# Copy this to .env file in the client directory
+VITE_BET_BASE_URL=http://localhost:3001/api
+
+# For production:
+# VITE_BET_BASE_URL=http://13.53.80.101:3001/api
+```
 
 ```bash
 # Development tools
