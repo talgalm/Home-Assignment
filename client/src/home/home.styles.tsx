@@ -1,7 +1,7 @@
 import styled from "styled-components";
 import { Add as addIcon } from "@mui/icons-material";
 
-export const HomeContainer = styled.div<{ $direction?: "ltr" | "rtl" }>(
+export const HomeContainer = styled("div")<{ $direction?: "ltr" | "rtl" }>(
   ({ $direction = "ltr" }) => ({
     width: "100%",
     maxWidth: "100vw",
@@ -13,8 +13,8 @@ export const HomeContainer = styled.div<{ $direction?: "ltr" | "rtl" }>(
   })
 );
 
-export const AddIcon = styled(addIcon)({
+export const AddIcon = styled(addIcon)(() => ({
   color: "#f5c518",
   fontSize: 28,
-  ml: 2,
-});
+  marginLeft: 8,
+}));

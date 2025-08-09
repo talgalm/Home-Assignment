@@ -2,6 +2,8 @@ import React, { useState } from "react";
 import { useTranslation } from "react-i18next";
 import {
   AddIcon,
+  ButtonsContainer,
+  DisplayConteinr,
   HeaderContainer,
   HeaderTitle,
   LogoImage,
@@ -36,17 +38,20 @@ const Header: React.FC = () => {
 
   return (
     <HeaderContainer>
-      <HeaderTitle>
-        <LogoImage src={logo} alt="Logo" />
-      </HeaderTitle>
-
-      <SearchContainer>
-        <GeneralSearch
-          icon={<SearchIcon />}
-          value={searchValue}
-          onChange={(e) => setSearchValue(e.target.value)}
-          placeholder={t("Header.search")}
-        />
+      <DisplayConteinr>
+        <HeaderTitle>
+          <LogoImage src={logo} alt="Logo" />
+        </HeaderTitle>
+        <SearchContainer>
+          <GeneralSearch
+            icon={<SearchIcon />}
+            value={searchValue}
+            onChange={(e) => setSearchValue(e.target.value)}
+            placeholder={t("Header.search")}
+          />
+        </SearchContainer>
+      </DisplayConteinr>
+      <ButtonsContainer>
         <IconButton sx={{ ml: 1 }} onClick={toggleFavoritesView}>
           <Badge badgeContent={favorites.length}>
             {!showFavoritesOnly ? (
@@ -58,7 +63,7 @@ const Header: React.FC = () => {
         </IconButton>
         <AddIcon onClick={() => setModal(true)} />
         <LanguageSwitcher />
-      </SearchContainer>
+      </ButtonsContainer>
       <Popup isOpen={modal} onClose={() => setModal(false)} />
     </HeaderContainer>
   );
