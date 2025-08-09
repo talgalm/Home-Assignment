@@ -94,10 +94,14 @@ const Home: React.FC = () => {
 
   if (isLoadingData && displayMovies.length === 0)
     return (
-      <GeneralLoader
-        loading={true}
-        text={debouncedSearchValue ? t("Search.searching") : t("Home.loading")}
-      />
+      <div style={{ marginTop: 50 }}>
+        <GeneralLoader
+          loading={true}
+          text={
+            debouncedSearchValue ? t("Search.searching") : t("Home.loading")
+          }
+        />
+      </div>
     );
 
   const handleMovieClick = (movie: Movie) => {
