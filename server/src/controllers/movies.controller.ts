@@ -53,10 +53,13 @@ export const MoviesController = {
 
   add: async (req: Request, res: Response) => {
     try {
+      console.log("--- loger ----");
+      console.log(req.body);
       const { title, director, year, genre, runtime, img, username } = req.body;
       if (!title || !director || !year || !genre || !runtime) {
         return res.status(400).json({ message: 'Missing required fields: title, director, year, genre, runtime' });
       }
+      console.log("--- loger 2 ----");
       const newMovie = await MoviesService.add({ 
         title, 
         director, 
@@ -65,11 +68,13 @@ export const MoviesController = {
         runtime, 
         img, 
         action: null,
-        username: username || 'default_user' // Default username if not provided
+        username: username || 'default_user'
       });
+
+      console.log("--- loger 3 ----");
       res.status(201).json(newMovie);
     } catch (error) {
-      console.error('Error in add:', error);
+      console.log('Error in add:', error);
       res.status(500).json({ message: 'Internal server error' });
     }
   },
