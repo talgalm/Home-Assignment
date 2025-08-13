@@ -56,7 +56,7 @@ export const MoviesController = {
       console.log("--- loger ----");
       console.log(req.body);
       const { title, director, year, genre, runtime, img, username } = req.body;
-      if (!title || !director || !year || !genre || !runtime) {
+      if (!title || !director || !year || !genre || !runtime || !username) {
         return res.status(400).json({ message: 'Missing required fields: title, director, year, genre, runtime' });
       }
       console.log("--- loger 2 ----");

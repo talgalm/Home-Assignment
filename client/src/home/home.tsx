@@ -153,11 +153,24 @@ const Home: React.FC = () => {
   return (
     <HomeContainer $direction={direction}>
       {showFavoritesOnly && (
-        <Box sx={{ mb: 2, p: 2, bgcolor: "background.paper", borderRadius: 1 }}>
+        <Box
+          sx={{
+            mb: 3,
+            p: 3,
+            background: "linear-gradient(135deg, #141414 0%, #1a1a1a 100%)",
+            borderRadius: 2,
+            border: "1px solid rgba(255, 255, 255, 0.08)",
+            boxShadow: "0 8px 25px rgba(0, 0, 0, 0.3)",
+          }}
+        >
           <GeneralTypography
-            variant="h6"
+            variant="h5"
             value={` ${t("Favorites.title")}`}
-            styleProps={{ color: "#f5c518" }}
+            styleProps={{
+              color: "#E50914",
+              fontWeight: 700,
+              textShadow: "0 2px 4px rgba(0, 0, 0, 0.5)",
+            }}
           />
         </Box>
       )}

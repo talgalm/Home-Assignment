@@ -5,29 +5,28 @@ import GeneralTypography from "../../components/typography/Typography";
 export const StyledForm = styled("form")({
   display: "flex",
   flexDirection: "column",
-  gap: "20px",
+  gap: "24px",
   width: "100%",
-  padding: "20px 0",
+  padding: "24px 0",
 });
 
 export const StyledSubmitButton = styled(Button)({
-  backgroundColor: "rgba(255, 255, 255, 0.15)",
-  color: "white",
-  border: "2px solid rgba(255, 255, 255, 0.3)",
-  borderRadius: "12px",
+  background: "linear-gradient(135deg, #E50914 0%, #ff1a1a 100%)",
+  color: "#ffffff",
+  border: "none",
+  borderRadius: "8px",
   padding: "16px 32px",
   fontSize: "16px",
-  fontWeight: 600,
+  fontWeight: 700,
   textTransform: "none",
-  backdropFilter: "blur(10px)",
-  transition: "all 0.3s ease",
-  marginTop: "10px",
+  transition: "all 0.3s cubic-bezier(0.4, 0, 0.2, 1)",
+  marginTop: "16px",
+  boxShadow: "0 4px 12px rgba(229, 9, 20, 0.3)",
 
   "&:hover": {
-    backgroundColor: "rgba(255, 255, 255, 0.25)",
-    borderColor: "rgba(255, 255, 255, 0.5)",
+    background: "linear-gradient(135deg, #ff1a1a 0%, #E50914 100%)",
     transform: "translateY(-2px)",
-    boxShadow: "0 8px 25px rgba(0, 0, 0, 0.3)",
+    boxShadow: "0 8px 25px rgba(229, 9, 20, 0.4)",
   },
 
   "&:active": {
@@ -35,9 +34,8 @@ export const StyledSubmitButton = styled(Button)({
   },
 
   "&:disabled": {
-    backgroundColor: "rgba(255, 255, 255, 0.1)",
+    background: "rgba(255, 255, 255, 0.1)",
     color: "rgba(255, 255, 255, 0.5)",
-    borderColor: "rgba(255, 255, 255, 0.2)",
     transform: "none",
     boxShadow: "none",
   },
@@ -46,36 +44,42 @@ export const StyledSubmitButton = styled(Button)({
 export const FormContainer = styled(Box)<{ $direction?: "ltr" | "rtl" }>(
   ({ $direction = "ltr" }) => ({
     width: "100%",
-    maxWidth: "500px",
+    maxWidth: "550px",
     margin: "0 auto",
     direction: $direction,
     textAlign: $direction === "rtl" ? "right" : "left",
+    padding: "32px",
+    background: "linear-gradient(135deg, #141414 0%, #1a1a1a 100%)",
+    borderRadius: "16px",
+    border: "1px solid rgba(255, 255, 255, 0.08)",
+    boxShadow: "0 20px 60px rgba(0, 0, 0, 0.4)",
   })
 );
 
 export const StyledAutocomplete = styled(Autocomplete)({
   "& .MuiOutlinedInput-root": {
-    backgroundColor: "rgba(255, 255, 255, 0.1)",
-    borderRadius: "12px",
-    border: "1px solid rgba(255, 255, 255, 0.2)",
-    color: "white",
+    backgroundColor: "rgba(255, 255, 255, 0.05)",
+    borderRadius: "8px",
+    border: "1px solid rgba(255, 255, 255, 0.1)",
+    color: "#ffffff",
     backdropFilter: "blur(10px)",
-    transition: "all 0.3s ease",
+    transition: "all 0.3s cubic-bezier(0.4, 0, 0.2, 1)",
 
     "&:hover": {
-      backgroundColor: "rgba(255, 255, 255, 0.15)",
-      borderColor: "rgba(255, 255, 255, 0.3)",
+      backgroundColor: "rgba(255, 255, 255, 0.08)",
+      borderColor: "rgba(255, 255, 255, 0.2)",
+      transform: "translateY(-1px)",
     },
 
     "&.Mui-focused": {
-      backgroundColor: "rgba(255, 255, 255, 0.2)",
-      borderColor: "rgba(255, 255, 255, 0.5)",
-      boxShadow: "0 0 0 2px rgba(255, 255, 255, 0.1)",
+      backgroundColor: "rgba(255, 255, 255, 0.1)",
+      borderColor: "#E50914",
+      boxShadow: "0 0 0 4px rgba(229, 9, 20, 0.1)",
     },
   },
 
   "& .MuiOutlinedInput-input": {
-    color: "white",
+    color: "#ffffff",
     fontSize: "16px",
     padding: "16px 20px",
 
@@ -94,7 +98,7 @@ export const StyledAutocomplete = styled(Autocomplete)({
     fontSize: "14px",
 
     "&.Mui-focused": {
-      color: "rgba(255, 255, 255, 0.9)",
+      color: "#E50914",
     },
   },
 
@@ -107,43 +111,44 @@ export const StyledAutocomplete = styled(Autocomplete)({
   },
 
   "& .MuiChip-root": {
-    backgroundColor: "rgba(255, 255, 255, 0.2)",
-    color: "white",
-    border: "1px solid rgba(255, 255, 255, 0.3)",
+    backgroundColor: "rgba(229, 9, 20, 0.15)",
+    color: "#E50914",
+    border: "1px solid rgba(229, 9, 20, 0.3)",
+    fontWeight: 600,
     "& .MuiChip-deleteIcon": {
-      color: "rgba(255, 255, 255, 0.7)",
+      color: "rgba(229, 9, 20, 0.7)",
       "&:hover": {
-        color: "white",
+        color: "#E50914",
       },
     },
   },
 
   "& .MuiAutocomplete-paper": {
     backgroundColor: "rgba(20, 20, 20, 0.95)",
-    backdropFilter: "blur(10px)",
-    border: "1px solid rgba(255, 255, 255, 0.2)",
+    backdropFilter: "blur(20px)",
+    border: "1px solid rgba(255, 255, 255, 0.08)",
     borderRadius: "12px",
-    marginTop: "4px",
-    boxShadow: "0 8px 32px rgba(0, 0, 0, 0.8)",
+    marginTop: "8px",
+    boxShadow: "0 16px 40px rgba(0, 0, 0, 0.8)",
 
     "& .MuiAutocomplete-option": {
-      color: "white",
+      color: "#ffffff",
       "&[data-focus='true']": {
-        backgroundColor: "rgba(255, 255, 255, 0.1)",
+        backgroundColor: "rgba(229, 9, 20, 0.1)",
       },
       "&[aria-selected='true']": {
-        backgroundColor: "rgba(255, 255, 255, 0.2)",
+        backgroundColor: "rgba(229, 9, 20, 0.2)",
       },
     },
   },
 });
 
 export const StyledGeneralTypography = styled(GeneralTypography)({
-  color: "white",
-  fontSize: "1.8rem",
-  fontWeight: 700,
-  margin: "0 0 30px 0",
+  color: "#E50914",
+  fontSize: "2rem",
+  fontWeight: 800,
+  margin: "0 0 32px 0",
   textAlign: "center",
-  textShadow: "0 2px 10px rgba(0,0,0,0.3)",
+  textShadow: "0 4px 12px rgba(229, 9, 20, 0.4)",
   letterSpacing: "-0.02em",
 });

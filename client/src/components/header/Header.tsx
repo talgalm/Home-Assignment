@@ -51,9 +51,7 @@ const Header: React.FC = () => {
   return (
     <HeaderContainer>
       <DisplayConteinr>
-        <HeaderTitle>
-          <LogoImage src={logo} alt="Logo" />
-        </HeaderTitle>
+        <HeaderTitle></HeaderTitle>
         <SearchContainer>
           <GeneralSearch
             icon={<SearchIcon />}

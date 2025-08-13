@@ -44,11 +44,9 @@ const MovieGrid: React.FC<MovieGridProps> = ({
       {isEmpty || error ? (
         <EmptyStateWrapper>
           <EmptyStateIcon
-            sx={{ fontSize: 60, color: error ? "error.main" : "#f5c518" }}
+            sx={{ fontSize: 60, color: error ? "error.main" : "#E50914" }}
           />
-          <EmptyStateText
-            color={error ? "error.main" : "text.secondary"}
-          >
+          <EmptyStateText color={error ? "error.main" : "text.secondary"}>
             {error
               ? `${t("Home.error")}: ${error}`
               : showFavoritesOnly
@@ -68,13 +66,11 @@ const MovieGrid: React.FC<MovieGridProps> = ({
             </div>
           ))}
 
-          {isLoadingMore && !showFavoritesOnly &&  (
+          {isLoadingMore && !showFavoritesOnly && (
             <LoadMoreWrapper>
               <LoadMoreContent>
                 <CircularProgress size={40} />
-                <EmptyStateText>
-                  {t("Home.loadMore")}
-                </EmptyStateText>
+                <EmptyStateText>{t("Home.loadMore")}</EmptyStateText>
               </LoadMoreContent>
             </LoadMoreWrapper>
           )}

@@ -4,27 +4,28 @@ import { styled } from "styled-components";
 export const StyledInput = styled(TextField)<{ $direction?: "ltr" | "rtl" }>(
   ({ $direction = "ltr" }) => ({
     "& .MuiOutlinedInput-root": {
-      backgroundColor: "rgba(255, 255, 255, 0.1)",
-      borderRadius: "12px",
-      border: "1px solid rgba(255, 255, 255, 0.2)",
-      color: "white",
+      backgroundColor: "rgba(255, 255, 255, 0.05)",
+      borderRadius: "8px",
+      border: "1px solid rgba(255, 255, 255, 0.1)",
+      color: "#ffffff",
       backdropFilter: "blur(10px)",
-      transition: "all 0.3s ease",
+      transition: "all 0.3s cubic-bezier(0.4, 0, 0.2, 1)",
 
       "&:hover": {
-        backgroundColor: "rgba(255, 255, 255, 0.15)",
-        borderColor: "rgba(255, 255, 255, 0.3)",
+        backgroundColor: "rgba(255, 255, 255, 0.08)",
+        borderColor: "rgba(255, 255, 255, 0.2)",
+        transform: "translateY(-1px)",
       },
 
       "&.Mui-focused": {
-        backgroundColor: "rgba(255, 255, 255, 0.2)",
-        borderColor: "rgba(255, 255, 255, 0.5)",
-        boxShadow: "0 0 0 2px rgba(255, 255, 255, 0.1)",
+        backgroundColor: "rgba(255, 255, 255, 0.1)",
+        borderColor: "#E50914",
+        boxShadow: "0 0 0 4px rgba(229, 9, 20, 0.1)",
       },
     },
 
     "& .MuiOutlinedInput-input": {
-      color: "white",
+      color: "#ffffff",
       fontSize: "16px",
       padding: "16px 20px",
       direction: $direction,
@@ -45,18 +46,18 @@ export const StyledInput = styled(TextField)<{ $direction?: "ltr" | "rtl" }>(
       fontSize: "14px",
 
       "&.Mui-focused": {
-        color: "rgba(255, 255, 255, 0.9)",
+        color: "#E50914",
       },
     },
 
     "&.Mui-error .MuiOutlinedInput-root": {
-      borderColor: "#f44336",
+      borderColor: "#E50914",
       "&:hover": {
-        borderColor: "#f44336",
+        borderColor: "#E50914",
       },
       "&.Mui-focused": {
-        borderColor: "#f44336",
-        boxShadow: "0 0 0 2px rgba(244, 67, 54, 0.2)",
+        borderColor: "#E50914",
+        boxShadow: "0 0 0 4px rgba(229, 9, 20, 0.2)",
       },
     },
 
@@ -64,7 +65,7 @@ export const StyledInput = styled(TextField)<{ $direction?: "ltr" | "rtl" }>(
       marginLeft: "0",
       marginTop: "8px",
       fontSize: "12px",
-      color: "#f44336",
+      color: "#E50914",
       fontWeight: 500,
     },
 

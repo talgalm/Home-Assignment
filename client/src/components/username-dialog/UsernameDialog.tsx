@@ -105,22 +105,26 @@ const UsernameDialog: React.FC<UsernameDialogProps> = ({
           variant="outlined"
           sx={{
             "& .MuiOutlinedInput-root": {
-              backgroundColor: "rgba(255, 255, 255, 0.1)",
-              borderRadius: "12px",
-              border: "1px solid rgba(255, 255, 255, 0.2)",
-              color: "white",
+              backgroundColor: "rgba(255, 255, 255, 0.05)",
+              borderRadius: "8px",
+              border: "1px solid rgba(255, 255, 255, 0.1)",
+              color: "#ffffff",
+              transition: "all 0.3s cubic-bezier(0.4, 0, 0.2, 1)",
               "&:hover": {
-                backgroundColor: "rgba(255, 255, 255, 0.15)",
-                borderColor: "rgba(255, 255, 255, 0.3)",
+                backgroundColor: "rgba(255, 255, 255, 0.08)",
+                borderColor: "rgba(255, 255, 255, 0.2)",
+                transform: "translateY(-1px)",
               },
               "&.Mui-focused": {
-                backgroundColor: "rgba(255, 255, 255, 0.2)",
-                borderColor: "rgba(255, 255, 255, 0.5)",
+                backgroundColor: "rgba(255, 255, 255, 0.1)",
+                borderColor: "#E50914",
+                boxShadow: "0 0 0 4px rgba(229, 9, 20, 0.1)",
               },
             },
             "& .MuiOutlinedInput-input": {
-              color: "white",
+              color: "#ffffff",
               padding: "16px 20px",
+              fontSize: "1rem",
               "&::placeholder": {
                 color: "rgba(255, 255, 255, 0.6)",
                 opacity: 1,

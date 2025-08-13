@@ -5,7 +5,7 @@ export const TitleInputContainer = styled(Box)<{ $direction?: "ltr" | "rtl" }>(
   ({ $direction = "ltr" }) => ({
     display: "flex",
     flexDirection: "column",
-    gap: "8px",
+    gap: "12px",
     width: "100%",
     direction: $direction,
     textAlign: $direction === "rtl" ? "right" : "left",
@@ -17,38 +17,40 @@ export const TitleStatus = styled(Box)<{ color: string }>(({ color }) => ({
   alignItems: "center",
   gap: "8px",
   fontSize: "14px",
-  padding: "4px 8px",
-  borderRadius: "4px",
+  padding: "6px 12px",
+  borderRadius: "6px",
   backgroundColor:
     color === "error"
-      ? "rgba(244, 67, 54, 0.1)"
+      ? "rgba(229, 9, 20, 0.15)"
       : color === "success"
-      ? "rgba(76, 175, 80, 0.1)"
+      ? "rgba(70, 211, 105, 0.15)"
       : color === "warning"
-      ? "rgba(255, 152, 0, 0.1)"
-      : "rgba(33, 150, 243, 0.1)",
+      ? "rgba(232, 124, 3, 0.15)"
+      : "rgba(0, 113, 235, 0.15)",
   color:
     color === "error"
-      ? "#f44336"
+      ? "#E50914"
       : color === "success"
-      ? "#4caf50"
+      ? "#46d369"
       : color === "warning"
-      ? "#ff9800"
-      : "#2196f3",
+      ? "#e87c03"
+      : "#0071eb",
   border: `1px solid ${
     color === "error"
-      ? "rgba(244, 67, 54, 0.3)"
+      ? "rgba(229, 9, 20, 0.3)"
       : color === "success"
-      ? "rgba(76, 175, 80, 0.3)"
+      ? "rgba(70, 211, 105, 0.3)"
       : color === "warning"
-      ? "rgba(255, 152, 0, 0.3)"
-      : "rgba(33, 150, 243, 0.3)"
+      ? "rgba(232, 124, 3, 0.3)"
+      : "rgba(0, 113, 235, 0.3)"
   }`,
+  fontWeight: 600,
+  transition: "all 0.2s ease",
   "& .MuiSvgIcon-root": {
-    fontSize: "16px",
+    fontSize: "18px",
   },
   "& span": {
-    fontSize: "12px",
-    fontWeight: 500,
+    fontSize: "13px",
+    fontWeight: 600,
   },
 }));

@@ -11,8 +11,9 @@ export const StyledPopupOverlay = styled(Box)({
   alignItems: "center",
   justifyContent: "center",
   zIndex: 9999,
-  backdropFilter: "blur(4px)",
-  animation: "fadeIn 0.3s ease-out",
+  backdropFilter: "blur(8px)",
+  backgroundColor: "rgba(0, 0, 0, 0.7)",
+  animation: "fadeIn 0.3s cubic-bezier(0.4, 0, 0.2, 1)",
   "@keyframes fadeIn": {
     from: { opacity: 0 },
     to: { opacity: 1 },
@@ -23,16 +24,17 @@ export const StyledPopup = styled(Box)<{
   size: "small" | "medium" | "large";
   $direction?: "ltr" | "rtl";
 }>(({ size, $direction = "ltr" }) => ({
-  borderRadius: "16px",
-  padding: "24px",
-  boxShadow: "0 20px 60px rgba(0, 0, 0, 0.8)",
-  border: "1px solid rgba(255, 255, 255, 0.1)",
-  backdropFilter: "blur(10px)",
-  maxWidth: size === "small" ? "400px" : size === "large" ? "800px" : "600px",
+  borderRadius: "12px",
+  padding: "32px",
+  background: "linear-gradient(135deg, #141414 0%, #1a1a1a 100%)",
+  boxShadow: "0 25px 80px rgba(0, 0, 0, 0.9)",
+  border: "1px solid rgba(255, 255, 255, 0.08)",
+  backdropFilter: "blur(20px)",
+  maxWidth: size === "small" ? "450px" : size === "large" ? "900px" : "700px",
   width: "90%",
-  maxHeight: "80vh",
+  maxHeight: "85vh",
   overflow: "auto",
-  animation: "slideIn 0.3s ease-out",
+  animation: "slideIn 0.3s cubic-bezier(0.4, 0, 0.2, 1)",
   position: "relative",
   direction: $direction,
   textAlign: $direction === "rtl" ? "right" : "left",
@@ -43,13 +45,13 @@ export const StyledPopup = styled(Box)<{
     left: 0,
     right: 0,
     bottom: 0,
-    borderRadius: "16px",
+    borderRadius: "12px",
     pointerEvents: "none",
   },
   "@keyframes slideIn": {
     from: {
       opacity: 0,
-      transform: "translateY(-20px) scale(0.95)",
+      transform: "translateY(-30px) scale(0.95)",
     },
     to: {
       opacity: 1,
@@ -60,14 +62,14 @@ export const StyledPopup = styled(Box)<{
     width: "8px",
   },
   "&::-webkit-scrollbar-track": {
-    background: "rgba(255, 255, 255, 0.1)",
+    background: "rgba(255, 255, 255, 0.05)",
     borderRadius: "4px",
   },
   "&::-webkit-scrollbar-thumb": {
-    background: "rgba(255, 255, 255, 0.3)",
+    background: "#E50914",
     borderRadius: "4px",
     "&:hover": {
-      background: "rgba(255, 255, 255, 0.5)",
+      background: "#ff1a1a",
     },
   },
 }));
@@ -75,9 +77,9 @@ export const StyledPopup = styled(Box)<{
 export const StyledPopupContent = styled(Box)({
   position: "relative",
   zIndex: 1,
-  color: "white",
+  color: "#ffffff",
   "& > *": {
-    color: "white",
+    color: "#ffffff",
   },
 });
 
@@ -85,26 +87,28 @@ export const StyledCloseButton = styled(IconButton)<{
   $direction?: "ltr" | "rtl";
 }>(({ $direction = "ltr" }) => ({
   position: "absolute",
-  top: "20px",
-  right: $direction === "rtl" ? "auto" : "20px",
-  left: $direction === "rtl" ? "20px" : "auto",
+  top: "24px",
+  right: $direction === "rtl" ? "auto" : "24px",
+  left: $direction === "rtl" ? "24px" : "auto",
   zIndex: 10000,
-  color: "rgba(255, 255, 255, 0.9)",
-  backgroundColor: "rgba(0, 0, 0, 0.6)",
+  color: "#ffffff",
+  backgroundColor: "rgba(229, 9, 20, 0.9)",
   backdropFilter: "blur(10px)",
-  border: "2px solid rgba(255, 255, 255, 0.3)",
+  border: "2px solid rgba(255, 255, 255, 0.2)",
   borderRadius: "50%",
   width: "48px",
   height: "48px",
-  transition: "all 0.3s ease",
+  transition: "all 0.3s cubic-bezier(0.4, 0, 0.2, 1)",
+  boxShadow: "0 4px 12px rgba(229, 9, 20, 0.4)",
   "& svg": {
     fontSize: "24px",
   },
   "&:hover": {
-    backgroundColor: "rgba(255, 255, 255, 0.2)",
-    color: "white",
+    backgroundColor: "#E50914",
+    color: "#ffffff",
     transform: "scale(1.1)",
-    borderColor: "rgba(255, 255, 255, 0.5)",
+    borderColor: "rgba(255, 255, 255, 0.4)",
+    boxShadow: "0 8px 20px rgba(229, 9, 20, 0.6)",
   },
   "&:active": {
     transform: "scale(0.95)",
